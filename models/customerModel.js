@@ -1,22 +1,21 @@
 const mysql = require("mysql2");
+const bcrypt = require("bcryptjs");
 
+// pass req.body.data to the constructor
 class Customer {
-  // pass req.data to the constructor
   constructor(data) {
     this.tableName = "customer";
     this.data = data;
 
-    this.validateData();
-
     this.customerID = data.customerID;
     this.password = data.password;
+    this.confirmPass = data.confirmPass;
     this.customerNIC = data.customerNIC;
     this.name = data.name;
     this.contactNumber = data.contactNumber;
     this.address = data.address;
     this.birthday = new Date(data.birthday);
   }
-  validateData() {} // Run a vaidator
 
   generateInsertStatement() {
     const cols =
@@ -26,3 +25,24 @@ class Customer {
     return `${statement} ${values}`;
   }
 }
+
+// Encrypt password middleware
+exports.encryptPass = async function (req, res, next) {
+  req.body.data.password = await bcrypt.hash(req.body.data.password, 12);
+  next();
+};
+
+exports.validateData = async function (req, res, next) {
+  if (req.body.data.password === req.body.data.confirmPass) {
+    next();
+  } else {
+    res.status(400).json({
+      status: "Failed to Create user",
+      data: {
+        err,
+      },
+    });
+  }
+};
+
+module.exports = Customer;
