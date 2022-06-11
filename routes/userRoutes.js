@@ -1,5 +1,5 @@
 const express = require("express");
-const userController = require("../controllers/transactionController");
+const userController = require("../controllers/userController");
 const authCOntroller = require("../controllers/authController");
 const { route } = require("express/lib/application");
 const router = express.Router();
@@ -8,13 +8,13 @@ route.post("/signup", authCOntroller.signUp);
 
 router
   .route("/")
-  .post(transactionController.createTransaction)
-  .get(transactionController.getAllTransactions);
+  .post(userController.createUser)
+  .get(userController.getAllTUser);
 router
   .route("/:id")
-  .post(transactionController.createTransaction)
-  .get(transactionController.getTransaction)
-  .patch(transactionController.updateTransaction)
-  .delete(transactionController.deleteTransaction);
+  .post(userController.createUser)
+  .get(userController.getUser)
+  .patch(userController.updateUser)
+  .delete(userController.deleteUser);
 
 module.exports = router;

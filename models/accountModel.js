@@ -26,4 +26,5 @@ class Account {
     const result = await db.query(sqlStatement);
     return result;
   }
+  
 }

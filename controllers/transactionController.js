@@ -1,4 +1,5 @@
 const db = require("../models/supportFunctions/dbOperations");
+const Transaction = require("../models/transactionModel");
 
 const tableCols =
   "(TransactionID, AccountNumber, Date, Time, TransactionType, AccountType, TransactionAmount, TransactionCharge)";
@@ -9,12 +10,28 @@ exports.validateBody = async (req, res) => {
 };
 
 exports.createTransaction = async (req, res) => {
-  const accNo = req.body.AccountNumber;
+  try {
+    console.log(req.body.data);
+    //Transaction.validateTransaction(req, res, next);
+    //console.log("validated");
+    const newTransaction = new Transaction(req.body.data);
+    //console.log(newTransaction);
+    const sqlStatement = newTransaction.statement;
+    //console.log(sqlStatement);
+    const result = await db.query(sqlStatement);
 
-  sqlStatement =
-    `INSERT INTO ${tableName}` +
-    tableCols +
-    ` VALUES (value1, value2, value3, ...);`;
+    res.status(200).json({
+      status: "Successfully added",
+      data: { newTransaction },
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: "Failed to add",
+      data: {
+        err,
+      },
+    });
+  }
 };
 
 exports.getAllTransactions = async (req, res) => {

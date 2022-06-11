@@ -1,4 +1,4 @@
-const db = require("./dbOperations");
+const db = require("../models/supportFunctions/dbOperations");
 //const dbConfig = require("../dbConfig");
 const customer = require("../models/customerModel.js");
 const Customer = require("../models/customerModel.js");

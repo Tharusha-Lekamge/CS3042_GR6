@@ -37,7 +37,7 @@ exports.validateData = async function (req, res, next) {
     next();
   } else {
     res.status(400).json({
-      status: "Failed to Create user",
+      status: "Invalid Data",
       data: {
         err,
       },
