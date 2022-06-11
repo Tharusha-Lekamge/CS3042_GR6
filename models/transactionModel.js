@@ -1,5 +1,16 @@
 const mysql = require("mysql");
-const db = require("../models/supportFunctions/dbOperations");
+// const db = require("../models/supportFunctions/dbOperations");
+
+/* Required input fields are
+ * accountNumber
+ * date
+ * transactionType
+ * transactionAmount
+ * agentID
+ *
+ * transactionID is AI
+ * transaction charge default is 30.0
+ * */
 
 // Does transaction need an account type?
 class Transaction {
@@ -7,51 +18,29 @@ class Transaction {
     this.tableName = "transaction";
     console.log(data);
 
-    this.transactionID = data.TransactionID;
-    this.accountNumber = data.AccountNumber;
-    this.dateTime = new Date(data.Date);
+    this.transactionID = data.transactionID;
+    this.accountNumber = data.accountNumber;
+    this.dateTime = new Date(data.date);
     console.log("after date ");
     this.sqlDate = this.dateTime.toISOString().slice(0, 19).replace("T", " ");
     console.log("after date ascasdc");
-    this.transactionType = data.TransactionType;
-    this.accountType = data.AccountType;
-    this.transactionAmount = data.TransactionAmount;
-    this.transactionCharge = data.TransactionCharge;
+    this.transactionType = data.transactionType;
+    this.transactionAmount = data.transactionAmount;
+    this.transactionCharge = data.transactionCharge;
+    this.agentID = data.agentID;
+
     this.statement = this.generateInsertStatement();
   }
   generateInsertStatement() {
     //console.log("inside functuon");
     const cols =
-      "(TransactionID, AccountNumber, Date, Time, TransactionType, AccountType, TransactionAmount, TransactionCharge)";
+      "(transactionID, accountNumber, date, transactionType, transactionAmount, transactionCharge, agentID)";
     var statement = `INSERT INTO ${this.tableName} ${cols} VALUES`;
-    var values = `('${this.transactionID}', '${this.accountNumber}', '${this.sqlDate}', '${this.sqlDate}', '${this.transactionType}', '${this.accountType}', '${this.transactionAmount}', '${this.transactionCharge}')`;
+    var values = `('${this.transactionID}', '${this.accountNumber}', '${this.sqlDate}', '${this.transactionType}', '${this.transactionAmount}', '${this.transactionCharge}', '${this.agentID}')`;
     const state = statement + " " + values;
     //console.log(state);
     return state;
   }
 }
-
-// Error with validator
-exports.validateTransaction = async function (req, res, next) {
-  if (req.body.data.TransactionCharge === 0) {
-    // Default charge
-    req.body.data.TransactionCharge = 30;
-  } else if (req.body.data.Date === NULL) {
-    req.body.data.Date = new Date();
-  }
-  if (
-    req.body.data === NULL ||
-    req.body.data.AccountNumber === NULL ||
-    req.body.data.TransactionAmount === NULL
-  ) {
-    res.status(400).json({
-      status: "Invalid Data",
-      data: {
-        err,
-      },
-    });
-  }
-  next();
-};
 
 module.exports = Transaction;
