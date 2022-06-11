@@ -1,5 +1,6 @@
 const db = require("../models/supportFunctions/dbOperations");
 const Transaction = require("../models/transactionModel");
+const validators = require("../models/supportFunctions/validators");
 
 const tableCols =
   "(TransactionID, AccountNumber, Date, Time, TransactionType, AccountType, TransactionAmount, TransactionCharge)";
@@ -11,8 +12,8 @@ exports.validateBody = async (req, res) => {
 
 exports.createTransaction = async (req, res) => {
   try {
-    console.log(req.body.data);
-    //Transaction.validateTransaction(req, res, next);
+    //console.log(req.body.data);
+    //const validate = validators.validateTransaction(req, res, next);
     //console.log("validated");
     const newTransaction = new Transaction(req.body.data);
     //console.log(newTransaction);
@@ -55,7 +56,30 @@ exports.getAllTransactions = async (req, res) => {
   }
 };
 
-exports.getTransaction = async (req, res) => {};
+/**Get transaction by ID
+ * Input ID in req.body
+ */
+exports.getTransaction = async (req, res) => {
+  try {
+    const transactionID = req.params.id;
+    const sqlStatement = `SELECT * FROM ${tableName} where transactionID = ${transactionID}`;
+    const result = await db.query(sqlStatement);
+
+    res.status(200).json({
+      status: "Success",
+      data: {
+        transactions: result,
+      },
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: "Failed to get",
+      data: {
+        err,
+      },
+    });
+  }
+};
 
 exports.updateTransaction = async (req, res) => {};
 
