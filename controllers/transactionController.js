@@ -57,18 +57,18 @@ exports.getAllTransactions = async (req, res) => {
 };
 
 /**Get transaction by ID
- * Input ID in req.body
+ * Input ID in req.params
  */
 exports.getTransaction = async (req, res) => {
   try {
     const transactionID = req.params.id;
-    const sqlStatement = `SELECT * FROM ${tableName} where transactionID = ${transactionID}`;
+    const sqlStatement = `SELECT * FROM ${tableName} WHERE transactionID = ${transactionID}`;
     const result = await db.query(sqlStatement);
 
     res.status(200).json({
       status: "Success",
       data: {
-        transactions: result,
+        transactions: result.affectedRows,
       },
     });
   } catch (err) {
@@ -81,6 +81,34 @@ exports.getTransaction = async (req, res) => {
   }
 };
 
-exports.updateTransaction = async (req, res) => {};
+// No need to update transaction details
+exports.updateTransaction = async (req, res) => {
+  res.status(400).json({
+    status: "Why are yout trying update a Transaction???",
+    data: {
+      err,
+    },
+  });
+};
 
-exports.deleteTransaction = async (req, res) => {};
+exports.deleteTransaction = async (req, res) => {
+  try{
+    const transactionID = req.params.id;
+    const sqlStatement = `DELETE FROM ${tableName} WHERE transactionID = ${transactionID}`;
+    const result = await db.query(sqlStatement);
+
+    res.status(200).json({
+      status: "Success",
+      data: {
+        transactions: result,
+      },
+    });
+  }catch(err){
+    res.status(400).json({
+      status: "Failed to get",
+      data: {
+        err,
+      },
+    });
+  }
+};
