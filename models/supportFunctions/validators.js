@@ -1,3 +1,5 @@
+const bcrypt = require("bcryptjs");
+
 /* Required input fields are
  * accountNumber
  * date
@@ -28,5 +30,24 @@ exports.validateTransaction = async function (req, res, next) {
     next();
   } else {
     next();
+  }
+};
+
+// Encrypt password middleware
+exports.encryptPass = async function (req, res, next) {
+  req.body.data.password = await bcrypt.hash(req.body.data.password, 12);
+  next();
+};
+
+exports.validateCustomer = async function (req, res, next) {
+  if (req.body.data.password === req.body.data.confirmPass) {
+    next();
+  } else {
+    res.status(400).json({
+      status: "Invalid Data",
+      data: {
+        err,
+      },
+    });
   }
 };
