@@ -7,30 +7,6 @@ const tableCols =
   "(customerNIC, name, contactNumber, address, birthday, password)";
 const tableName = "customer";
 
-customer.encryptPass(req, res, next);
-
-exports.createUSer = async (req, res) => {
-  try {
-    validator.validateData(req, res, next);
-    validator.encryptPass(req, res, next);
-
-    const newCustomer = new Customer(req.body.data);
-    var sqlStatement = newCustomer.statement;
-    const result = await db.query(sqlStatement);
-
-    res.status(200).json({
-      status:"User created Successfully",
-      data: newCustomer
-    })
-  } catch (err) {
-    res.status(400).json({
-      status: "Failed to Create user",
-      data: {
-        err,
-      },
-    });
-  }
-};
 exports.getAllUsers = async (req, res) => {
   try {
     const sqlStatement = `SELECT * FROM ${tableName}`;
