@@ -96,7 +96,7 @@
                 app:srcCompat="@drawable/user" />
 
             <TextView
-                android:id="@+id/textView3"
+                android:id="@+id/accNum"
                 android:layout_width="179dp"
                 android:layout_height="26dp"
                 android:layout_marginStart="16dp"
