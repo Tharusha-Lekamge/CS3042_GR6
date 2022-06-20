@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".HomepageActivity"
+    android:background="@color/bggray">
+
+
+    <TextView
+
+        android:id="@+id/textView11"
+        android:layout_width="323dp"
+        android:layout_height="75dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="73dp"
+        android:layout_marginEnd="33dp"
+        android:layout_marginBottom="126dp"
+        android:background="@color/bggray"
+        android:fontFamily="@font/poppins_light"
+        android:text="\n  Account No : XXXXX \n  Balance : YYYY LKR \n"
+
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="match_parent"
+        android:layout_height="128dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearance="?attr/shapeAppearanceMediumComponent"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.Card.Media"
+        app:srcCompat="@drawable/topimg" />
+
+    <ImageView
+        android:id="@+id/imageView8"
+        android:layout_width="166dp"
+        android:layout_height="49dp"
+        android:layout_marginTop="36dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/logo" />
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/account_list"
+        android:layout_width="374dp"
+        android:layout_height="250dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="21dp"
+        android:layout_marginTop="161dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="320dp"
+        android:background="@drawable/shadoweffect"
+        android:elevation="4dp"
+        android:outlineAmbientShadowColor="#434040"
+        app:cardBackgroundColor="#ABD4F6"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textView9"
+                android:layout_width="198dp"
+                android:layout_height="31dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="18dp"
+                android:layout_marginEnd="150dp"
+                android:layout_marginBottom="192dp"
+                android:fontFamily="@font/poppins_extrabold"
+                android:text="Your Accounts : "
+                android:textColor="@color/blue"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+
+                android:layout_width="321dp"
+                android:layout_height="84dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="73dp"
+                android:layout_marginEnd="33dp"
+                android:layout_marginBottom="126dp"
+                android:background="@color/bggray"
+                android:fontFamily="@font/poppins_light"
+                android:text="\n  Account No : XXXXX \n  Balance : YYYY LKR \n"
+                android:textColor="@color/black"
+
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.606" />
+
+            <TextView
+
+                android:id="@+id/textView13"
+                android:layout_width="322dp"
+                android:layout_height="81dp"
+
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="151dp"
+                android:layout_marginEnd="28dp"
+                android:layout_marginBottom="18dp"
+                android:background="@color/bggray"
+                android:fontFamily="@font/poppins_light"
+                android:text="\n  Account No : XXXXX \n  Balance : YYYY LKR \n"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="1.0" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <ImageButton
+        android:id="@+id/withdrawalImgBtn"
+        android:layout_width="102dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="49dp"
+        android:layout_marginEnd="80dp"
+        android:layout_marginBottom="23dp"
+        android:background="@drawable/withdrawal_icon"
+        android:text="withdrawal"
+        android:contentDescription="Cash Withdrawal"
+        app:layout_constraintBottom_toTopOf="@+id/cash_withdr"
+        app:layout_constraintEnd_toStartOf="@+id/depositImgBtn"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/account_list"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageButton
+        android:id="@+id/depositImgBtn"
+        android:layout_width="102dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="49dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="23dp"
+        android:background="@drawable/deposit_icon"
+        android:text="deposit"
+        android:contentDescription="Cash Deposit"
+        app:layout_constraintBottom_toTopOf="@+id/cash_deposi"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/withdrawalImgBtn"
+        app:layout_constraintTop_toBottomOf="@+id/account_list"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/cash_withdr"
+        android:layout_width="97dp"
+        android:layout_height="54dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="584dp"
+        android:layout_marginEnd="250dp"
+        android:layout_marginBottom="85dp"
+        android:fontFamily="@font/poppins_extrabold"
+        android:gravity="center_horizontal|top"
+        android:text="Cash Withdrawal"
+        android:textColor="@color/blue"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/cash_deposi"
+        android:layout_width="87dp"
+        android:layout_height="54dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="264dp"
+        android:layout_marginTop="584dp"
+        android:layout_marginEnd="60dp"
+        android:layout_marginBottom="93dp"
+        android:fontFamily="@font/poppins_extrabold"
+        android:gravity="center_horizontal|center_vertical"
+        android:text="Cash Deposit"
+        android:textColor="@color/blue"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/logout_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="123dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="133dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/button_ng"
+        android:fontFamily="@font/poppins_extrabold"
+        android:paddingStart="40dp"
+        android:paddingTop="15dp"
+        android:paddingEnd="40dp"
+        android:paddingBottom="15dp"
+        android:text="Log Out >"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cash_withdr" />
+</androidx.constraintlayout.widget.ConstraintLayout>

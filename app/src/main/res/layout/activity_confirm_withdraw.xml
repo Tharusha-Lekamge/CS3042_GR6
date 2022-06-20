@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bggray"
+    android:paddingEnd="0dp"
+    android:paddingStart="0dp"
+    tools:context=".ConfirmWithdrawalActivity"
+    android:isScrollContainer="true"
+    android:fillViewport="true"
+    >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="0dp"
+        android:layout_marginEnd="0dp">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/imageView7"
+            android:layout_width="match_parent"
+            android:layout_height="128dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearance="?attr/shapeAppearanceMediumComponent"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.Card.Media"
+            app:srcCompat="@drawable/topimg" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:layout_width="match_parent"
+            android:layout_height="128dp"
+            android:background="@drawable/shadoweffect"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearance="?attr/shapeAppearanceMediumComponent"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.Card.Media" />
+
+        <ImageView
+            android:id="@+id/imageView8"
+            android:layout_width="166dp"
+            android:layout_height="49dp"
+            android:layout_marginTop="36dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/logo" />
+
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="64dp"
+            android:fontFamily="@font/poppins_extrabold"
+            android:text="Confirm Withdrawal"
+            android:textColor="@color/blue"
+            android:textSize="24dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.01"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView7" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/account_list"
+            android:layout_width="374dp"
+            android:layout_height="240dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="245dp"
+            android:layout_marginEnd="21dp"
+            android:layout_marginBottom="246dp"
+            android:elevation="4dp"
+            app:cardBackgroundColor="#ffff"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/textView9"
+                    android:layout_width="200dp"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginEnd="164dp"
+                    android:fontFamily="@font/poppins_extrabold"
+                    android:text="From Account :"
+                    android:textColor="@color/blue"
+                    android:textSize="16dp"
+                    app:layout_constraintBottom_toTopOf="@+id/textView11"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                <TextView
+                    android:id="@+id/textView11"
+                    android:layout_width="200dp"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="166dp"
+                    android:layout_marginBottom="8dp"
+                    android:fontFamily="@font/poppins_extrabold"
+                    android:text="xxxxxxx"
+                    android:textColor="@color/blue"
+                    android:textSize="16dp"
+                    app:layout_constraintBottom_toTopOf="@+id/textView10"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView9" />
+
+                <TextView
+                    android:id="@+id/textView10"
+                    android:layout_width="200dp"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="7dp"
+                    android:layout_marginEnd="164dp"
+                    android:layout_marginBottom="4dp"
+                    android:fontFamily="@font/poppins_extrabold"
+                    android:text="Amount :"
+                    android:textColor="@color/blue"
+                    android:textSize="16dp"
+                    app:layout_constraintBottom_toTopOf="@+id/textView13"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView11" />
+
+                <TextView
+                    android:id="@+id/textView12"
+                    android:layout_width="200dp"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginEnd="164dp"
+                    android:layout_marginBottom="27dp"
+                    android:fontFamily="@font/poppins_extrabold"
+                    android:text="xxxxxxx"
+                    android:textColor="@color/blue"
+                    android:textSize="16dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewRef" />
+
+                <TextView
+                    android:id="@+id/textViewRef"
+                    android:layout_width="200dp"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="164dp"
+                    android:layout_marginBottom="7dp"
+                    android:fontFamily="@font/poppins_extrabold"
+                    android:text="Reference :"
+                    android:textColor="@color/blue"
+                    android:textSize="16dp"
+                    app:layout_constraintBottom_toTopOf="@+id/textView12"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView13" />
+
+
+                <TextView
+                    android:id="@+id/textView13"
+                    android:layout_width="200dp"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="1dp"
+                    android:layout_marginEnd="164dp"
+                    android:layout_marginBottom="7dp"
+                    android:fontFamily="@font/poppins_extrabold"
+                    android:text="xxxxxxx"
+                    android:textColor="@color/blue"
+                    android:textSize="16dp"
+                    app:layout_constraintBottom_toTopOf="@+id/textViewRef"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView10" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/conWithdrawBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/button_ng"
+            android:fontFamily="@font/poppins_extrabold"
+            android:paddingStart="25dp"
+            android:paddingEnd="25dp"
+            android:text="Confirm >"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/account_list"
+            app:layout_constraintVertical_bias="0.0" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>
