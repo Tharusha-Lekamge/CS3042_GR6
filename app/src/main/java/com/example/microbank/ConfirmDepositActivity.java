@@ -11,10 +11,11 @@ public class ConfirmDepositActivity extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState){
 
-        Button confirm = findViewById(R.id.conDepositBtn);
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirm_deposit);
+
+        Button confirm = findViewById(R.id.conDepositBtn);
+
 
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -11,10 +11,10 @@ public class ConfirmWithdrawalActivity extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState){
 
-        Button confirm = findViewById(R.id.conWithdrawBtn);
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirm_withdraw);
+
+        Button confirm = findViewById(R.id.conWithdrawBtn);
 
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override

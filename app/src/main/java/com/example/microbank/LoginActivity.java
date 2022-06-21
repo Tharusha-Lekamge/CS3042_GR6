@@ -2,6 +2,7 @@ package com.example.microbank;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -41,6 +42,7 @@ public class LoginActivity extends AppCompatActivity {
                     validUser.show();
                     userID.getText().clear();
                     userPwd.getText().clear();
+                    openHomePage();
                 }
                 else
                 {
@@ -59,5 +61,10 @@ public class LoginActivity extends AppCompatActivity {
 
     protected boolean isUser(String userID,String pwd){
         return (userID.equals("User123") && pwd.equals("GoHomeGota2022"));
+    }
+
+    public void openHomePage(){
+        Intent intent = new Intent(this, HomepageActivity.class);
+        startActivity(intent);
     }
 }

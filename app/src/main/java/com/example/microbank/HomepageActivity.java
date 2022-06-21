@@ -12,12 +12,14 @@ import androidx.appcompat.app.AppCompatActivity;
 public class HomepageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState){
 
-        Button logout = findViewById(R.id.logout_btn);
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_homepage);
+
+
+        Button logout = findViewById(R.id.logoutBtn);
         ImageButton withdrawImgBtn = findViewById(R.id.withdrawalImgBtn);
         ImageButton depositImgBtn = findViewById(R.id.depositImgBtn);
 
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_homepage);
 
         withdrawImgBtn.setOnClickListener(new View.OnClickListener() {
             @Override

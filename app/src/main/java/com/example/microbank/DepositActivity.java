@@ -11,10 +11,11 @@ public class DepositActivity extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
 
-        Button depositBtn = findViewById(R.id.depositBtn);
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_deposit);
+
+
+        Button depositBtn = findViewById(R.id.depositBtn);
 
         depositBtn.setOnClickListener(new View.OnClickListener() {
             @Override
