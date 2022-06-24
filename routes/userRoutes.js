@@ -5,18 +5,18 @@ const { route } = require("express/lib/application");
 const router = express.Router();
 const validator = require("../models/supportFunctions/validators");
 
-router.post("/signup", authController.signUp);
+router.post(
+  "/signup", // Check if all needed fields are present
+  validator.validateCustomer,
+  // encrypts the password if pass = confirm pass
+  validator.encryptPass,
+  authController.signUp
+);
 router.post("/login", authController.login);
 
 router
   .route("/")
-  .post(
-    // Check if all needed fields are present
-    validator.validateCustomer,
-    // encrypts the password if pass = confirm pass
-    validator.encryptPass,
-    authController.signUp
-  )
+
   .get(userController.getAllUsers);
 router
   .route("/:id")
