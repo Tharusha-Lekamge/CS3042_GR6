@@ -2,13 +2,14 @@ const Customer = require("../models/customerModel");
 const jwt = require("jsonwebtoken");
 const mysql = require("mysql2");
 const db = require("../models/supportFunctions/dbOperations");
-const validator = require("../models/supportFunctions/validators");
+//const validator = require("../models/supportFunctions/validators");
 
 //signup function
 exports.signUp = async (req, res, next) => {
-  //validator.encryptPass(req, res, next);
-  // Assumes that all data is present
   const newCustomer = new Customer(req.body.data);
+
+  // Using jwt token
+  const token = jwt.sign({id: newCustomer.customerNIC}, process.env.JWT_SECRET, {expiresIn: process.enc.JWT_EXPIRES_IN})
 
   var sqlStatement = newCustomer.statement;
   //console.log(sqlStatement);
@@ -21,8 +22,52 @@ exports.signUp = async (req, res, next) => {
   // console.log(result);
   res.status(201).json({
     status: "success",
+    token: token,
     data: {
       user: result,
     },
   });
 };
+
+exports.login = async(req, res, next) => {
+  // Uses object destructuring to get the required fields from the passed object
+  const {customerNIC, password} = req.body;
+
+  // 1) check if the customerNIC and password is valid
+  if (!customerNIC || !password){
+    res.status(400).json({
+      status: "fill the details",
+      data: {},
+    });
+    return;
+  }
+  // 2) check if user exists and if the password matches
+  const sqlStatement = `SELECT * FROM CUSTOMER WHERE customerNIC =  ${customerNIC}`;
+  var result = await db.query(sqlStatement);
+  // Check for errors
+  if (!result){
+    res.status(400).json({
+      status: "No such user",
+      token: token
+    });
+  }
+
+  // If a result is found,
+  var fetchedPass = result.password;
+  password = await bcrypt.hash(password, 12);
+  if (password != fetchedPass){
+    res.status(400).json({
+      status: "Failed",
+      body:{
+        message: "Password incorrect"
+      }
+    });
+  }
+
+  // 3) pass the JWT to the client
+  const token = '';
+  res.status(200).json({
+    status: "Logged in",
+    token: token
+  });
+}

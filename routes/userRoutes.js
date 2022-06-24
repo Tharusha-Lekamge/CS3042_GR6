@@ -6,6 +6,7 @@ const router = express.Router();
 const validator = require("../models/supportFunctions/validators");
 
 router.post("/signup", authController.signUp);
+router.post("/login", authController.login);
 
 router
   .route("/")

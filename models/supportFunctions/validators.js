@@ -59,7 +59,7 @@ exports.validateCustomer = async function (req, res, next) {
     req.body.data.address === "NULL" ||
     req.body.data.birthday === "NULL"
   ) {
-    console.log("Inside if");
+    //console.log("Inside if");
     res.status(400).json({
       status: "Invalid Data",
       data: {
@@ -68,15 +68,13 @@ exports.validateCustomer = async function (req, res, next) {
     });
     //next();
   } else if (req.body.data.password === req.body.data.confirmPass) {
-    console.log("passwords match");
+    // console.log("passwords match");
     next();
   } else {
-    console.log("pass no match");
+    // console.log("pass no match");
     res.status(400).json({
-      status: "Invalid Data",
-      data: {
-        err,
-      },
+      status: "confirm password not matching",
+      data: {},
     });
   }
 };

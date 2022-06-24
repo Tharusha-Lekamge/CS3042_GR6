@@ -12,6 +12,10 @@ exports.getAllUsers = async (req, res) => {
     const sqlStatement = `SELECT * FROM ${tableName}`;
     const result = await db.query(sqlStatement);
 
+    result.forEach(function (el) {
+      el.password = "NULL";
+    });
+
     res.status(200).json({
       status: "Success",
       data: {
@@ -50,7 +54,14 @@ exports.getUser = async (req, res) => {
     });
   }
 };
-exports.updateUser = async (req, res) => {};
+exports.updateUser = async (req, res) => {
+  res.status(400).json({
+    status: "Failed",
+    data: {
+      message: "Ee miss ada wada na",
+    },
+  });
+};
 
 exports.deleteUser = async (req, res) => {
   try {
