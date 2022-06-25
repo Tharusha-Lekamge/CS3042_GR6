@@ -10,10 +10,10 @@ import androidx.appcompat.app.AppCompatActivity;
 public class DepositActivity extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
-
+        super.onCreate(savedInstanceState);
         Button depositBtn = findViewById(R.id.depositBtn);
 
-        super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_deposit);
 
         depositBtn.setOnClickListener(new View.OnClickListener() {

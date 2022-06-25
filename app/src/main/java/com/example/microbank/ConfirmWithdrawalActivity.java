@@ -10,10 +10,10 @@ import androidx.appcompat.app.AppCompatActivity;
 public class ConfirmWithdrawalActivity extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState){
-
+        super.onCreate(savedInstanceState);
         Button confirm = findViewById(R.id.conWithdrawBtn);
 
-        super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_confirm_withdraw);
 
         confirm.setOnClickListener(new View.OnClickListener() {

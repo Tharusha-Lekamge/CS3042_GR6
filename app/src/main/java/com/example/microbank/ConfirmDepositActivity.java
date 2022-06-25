@@ -10,10 +10,10 @@ import androidx.appcompat.app.AppCompatActivity;
 public class ConfirmDepositActivity extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState){
-
+        super.onCreate(savedInstanceState);
         Button confirm = findViewById(R.id.conDepositBtn);
 
-        super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_confirm_deposit);
 
         confirm.setOnClickListener(new View.OnClickListener() {
