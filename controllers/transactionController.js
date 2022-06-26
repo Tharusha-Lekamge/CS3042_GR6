@@ -12,14 +12,9 @@ exports.validateBody = async (req, res) => {
 
 exports.createTransaction = async (req, res) => {
   try {
-    //console.log(req.body.data);
-    //const validate = validators.validateTransaction(req, res, next);
-    //console.log("validated");
     const newTransaction = new Transaction(req.body.data);
-    //console.log(newTransaction);
     const sqlStatement = newTransaction.statement;
-    //console.log(sqlStatement);
-    const result = await db.query(sqlStatement);
+    const result = await db.query(sqlStatement); 
 
     res.status(200).json({
       status: "Successfully added",

@@ -32,6 +32,37 @@ exports.getAllUsers = async (req, res) => {
   }
 };
 
+exports.getAllLoginInfoByAgentID = async (req, res) => {
+  const agentID = req.params.id;
+  try {
+    var sqlStatement = `SELECT * FROM accounts WHERE agentID = ${agentID}`;
+    const resultAccounts = await db.query(sqlStatement);
+
+    var userArray = [];
+
+    for (item in resultAccounts) {
+      var cusNIC = item.customerNIC;
+      sqlStatement = `SELECT customerID, password, customerNIC FROM ${tableName} WHERE customerNIC = ${cusNIC}`;
+      var resultAcc = await db.query(sqlStatement);
+      userArray.push(resultAcc);
+    }
+
+    res.status(200).json({
+      status: "Success",
+      data: {
+        users: userArray,
+      },
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: "Failed to get",
+      data: {
+        err,
+      },
+    });
+  }
+};
+
 /** Get customer NIC as param in req */
 exports.getUser = async (req, res) => {
   try {
@@ -54,6 +85,7 @@ exports.getUser = async (req, res) => {
     });
   }
 };
+
 exports.updateUser = async (req, res) => {
   res.status(400).json({
     status: "Failed",

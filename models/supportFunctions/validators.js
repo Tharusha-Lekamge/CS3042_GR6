@@ -38,9 +38,9 @@ exports.encryptPass = async function (req, res, next) {
   // Additional functionality
   // TODO  No need to run this if the password field is not modified
   // Check if pass = confirm pass
-  console.log("encrpting");
+  //console.log("encrpting");
   req.body.data.password = await bcrypt.hash(req.body.data.password, 12);
-  console.log("hashed");
+  //console.log("hashed");
   // remove confirm pass from here
   next();
 };

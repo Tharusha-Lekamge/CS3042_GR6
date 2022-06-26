@@ -3,17 +3,14 @@ const userController = require("../controllers/userController");
 const authController = require("../controllers/authController");
 const router = express.Router();
 const validator = require("../models/supportFunctions/validators");
+const accountController = require("../controllers/accountController");
 
-router.post(
-  "/signup", // Check if all needed fields are present
-  validator.validateCustomer,
-  // encrypts the password if pass = confirm pass
-  validator.encryptPass,
-  authController.signUp
-);
-router.post("/login", authController.login);
-
-router.route("/").get(userController.getAllUsers);
+router
+  .route("/init/:id")
+  .get(
+    accountController.getAllAccByAgentID,
+    userController.getAllLoginInfoByAgentID
+  );
 router
   .route("/:id")
   .get(userController.getUser)
