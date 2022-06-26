@@ -10,7 +10,7 @@
 
     <TextView
 
-        android:id="@+id/textView11"
+        android:id="@+id/depositToAcc"
         android:layout_width="323dp"
         android:layout_height="75dp"
         android:layout_marginStart="24dp"
@@ -113,7 +113,7 @@
 
             <TextView
 
-                android:id="@+id/textView13"
+                android:id="@+id/depositReference"
                 android:layout_width="322dp"
                 android:layout_height="81dp"
 

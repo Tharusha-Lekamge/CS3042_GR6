@@ -23,7 +23,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class DBHandler extends SQLiteOpenHelper {
-
+    public static final String AGENT_ID="WEN100";
     private static final int VERSION=1;
     private static final String DB_NAME = "microDB";
     Context context;
@@ -36,7 +36,6 @@ public class DBHandler extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        Log.d("Main activity", "checkUserNamePassword: ");
         String dropTableAccounts = "DROP TABLE IF EXISTS ACCOUNTS";
         String dropTableCustomers = "DROP TABLE IF EXISTS CUSTOMERS";
         String dropTableTransactions = "DROP TABLE IF EXISTS TRANSACTIONS";
@@ -44,18 +43,18 @@ public class DBHandler extends SQLiteOpenHelper {
                 "ACCOUNT_NO VARCHAR(20) NOT NULL," +
                 "CUSTOMER_ID VARCHAR(10) NOT NULL," +
                 "ACCOUNT_TYPE CHECK (ACCOUNT_TYPE IN ('CHILDREN','TEEN','ADULT','SENIOR','JOINT'))," +
-                "BALANCE FLOAT," +
+                "BALANCE DOUBLE," +
                 "PRIMARY KEY(ACCOUNT_NO)," +
-                "FOREIGN KEY(CUTOMER_ID) REFERENCES CUSTOMERS(CUSTOMER_ID))";
+                "FOREIGN KEY(CUSTOMER_ID) REFERENCES CUSTOMERS(CUSTOMER_ID))";
 
         String createTableTransactions = "CREATE TABLE TRANSACTIONS (" +
-                "TRANSACTION_ID VARCHAR(10) NOT NULL," +
+                "TRANSACTION_ID INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "ACCOUNT_NO VARCHAR(20)," +
-                "DATE DATE," +
-                "TIME DATE," +
-                "TRANSACTION_TYPE CHECK (TRANSACTION_TYPE IN ('WITHDRAW','DEPOSIT'))," +
-                "TRANSACTION_CHARGE FLOAT," +
-                "PRIMARY KEY(TRANSACTION_ID)," +
+                "TIMESTAMP TEXT,"+
+                "TRANSACTION_TYPE TEXT," +
+                "TRANSACTION_CHARGE DOUBLE," +
+                "AMOUNT DOUBLE,"+
+                "REFERENCE TEXT,"+
                 "FOREIGN KEY(ACCOUNT_NO) REFERENCES ACCOUNTS(ACCOUNT_NO))";
 
         String createTableCustomers = "CREATE TABLE CUSTOMERS (" +
@@ -65,10 +64,10 @@ public class DBHandler extends SQLiteOpenHelper {
         db.execSQL(dropTableAccounts);
         db.execSQL(dropTableTransactions);
         db.execSQL(dropTableCustomers);
+        db.execSQL(createTableCustomers);
         db.execSQL(createTableAccounts);
         db.execSQL(createTableTransactions);
-        db.execSQL(createTableCustomers);
-
+        db.close();
 
     }
 
@@ -136,5 +135,45 @@ public class DBHandler extends SQLiteOpenHelper {
             }
         });
 
+    }
+    public void init(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String dropTableAccounts = "DROP TABLE IF EXISTS ACCOUNTS";
+        String dropTableCustomers = "DROP TABLE IF EXISTS CUSTOMERS";
+        String dropTableTransactions = "DROP TABLE IF EXISTS TRANSACTIONS";
+        String createTableAccounts = "CREATE TABLE ACCOUNTS (" +
+                "ACCOUNT_NO VARCHAR(20) NOT NULL," +
+                "CUSTOMER_ID VARCHAR(10) NOT NULL," +
+                "ACCOUNT_TYPE CHECK (ACCOUNT_TYPE IN ('CHILDREN','TEEN','ADULT','SENIOR','JOINT'))," +
+                "BALANCE DOUBLE," +
+                "PRIMARY KEY(ACCOUNT_NO)," +
+                "FOREIGN KEY(CUSTOMER_ID) REFERENCES CUSTOMERS(CUSTOMER_ID))";
+
+        String createTableTransactions = "CREATE TABLE TRANSACTIONS (" +
+                "TRANSACTION_ID INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "ACCOUNT_NO VARCHAR(20)," +
+                "TIMESTAMP TEXT,"+
+                "TRANSACTION_TYPE TEXT," +
+                "TRANSACTION_CHARGE DOUBLE," +
+                "AMOUNT DOUBLE,"+
+                "REFERENCE TEXT,"+
+                "FOREIGN KEY(ACCOUNT_NO) REFERENCES ACCOUNTS(ACCOUNT_NO))";
+
+
+        String createTableCustomers = "CREATE TABLE CUSTOMERS (" +
+                "CUSTOMER_ID VARCHAR(10) NOT NULL," +
+                "PASSWORD VARCHAR(50) NOT NULL," +
+                "PRIMARY KEY(CUSTOMER_ID))";
+        db.execSQL(dropTableAccounts);
+        db.execSQL(dropTableTransactions);
+        db.execSQL(dropTableCustomers);
+        db.execSQL(createTableCustomers);
+        db.execSQL(createTableAccounts);
+        db.execSQL(createTableTransactions);
+        db.close();
+    }
+
+    public void updateBalance(String accNo,String type,Double amount){
+        Log.d("UpdateBalance", "updatingBalance: ");
     }
 }
