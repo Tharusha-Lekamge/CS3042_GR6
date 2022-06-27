@@ -41,6 +41,7 @@ public class LoginActivity extends AppCompatActivity {
                 String customerID = userID.getText().toString();
                 String password = userPwd.getText().toString();
 
+
                 if (customerID.equals("")||password.equals("")){
                     Toast.makeText(LoginActivity.this,"Please fill all the fields to Login",Toast.LENGTH_SHORT).show();
                 }
