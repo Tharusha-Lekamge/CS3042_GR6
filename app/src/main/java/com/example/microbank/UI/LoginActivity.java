@@ -25,9 +25,6 @@ public class LoginActivity extends AppCompatActivity {
         Button submit = findViewById(R.id.btnSubmit);
         TextView pwdChange = findViewById(R.id.pwdForget);
         Toast pwdchng = Toast.makeText(LoginActivity.this, "Submitting Request", Toast.LENGTH_SHORT);
-//        DB.init();
-       // DB.setup();
-       // DB.setup_customers();
         pwdChange.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

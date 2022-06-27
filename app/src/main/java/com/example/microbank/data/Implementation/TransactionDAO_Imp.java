@@ -33,4 +33,6 @@ public class TransactionDAO_Imp extends DBHandler implements TransactionDAO {
         SQLiteDatabase db = this.getWritableDatabase();
         db.insert("TRANSACTIONS",null,cv);
     }
+
+
 }

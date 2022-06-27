@@ -31,6 +31,7 @@ public class AccountDAO_Imp extends DBHandler implements AccountDAO {
         db.insert("ACCOUNTS",null,cv);
         db.close();
     }
+
     public List<Account> getAccountsList(String CustomerID) throws InvalidAccountException{
         List<Account> accountList = new ArrayList<>();
         String queryString = "SELECT * FROM ACCOUNTS WHERE CUSTOMER_ID='"+CustomerID+"';";
@@ -101,5 +102,12 @@ public class AccountDAO_Imp extends DBHandler implements AccountDAO {
         cursor.close();
         db.close();
         return isValid;
+    }
+
+    public void initAccTable(){
+        Account acc1 = new Account("2039134","123432","ADULT",12500.0);
+        Account acc2 = new Account("2031134","123432","TEEN",15500.0);
+        addAccount(acc1);
+        addAccount(acc2);
     }
 }

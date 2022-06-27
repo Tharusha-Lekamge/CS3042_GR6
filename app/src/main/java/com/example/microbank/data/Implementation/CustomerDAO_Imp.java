@@ -1,5 +1,6 @@
 package com.example.microbank.data.Implementation;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -24,5 +25,14 @@ public class CustomerDAO_Imp extends DBHandler implements CustomerDAO {
         }
         accountsTable.close();
         return false;
+    }
+
+    public void initCustomerTable(){
+        ContentValues cv = new ContentValues();
+        cv.put("CUSTOMER_ID","123432");
+        cv.put("PASSWORD","#YoLo123");
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.insert("CUSTOMERS",null,cv);
+        db.close();
     }
 }
