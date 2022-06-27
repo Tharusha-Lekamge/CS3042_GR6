@@ -18,7 +18,6 @@ public class ConfirmWithdrawalActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_confirm_withdraw);
 
-        Button confirm = findViewById(R.id.conWithdrawBtn);
 
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override

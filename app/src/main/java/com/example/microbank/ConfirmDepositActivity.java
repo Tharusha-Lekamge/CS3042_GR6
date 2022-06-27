@@ -32,7 +32,7 @@ public class ConfirmDepositActivity extends AppCompatActivity {
         Transaction tr = getIntent().getParcelableExtra("Transaction");
         depositAccount.setText(tr.getAccNo());
         depositAmount.setText(String.valueOf(tr.getAmount()));
-        depositRef.setText(tr.getType());
+        depositRef.setText(tr.getReference());
 
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override

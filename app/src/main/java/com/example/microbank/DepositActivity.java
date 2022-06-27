@@ -20,13 +20,12 @@ public class DepositActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_deposit);
         Button depositBtn = findViewById(R.id.btn_proceedDeposit);
-        Spinner accSel = findViewById(R.id.acc_spinner);
+        Spinner accSel = findViewById(R.id.spinner_1);
         TextView amount = findViewById(R.id.deposit_amount);
         TextView reference = findViewById(R.id.deposit_reference);
 
 
 
-        Button depositBtn = findViewById(R.id.depositBtn);
 
         depositBtn.setOnClickListener(new View.OnClickListener() {
             @Override

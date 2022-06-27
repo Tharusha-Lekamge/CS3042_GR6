@@ -87,7 +87,7 @@
 
         <Spinner
 
-            android:id="@+id/spinner"
+            android:id="@+id/spinner_1"
             android:layout_width="352dp"
             android:layout_height="49dp"
             android:layout_marginStart="38dp"
@@ -112,7 +112,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.124"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/acc_spinner" />
+            app:layout_constraintTop_toBottomOf="@+id/spinner_1" />
 
         <EditText
             android:id="@+id/deposit_amount"
@@ -190,11 +190,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/reference" />
+            app:layout_constraintTop_toBottomOf="@+id/deposit_reference" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>
-
-
-
