@@ -105,14 +105,14 @@
                     android:text="From Account :"
                     android:textColor="@color/blue"
                     android:textSize="16dp"
-                    app:layout_constraintBottom_toTopOf="@+id/textView11"
+                    app:layout_constraintBottom_toTopOf="@+id/depositToAcc"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
 
                 <TextView
-                    android:id="@+id/textView11"
+                    android:id="@+id/depositToAcc"
                     android:layout_width="200dp"
                     android:layout_height="30dp"
                     android:layout_marginStart="8dp"
@@ -139,13 +139,13 @@
                     android:text="Amount :"
                     android:textColor="@color/blue"
                     android:textSize="16dp"
-                    app:layout_constraintBottom_toTopOf="@+id/textView13"
+                    app:layout_constraintBottom_toTopOf="@+id/depositReference"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView11" />
+                    app:layout_constraintTop_toBottomOf="@+id/depositToAcc" />
 
                 <TextView
-                    android:id="@+id/textView12"
+                    android:id="@+id/depositAmount"
                     android:layout_width="200dp"
                     android:layout_height="30dp"
                     android:layout_marginStart="10dp"
@@ -172,13 +172,13 @@
                     android:text="Reference :"
                     android:textColor="@color/blue"
                     android:textSize="16dp"
-                    app:layout_constraintBottom_toTopOf="@+id/textView12"
+                    app:layout_constraintBottom_toTopOf="@+id/depositAmount"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView13" />
+                    app:layout_constraintTop_toBottomOf="@+id/depositReference" />
 
 
                 <TextView
-                    android:id="@+id/textView13"
+                    android:id="@+id/depositReference"
                     android:layout_width="200dp"
                     android:layout_height="30dp"
                     android:layout_marginStart="10dp"

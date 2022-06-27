@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+
+import android.widget.ImageView;
+
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +22,8 @@ import data.Model.Account;
 
 public class HomepageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_homepage);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_homepage);
@@ -26,6 +31,13 @@ public class HomepageActivity extends AppCompatActivity {
         Button logout = findViewById(R.id.logoutBtn);
         ImageButton withdrawImgBtn = findViewById(R.id.withdrawalImgBtn);
         ImageButton depositImgBtn = findViewById(R.id.depositImgBtn);
+
+        TextView nameTag = findViewById(R.id.name_tag);
+        Intent intent = getIntent();
+        String customer_id = intent.getStringExtra("ID");
+        nameTag.setText("Hello "+customer_id);
+
+
         RecyclerView rv = findViewById(R.id.rv_accList);
 
         // demo accounts
