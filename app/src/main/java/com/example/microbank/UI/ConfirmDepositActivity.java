@@ -44,6 +44,7 @@ public class ConfirmDepositActivity extends AppCompatActivity {
                     if (appController.getAccountDAO().checkBalance(accNo,amount,type,charge)){
                         appController.addTransaction(accNo,type,amount,reference);
                         Toast.makeText(ConfirmDepositActivity.this, "Transaction added successfully", Toast.LENGTH_LONG).show();
+                        //This causes problems
                         openHomePage();
                     }
                 } catch (InvalidAccountException e) {
