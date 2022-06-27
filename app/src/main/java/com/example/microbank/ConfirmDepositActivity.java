@@ -15,6 +15,7 @@ import org.w3c.dom.Text;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+
 import data.DBHandler;
 import data.Implementation.TransactionDAO;
 import data.Model.Transaction;
@@ -32,6 +33,7 @@ public class ConfirmDepositActivity extends AppCompatActivity {
         depositAccount.setText(tr.getAccNo());
         depositAmount.setText(String.valueOf(tr.getAmount()));
         depositRef.setText(tr.getType());
+
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

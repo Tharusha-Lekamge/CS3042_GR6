@@ -25,6 +25,9 @@ public class DepositActivity extends AppCompatActivity {
         TextView reference = findViewById(R.id.deposit_reference);
 
 
+
+        Button depositBtn = findViewById(R.id.depositBtn);
+
         depositBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
