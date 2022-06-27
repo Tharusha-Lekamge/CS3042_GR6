@@ -1,21 +1,19 @@
-package data;
+package com.example.microbank.data;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import java.io.Console;
+import com.example.microbank.data.Implementation.AccountDAO_Imp;
+import com.example.microbank.data.Model.Account;
+
 import java.io.IOException;
 
-import data.Implementation.AccountDAO;
-import data.Model.Account;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
@@ -68,7 +66,6 @@ public class DBHandler extends SQLiteOpenHelper {
         db.execSQL(createTableAccounts);
         db.execSQL(createTableTransactions);
         db.close();
-
     }
 
     @Override
@@ -86,22 +83,11 @@ public class DBHandler extends SQLiteOpenHelper {
         return false;
     }
 
-    public Boolean checkUserNamePassword(String username, String password){
-        SQLiteDatabase accountsTable = this.getWritableDatabase();
-        Cursor cursor = accountsTable.rawQuery("SELECT * FROM CUSTOMERS WHERE CUSTOMER_ID=? AND PASSWORD=?",new String[]{username,password});
-        if (cursor.getCount()>0){
-            accountsTable.close();
-            return true;
-
-        }
-        accountsTable.close();
-        return false;
-    }
 
     public void setup(){
-        Account acc1 = new Account("2039134","123432","ADULT",12500);
-        Account acc2 = new Account("2031134","123432","TEEN",15500);
-        AccountDAO accDAO = new AccountDAO(this.context);
+        Account acc1 = new Account("2039134","123432","ADULT",12500.0);
+        Account acc2 = new Account("2031134","123432","TEEN",15500.0);
+        AccountDAO_Imp accDAO = new AccountDAO_Imp(this.context);
         accDAO.addAccount(acc1);
         accDAO.addAccount(acc2);
     }
@@ -134,7 +120,6 @@ public class DBHandler extends SQLiteOpenHelper {
                 }
             }
         });
-
     }
     public void init(){
         SQLiteDatabase db = this.getWritableDatabase();
@@ -172,8 +157,5 @@ public class DBHandler extends SQLiteOpenHelper {
         db.execSQL(createTableTransactions);
         db.close();
     }
-
-    public void updateBalance(String accNo,String type,Double amount){
-        Log.d("UpdateBalance", "updatingBalance: ");
-    }
 }
+

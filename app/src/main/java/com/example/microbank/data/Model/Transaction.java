@@ -1,11 +1,7 @@
-package data.Model;
+package com.example.microbank.data.Model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import java.util.Date;
-
-import data.TransactionType;
 
 public class Transaction implements Parcelable{
     private Integer TrID;

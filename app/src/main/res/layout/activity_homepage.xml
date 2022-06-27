@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bggray"
-    tools:context=".HomepageActivity">
+    tools:context=".UI.HomepageActivity">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -162,7 +162,7 @@
         android:layout_height="54dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="12dp"
         android:layout_marginEnd="75dp"
         android:fontFamily="@font/poppins_extrabold"
         android:gravity="center_horizontal|center_vertical"

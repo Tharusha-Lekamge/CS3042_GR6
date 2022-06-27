@@ -11,11 +11,12 @@
         <entry key="..\:/DB Project/Mobile App/app/src/main/res/drawable/shadoweffect.xml" value="0.2365" />
         <entry key="..\:/DB Project/Mobile App/app/src/main/res/layout/activity_confirm_deposit.xml" value="0.264" />
         <entry key="..\:/DB Project/Mobile App/app/src/main/res/layout/activity_confirm_withdraw.xml" value="0.264" />
-        <entry key="..\:/DB Project/Mobile App/app/src/main/res/layout/activity_deposit.xml" value="0.1" />
-        <entry key="..\:/DB Project/Mobile App/app/src/main/res/layout/activity_homepage.xml" value="0.17525773195876287" />
+        <entry key="..\:/DB Project/Mobile App/app/src/main/res/layout/activity_deposit.xml" value="0.264" />
+        <entry key="..\:/DB Project/Mobile App/app/src/main/res/layout/activity_homepage.xml" value="0.536" />
         <entry key="..\:/DB Project/Mobile App/app/src/main/res/layout/activity_login.xml" value="0.4" />
         <entry key="..\:/DB Project/Mobile App/app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="..\:/DB Project/Mobile App/app/src/main/res/layout/activity_withdrawal.xml" value="0.2" />
+        <entry key="..\:/DB Project/Mobile App/app/src/main/res/layout/design_list_item.xml" value="0.20521590423257802" />
       </map>
     </option>
   </component>

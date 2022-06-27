@@ -10,7 +10,7 @@
     android:background="@color/bggray"
     android:paddingEnd="0dp"
     android:paddingStart="0dp"
-    tools:context=".ConfirmDepositActivity"
+    tools:context=".UI.ConfirmDepositActivity"
     android:isScrollContainer="true"
     android:fillViewport="true"
     >

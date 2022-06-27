@@ -1,4 +1,4 @@
-package com.example.microbank;
+package com.example.microbank.UI;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,10 +10,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import data.DBHandler;
+import com.example.microbank.Control.AppController;
+import com.example.microbank.Control.AppController_ab;
+import com.example.microbank.R;
+
+import com.example.microbank.data.DBHandler;
 
 public class LoginActivity extends AppCompatActivity {
-    DBHandler DB;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,7 +25,6 @@ public class LoginActivity extends AppCompatActivity {
         Button submit = findViewById(R.id.btnSubmit);
         TextView pwdChange = findViewById(R.id.pwdForget);
         Toast pwdchng = Toast.makeText(LoginActivity.this, "Submitting Request", Toast.LENGTH_SHORT);
-        DB = new DBHandler(this);
 //        DB.init();
        // DB.setup();
        // DB.setup_customers();
@@ -40,13 +42,13 @@ public class LoginActivity extends AppCompatActivity {
                 EditText userPwd = findViewById(R.id.userpwd);
                 String customerID = userID.getText().toString();
                 String password = userPwd.getText().toString();
-
+                AppController_ab appController = new AppController(LoginActivity.this);
 
                 if (customerID.equals("")||password.equals("")){
                     Toast.makeText(LoginActivity.this,"Please fill all the fields to Login",Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    Boolean checkUserPass = DB.checkUserNamePassword(customerID,password);
+                    Boolean checkUserPass = appController.getCustomerDAO().checkUserNamePassword(customerID,password);
                     if (checkUserPass){
                         Toast.makeText(LoginActivity.this, "Login Succesful", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(getApplicationContext(),HomepageActivity.class);

@@ -1,4 +1,4 @@
-package com.example.microbank;
+package com.example.microbank.UI;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,9 +9,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.microbank.R;
+
 import java.util.List;
 
-import data.Model.Account;
+import com.example.microbank.data.Model.Account;
 
 public class AccDisplayAdapter extends RecyclerView.Adapter<AccDisplayAdapter.Viewholder> {
 
