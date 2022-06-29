@@ -36,8 +36,8 @@ public class HomepageActivity extends AppCompatActivity {
         TextView nameTag = findViewById(R.id.name_tag);
         SessionManagement sessionManagement = new SessionManagement(HomepageActivity.this);
         String customer_id = sessionManagement.getSession();
-        Customer customer = appController.getCustomerDAO().getUser(customer_id);
-        nameTag.setText("Hello "+customer.getFirst_Name());
+//        Customer customer = appController.getCustomerDAO().getUser(customer_id);
+        nameTag.setText("Hello "+sessionManagement.getFirstName());
 
         RecyclerView rv = findViewById(R.id.rv_accList);
         List<Account> accountList = null;
@@ -87,12 +87,14 @@ public class HomepageActivity extends AppCompatActivity {
     public void openWithdrawalPage(){
 
         Intent intent = new Intent(this, WithdrawalActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
 
     public void openDepositpage(){
 
         Intent intent = new Intent(this, DepositActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
 
