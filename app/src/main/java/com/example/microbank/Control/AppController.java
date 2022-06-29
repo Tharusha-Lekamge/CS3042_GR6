@@ -33,8 +33,8 @@ public class AppController extends AppController_ab {
         setCustomerDAO(customerDAO);
 
         /*Run this below methods to load dummy data first time to the tables. Then comment out. Or else will run into unique constraint errors*/
-//        accountDAO.initAccTable();
 //        customerDAO.initCustomerTable();
+//        accountDAO.initAccTable();
     }
 
 }

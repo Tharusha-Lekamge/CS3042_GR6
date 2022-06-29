@@ -14,9 +14,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.microbank.Control.AppController;
 import com.example.microbank.Control.AppController_ab;
+import com.example.microbank.Control.SessionManagement;
 import com.example.microbank.R;
 import com.example.microbank.data.Exception.InvalidAccountException;
 import com.example.microbank.data.Model.Account;
+import com.example.microbank.data.Model.Customer;
 
 import java.util.List;
 
@@ -32,8 +34,8 @@ public class HomepageActivity extends AppCompatActivity {
         ImageButton depositImgBtn = findViewById(R.id.depositImgBtn);
 
         TextView nameTag = findViewById(R.id.name_tag);
-        Intent intent = getIntent();
-        String customer_id = intent.getStringExtra("ID");
+        SessionManagement sessionManagement = new SessionManagement(HomepageActivity.this);
+        String customer_id = sessionManagement.getSession();
         nameTag.setText("Hello "+customer_id);
 
         RecyclerView rv = findViewById(R.id.rv_accList);
@@ -63,7 +65,7 @@ public class HomepageActivity extends AppCompatActivity {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openLoginpage();
+                logOut();
             }
         });
 
@@ -76,8 +78,8 @@ public class HomepageActivity extends AppCompatActivity {
     }
 
     public void openLoginpage(){
-
         Intent intent = new Intent(this, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
 
@@ -91,6 +93,12 @@ public class HomepageActivity extends AppCompatActivity {
 
         Intent intent = new Intent(this, DepositActivity.class);
         startActivity(intent);
+    }
+
+    public void logOut(){
+        SessionManagement sessionManagement = new SessionManagement(HomepageActivity.this);
+        sessionManagement.removeSession();
+        openLoginpage();
     }
 
 }

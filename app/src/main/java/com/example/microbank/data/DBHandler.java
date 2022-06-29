@@ -22,7 +22,7 @@ import okhttp3.Response;
 
 public class DBHandler extends SQLiteOpenHelper {
     public static final String AGENT_ID="WEN100";
-    private static final int VERSION=1;
+    private static final int VERSION=2;
     private static final String DB_NAME = "microDB";
     Context context;
 
@@ -57,6 +57,8 @@ public class DBHandler extends SQLiteOpenHelper {
 
         String createTableCustomers = "CREATE TABLE CUSTOMERS (" +
                 "CUSTOMER_ID VARCHAR(10) NOT NULL," +
+                "FIRST_NAME TEXT,"+
+                "LAST_NAME TEXT,"+
                 "PASSWORD VARCHAR(50) NOT NULL," +
                 "PRIMARY KEY(CUSTOMER_ID))";
         db.execSQL(dropTableAccounts);
@@ -65,11 +67,16 @@ public class DBHandler extends SQLiteOpenHelper {
         db.execSQL(createTableCustomers);
         db.execSQL(createTableAccounts);
         db.execSQL(createTableTransactions);
-        db.close();
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        if (oldVersion < 2){
+            db.execSQL("DROP TABLE IF EXISTS ACCOUNTS");
+            db.execSQL("DROP TABLE IF EXISTS CUSTOMERS");
+            db.execSQL("DROP TABLE IF EXISTS TRANSACTIONS");
+            onCreate(db);
+        }
 
     }
 
