@@ -36,7 +36,8 @@ public class HomepageActivity extends AppCompatActivity {
         TextView nameTag = findViewById(R.id.name_tag);
         SessionManagement sessionManagement = new SessionManagement(HomepageActivity.this);
         String customer_id = sessionManagement.getSession();
-        nameTag.setText("Hello "+customer_id);
+        Customer customer = appController.getCustomerDAO().getUser(customer_id);
+        nameTag.setText("Hello "+customer.getFirst_Name());
 
         RecyclerView rv = findViewById(R.id.rv_accList);
         List<Account> accountList = null;
