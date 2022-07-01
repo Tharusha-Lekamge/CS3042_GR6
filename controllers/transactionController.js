@@ -86,6 +86,13 @@ exports.updateTransaction = async (req, res) => {
   });
 };
 
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * 
+ * Don't Do this machang without permission
+ */
 exports.deleteTransaction = async (req, res) => {
   try{
     const transactionID = req.params.id;
