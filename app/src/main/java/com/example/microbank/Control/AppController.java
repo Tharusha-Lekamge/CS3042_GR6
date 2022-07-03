@@ -32,7 +32,7 @@ public class AppController extends AppController_ab {
         CustomerDAO customerDAO = new CustomerDAO_Imp(context);
         setCustomerDAO(customerDAO);
 
-        /*Run this below methods to load dummy data first time to the tables. Then comment out. Or else will run into unique constraint errors*/
+//        /*Run this below methods to load dummy data first time to the tables. Then comment out. Or else will run into unique constraint errors*/
 //        customerDAO.initCustomerTable();
 //        accountDAO.initAccTable();
     }

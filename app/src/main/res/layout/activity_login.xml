@@ -101,7 +101,7 @@
                 android:layout_height="26dp"
                 android:layout_marginStart="16dp"
                 android:fontFamily="@font/poppins_medium"
-                android:text="Account Number"
+                android:text="Customer ID"
                 android:textColor="@color/blue"
                 android:textSize="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
