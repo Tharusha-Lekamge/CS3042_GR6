@@ -57,8 +57,7 @@ exports.getAllAccByAgentID = async (req, res) => {
     const sqlStatement = `SELECT * FROM accounts WHERE agentID = ${agentID}`;
     const result = await db.query(sqlStatement);
 
-    res.status(200).json({
-      status: "Success",
+    res.json({
       data: {
         accounts: result,
       },

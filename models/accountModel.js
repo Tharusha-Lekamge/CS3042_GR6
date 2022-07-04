@@ -20,12 +20,12 @@ class Account {
   getInterstRate(accType) {
     var sqlStatement = `SELECT interestRate from InterestRates where AccountType = ${this.accType}`;
     const result = db.query(sqlStatement);
-    return result;
+    return result[0].interestRate;
   }
   getMinimumAmount(accType) {
     var sqlStatement = `SELECT MinimumAmount from InterestRates where AccountType = ${this.accType}`;
     const result = db.query(sqlStatement);
-    return result;
+    return result[0].minimumAmount;
   }
   generateInsertStatement() {
     const cols =

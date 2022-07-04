@@ -12,15 +12,24 @@ exports.validateBody = async (req, res) => {
 
 exports.createTransaction = async (req, res) => {
   try {
-    const newTransaction = new Transaction(req.body.data);
-    const sqlStatement = newTransaction.statement;
-    const result = await db.query(sqlStatement); 
+    const transactionArray = req.body.data;
+    transactionArray.forEach((elem) => {
+      const newTransaction = new Transaction(elem);
+      var sqlStatement = newTransaction.statement;
+      const result = db.query(sqlStatement);
+      // update account balance
+      newTransaction.checkBalance();
+    });
+    // const newTransaction = new Transaction(req.body.data);
+    // const sqlStatement = newTransaction.statement;
+    // const result = await db.query(sqlStatement);
 
     res.status(200).json({
       status: "Successfully added",
-      data: { newTransaction },
+      data: {},
     });
   } catch (err) {
+    console.log(err);
     res.status(400).json({
       status: "Failed to add",
       data: {
