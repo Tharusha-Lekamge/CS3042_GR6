@@ -2,6 +2,7 @@ package com.example.microbank.UI;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -42,7 +43,7 @@ public class ConfirmDepositActivity extends AppCompatActivity {
         depositAccount.setText(accNo);
         depositAmount.setText(String.valueOf(amount));
         depositRef.setText(reference);
-
+        Log.d("DEPOSITAMT", String.valueOf(amount));
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

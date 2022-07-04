@@ -4,6 +4,8 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteStatement;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
@@ -56,9 +58,9 @@ public class AccountDAO_Imp extends DBHandler implements AccountDAO {
         return accountList;
     }
     public void updateBalance(String accNo,String type,Double trCharge,Double amount) throws InvalidAccountException {
-        String SQLUpdate = "SELECT BALANCE FROM ACCOUNTS WHERE ACCOUNT_NO = '" + accNo + "';";
+//        String SQLUpdate = "SELECT BALANCE FROM ACCOUNTS WHERE ACCOUNT_NO = '" + accNo + "';";
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(SQLUpdate, null);
+        Cursor cursor = db.rawQuery("SELECT BALANCE FROM ACCOUNTS WHERE ACCOUNT_NO =?",new String[]{accNo});
         if (!cursor.moveToFirst()) {
             String msg = "Account " + accNo + " is invalid.";
             throw new InvalidAccountException(msg);
@@ -66,23 +68,25 @@ public class AccountDAO_Imp extends DBHandler implements AccountDAO {
             double balance = cursor.getDouble(0);
             switch (type) {
                 case "DEPOSIT":
-                    balance = balance + amount - trCharge;
+                    balance = balance + amount-trCharge;
                     break;
                 case "WITHDRAW":
                     balance = balance - amount - trCharge;
                     break;
             }
-            String setBalance = "UPDATE ACCOUNTS SET BALANCE= " + balance + " WHERE ACCOUNT_NO = '" + accNo + "';";
-            db.execSQL(setBalance);
+
+            String setBalance_1 = "UPDATE ACCOUNTS SET BALANCE= " + balance + " WHERE ACCOUNT_NO = ?";
+            SQLiteStatement statement = db.compileStatement(setBalance_1);
+            statement.bindString(1,accNo);
+            int effectedRows = statement.executeUpdateDelete();
             db.close();
         }
     }
 
     public boolean checkBalance(String accNo,double amount, String type,double charge) throws InvalidAccountException{
         boolean isValid;
-        String SQLUpdate = "SELECT BALANCE FROM ACCOUNTS WHERE ACCOUNT_NO = '" + accNo + "';";
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(SQLUpdate, null);
+        Cursor cursor = db.rawQuery("SELECT BALANCE FROM ACCOUNTS WHERE ACCOUNT_NO =?",new String[]{accNo});
         if (!cursor.moveToFirst()) {
             String msg = "Account " + accNo + " is invalid.";
             throw new InvalidAccountException(msg);
@@ -91,8 +95,10 @@ public class AccountDAO_Imp extends DBHandler implements AccountDAO {
             switch (type) {
                 case "DEPOSIT":
                     balance = balance + amount-charge;
+                    break;
                 case "WITHDRAW":
                     balance = balance - amount-charge;
+                    break;
             }
             //Assume that the minimum balance is LKR250.00
             if (balance >= 250) {
