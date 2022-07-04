@@ -11,4 +11,5 @@ public interface AccountDAO {
     public void updateBalance(String accNo,String type,Double trCharge,Double amount) throws InvalidAccountException;
     public boolean checkBalance(String accNo,double amount, String type,double charge) throws InvalidAccountException;
     public void initAccTable();
+    public List<Account> fetchAccounts(String customerID);
 }

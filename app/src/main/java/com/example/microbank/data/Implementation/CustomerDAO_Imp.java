@@ -16,6 +16,8 @@ public class CustomerDAO_Imp extends DBHandler implements CustomerDAO {
         super(context);
     }
 
+    boolean isSpecial = false;
+
     @Override
     public Customer checkUserNamePassword(String username, String password){
         SQLiteDatabase accountsTable = this.getWritableDatabase();
@@ -28,6 +30,11 @@ public class CustomerDAO_Imp extends DBHandler implements CustomerDAO {
             Customer customer= new Customer(customer_id,first_name,last_name);
             cursor.close();
             accountsTable.close();
+            return customer;
+        }
+        // dummy data for special customers
+        Customer customer = checkValidCustomer(username, password);
+        if (customer != null){
             return customer;
         }
         cursor.close();
@@ -64,5 +71,17 @@ public class CustomerDAO_Imp extends DBHandler implements CustomerDAO {
         return null;
     }
 
+    public Customer checkValidCustomer(String customerID, String password){
+        // call to main server and check if the given username, password belongs to a valid customer
+        if (customerID.equals("User123") && password.equals("#GoHomeGota2022")){
+            Customer customer = new Customer(customerID, "Pala", "Nande");
+            isSpecial = true;
+            return customer;
+        }
+        return null;
+    }
 
+    public boolean isSpecialCustomer(String customerID){
+        return isSpecial;
+    }
 }

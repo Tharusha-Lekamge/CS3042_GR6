@@ -47,6 +47,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
         String createTableTransactions = "CREATE TABLE TRANSACTIONS (" +
                 "TRANSACTION_ID INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "CUSTOMER_ID VARCHAR(10) NOT NULL," +
                 "ACCOUNT_NO VARCHAR(20)," +
                 "TIMESTAMP TEXT,"+
                 "TRANSACTION_TYPE TEXT," +

@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.microbank.Control.AppController;
 import com.example.microbank.Control.AppController_ab;
+import com.example.microbank.Control.SessionManagement;
 import com.example.microbank.R;
 import com.example.microbank.data.Exception.InvalidAccountException;
 import com.example.microbank.data.Model.Transaction;
@@ -31,6 +32,7 @@ public class ConfirmWithdrawalActivity extends AppCompatActivity {
 
         Transaction tr = getIntent().getParcelableExtra("Transaction");
 
+        String cusID = tr.getCustomerID();
         String accNo = tr.getAccNo();
         Double amount = tr.getAmount();
         String reference = tr.getReference();
@@ -41,16 +43,27 @@ public class ConfirmWithdrawalActivity extends AppCompatActivity {
         withdraw_amount.setText(String.valueOf(amount));
         withdraw_reference.setText(reference);
 
+        SessionManagement session = new SessionManagement(ConfirmWithdrawalActivity.this);
+        boolean specialReq = session.isSpecialRequest();
+
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 try {
-                    if (appController.getAccountDAO().checkBalance(accNo,amount,type,charge)){
-                        appController.addTransaction(accNo,type,amount,reference);
-                        Toast.makeText(ConfirmWithdrawalActivity.this, "Transaction added successfully", Toast.LENGTH_LONG).show();
-                        openHomePage();
+                    if (!specialReq){
+                        if (appController.getAccountDAO().checkBalance(accNo,amount,type,charge)){
+                            appController.addTransaction(cusID, accNo,type,amount,reference);
+                            Toast.makeText(ConfirmWithdrawalActivity.this, "Transaction added successfully", Toast.LENGTH_LONG).show();
+                            openHomePage();
+                        }
                     }
+                    else{
+                        // call to main server and immediately update the account
+                        appController.getTransactionDAO().addTransaction(cusID, accNo,type,30.0, amount,reference);
+                        openLogoutPage();
+                    }
+
                 } catch (InvalidAccountException e) {
                     e.printStackTrace();
                 }
@@ -61,6 +74,11 @@ public class ConfirmWithdrawalActivity extends AppCompatActivity {
 
     public void openHomePage(){
         Intent intent = new Intent(this, HomepageActivity.class);
+        startActivity(intent);
+    }
+
+    public void openLogoutPage(){
+        Intent intent = new Intent(this, LogoutActivity.class);
         startActivity(intent);
     }
 }

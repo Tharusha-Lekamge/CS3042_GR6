@@ -8,13 +8,15 @@ public class Transaction implements Parcelable{
     private String AccNo;
     private String Trtype;
     private double TrCharge;
+    private String CustomerID;
 
-    public Transaction(String AccNo,String type, double TrCharge,double Amount,String reference) {
+    public Transaction(String CustomerID, String AccNo,String type, double TrCharge,double Amount,String reference) {
         this.AccNo = AccNo;
         this.Trtype = type;
         this.TrCharge = TrCharge;
         this.Amount = Amount;
         this.reference=reference;
+        this.CustomerID = CustomerID;
     }
 
     protected Transaction(Parcel in) {
@@ -23,6 +25,7 @@ public class Transaction implements Parcelable{
         } else {
             TrID = in.readInt();
         }
+        CustomerID = in.readString();
         AccNo = in.readString();
         Trtype = in.readString();
         TrCharge = in.readDouble();
@@ -72,6 +75,10 @@ public class Transaction implements Parcelable{
         return TrCharge;
     }
 
+    public String getCustomerID() {
+        return CustomerID;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -85,6 +92,7 @@ public class Transaction implements Parcelable{
             parcel.writeByte((byte) 1);
             parcel.writeInt(TrID);
         }
+        parcel.writeString(CustomerID);
         parcel.writeString(AccNo);
         parcel.writeString(Trtype);
         parcel.writeDouble(TrCharge);

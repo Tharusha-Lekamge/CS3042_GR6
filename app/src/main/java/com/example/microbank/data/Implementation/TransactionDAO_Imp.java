@@ -20,10 +20,11 @@ public class TransactionDAO_Imp extends DBHandler implements TransactionDAO {
     }
 
     @Override
-    public void addTransaction(String accNo,String type,Double trCharge,Double amount,String reference) {
+    public void addTransaction(String customerID, String accNo,String type,Double trCharge,Double amount,String reference) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         String currentDateandTime = sdf.format(new Date());
         ContentValues cv = new ContentValues();
+        cv.put("CUSTOMER_ID",customerID);
         cv.put("ACCOUNT_NO",accNo);
         cv.put("TIMESTAMP",currentDateandTime);
         cv.put("TRANSACTION_TYPE",type);

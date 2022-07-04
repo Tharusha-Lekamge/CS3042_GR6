@@ -12,18 +12,20 @@ public class SessionManagement {
     String SESSION_KEY = "session_user";
     String FIRST_NAME = "session_firstname";
     String LAST_NAME = "session_lastname";
+    String IS_SPECIAL = "session_specialReq";
 
     public SessionManagement(Context context){
         sharedPreferences = context.getSharedPreferences(SHARED_PREF_NAME,Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
     }
-    public void saveSession(Customer customer){
+    public void saveSession(Customer customer, boolean isSpecial){
         String id = customer.getCustomer_id();
         String first_name = customer.getFirst_Name();
         String last_name = customer.getLast_Name();
         editor.putString(SESSION_KEY,id).commit();
         editor.putString(FIRST_NAME,first_name).commit();
         editor.putString(LAST_NAME,last_name).commit();
+        editor.putBoolean(IS_SPECIAL,isSpecial).commit();
     }
     public String  getSession(){
         return sharedPreferences.getString(SESSION_KEY,"Over");
@@ -35,5 +37,9 @@ public class SessionManagement {
 
     public String getFirstName(){
         return sharedPreferences.getString(FIRST_NAME,null);
+    }
+
+    public boolean isSpecialRequest(){
+        return sharedPreferences.getBoolean(IS_SPECIAL, false);
     }
 }

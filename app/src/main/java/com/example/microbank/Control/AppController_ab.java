@@ -20,10 +20,10 @@ public abstract class AppController_ab implements Serializable {
         return accountDAO.getAccountsList(customerID);
     }
 
-    public void addTransaction(String accNo,String type,Double amount,String reference) throws InvalidAccountException {
+    public void addTransaction(String cusID, String accNo,String type,Double amount,String reference) throws InvalidAccountException {
         if (!(amount==0)){
             accountDAO.updateBalance(accNo,type,trCharge,amount);
-            transactionDAO.addTransaction(accNo,type,trCharge,amount,reference);
+            transactionDAO.addTransaction(cusID, accNo,type,trCharge,amount,reference);
         }
     }
 

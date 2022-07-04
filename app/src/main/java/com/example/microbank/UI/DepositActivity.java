@@ -34,7 +34,10 @@ public class DepositActivity extends AppCompatActivity implements AdapterView.On
         TextView amount = findViewById(R.id.deposit_amount);
         TextView reference = findViewById(R.id.deposit_reference);
 
-        List<String> accountList = getSpinnerList(accSel);
+        SessionManagement session = new SessionManagement(DepositActivity.this);
+        String customerID = session.getSession();
+
+        List<String> accountList = getSpinnerList(accSel, customerID);
 
         //Creating the ArrayAdapter instance having the accounts list
         ArrayAdapter acc_arr = new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, accountList);
@@ -54,7 +57,7 @@ public class DepositActivity extends AppCompatActivity implements AdapterView.On
 
                 if (checkAmountValid(deposit_amount)){
                     double amount = Double.parseDouble(deposit_amount);
-                    Transaction tr = new Transaction(accountNo,type,charge,amount,deposit_reference);
+                    Transaction tr = new Transaction(customerID, accountNo,type,charge,amount,deposit_reference);
                     openConfirmDepositView(tr);
                 }
                 else{
@@ -77,12 +80,9 @@ public class DepositActivity extends AppCompatActivity implements AdapterView.On
     }
 
     // get the account numbers list for spinner
-    public List<String> getSpinnerList(Spinner spin){
+    public List<String> getSpinnerList(Spinner spin, String customerID){
 
         List<String> strAcc_no = new ArrayList<>();
-
-        SessionManagement session = new SessionManagement(DepositActivity.this);
-        String customerID = session.getSession();
         List<Account> accList = null;
         AppController appController = new AppController(DepositActivity.this);
         try {

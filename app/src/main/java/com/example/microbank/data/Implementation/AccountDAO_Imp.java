@@ -67,8 +67,10 @@ public class AccountDAO_Imp extends DBHandler implements AccountDAO {
             switch (type) {
                 case "DEPOSIT":
                     balance = balance + amount - trCharge;
+                    break;
                 case "WITHDRAW":
                     balance = balance - amount - trCharge;
+                    break;
             }
             String setBalance = "UPDATE ACCOUNTS SET BALANCE= " + balance + " WHERE ACCOUNT_NO = '" + accNo + "';";
             db.execSQL(setBalance);
@@ -109,5 +111,20 @@ public class AccountDAO_Imp extends DBHandler implements AccountDAO {
         Account acc2 = new Account("2031134","123432","TEEN",15500.0);
         addAccount(acc1);
         addAccount(acc2);
+    }
+
+    // method to call central database and fetch the accounts of a special customer
+    public List<Account> fetchAccounts(String customerID){
+        List<Account> accList = new ArrayList<>();
+
+        Account acc3 = new Account("4035567", "890765", "SENIOR", 10000.0);
+        Account acc4 = new Account("4038899", "890765", "CHILD", 10000.0);
+        Account acc5 = new Account("4035233", "890765", "JOINT", 10000.0);
+
+        accList.add(acc3);
+        accList.add(acc4);
+        accList.add(acc5);
+
+        return accList;
     }
 }

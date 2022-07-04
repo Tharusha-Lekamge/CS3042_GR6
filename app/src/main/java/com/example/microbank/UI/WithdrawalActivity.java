@@ -37,14 +37,20 @@ public class WithdrawalActivity extends AppCompatActivity implements AdapterView
 
         SessionManagement session = new SessionManagement(WithdrawalActivity.this);
         String customerID = session.getSession();
+        boolean specialReq = session.isSpecialRequest();
 
         List<Account> accList = null;
         AppController appController = new AppController(WithdrawalActivity.this);
         try {
-            accList = appController.getAccountDAO().getAccountsList(customerID);
+            if (!specialReq)
+                accList = appController.getAccountDAO().getAccountsList(customerID);
+            else{
+                accList = appController.getAccountDAO().fetchAccounts(customerID);
+            }
         } catch (InvalidAccountException e) {
             e.printStackTrace();
         }
+
 
         List<String> accountList = getSpinnerList(accSel, accList);
         ArrayAdapter acc_arr = new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, accountList);
@@ -64,7 +70,7 @@ public class WithdrawalActivity extends AppCompatActivity implements AdapterView
                 if (checkAmountValid(withdraw_amount)){
                     double amount = Double.parseDouble(withdraw_amount);
                     if (isWithdrawable(amount, accountNo, finalAccList)){
-                        Transaction tr = new Transaction(accountNo, type, charge, amount, withdraw_reference);
+                        Transaction tr = new Transaction(customerID, accountNo, type, charge, amount, withdraw_reference);
                         openConfrimWithdrawalPage(tr);
                     }
                 }else{

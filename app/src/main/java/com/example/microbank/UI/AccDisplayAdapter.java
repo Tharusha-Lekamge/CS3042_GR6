@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -40,6 +41,25 @@ public class AccDisplayAdapter extends RecyclerView.Adapter<AccDisplayAdapter.Vi
         Account acc = accList.get(position);
         holder.accID.setText(acc.getAcc_No());
         holder.bal.setText(acc.getBalance().toString());
+
+        String acc_type = acc.getAccount_type();
+        switch (acc_type){
+            case "CHILD":
+                holder.type.setImageResource(R.drawable.child);
+                break;
+            case "TEEN":
+                holder.type.setImageResource(R.drawable.teen);
+                break;
+            case "ADULT":
+                holder.type.setImageResource(R.drawable.adult);
+                break;
+            case "SENIOR":
+                holder.type.setImageResource(R.drawable.senior);
+                break;
+            case "JOINT":
+                holder.type.setImageResource(R.drawable.joint);
+                break;
+        }
     }
 
     @Override
@@ -55,10 +75,12 @@ public class AccDisplayAdapter extends RecyclerView.Adapter<AccDisplayAdapter.Vi
 
         private TextView accID;
         private TextView bal;
+        private ImageView type;
         public Viewholder(@NonNull View itemView) {
             super(itemView);
             accID = itemView.findViewById(R.id.list_item1);
             bal = itemView.findViewById(R.id.list_item2);
+            type = itemView.findViewById(R.id.accType);
         }
     }
 }

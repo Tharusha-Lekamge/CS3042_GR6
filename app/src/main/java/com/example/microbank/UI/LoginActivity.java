@@ -51,8 +51,12 @@ public class LoginActivity extends AppCompatActivity {
                     if (newCustomer!=null){
                         Toast.makeText(LoginActivity.this, "Login Succesful", Toast.LENGTH_SHORT).show();
                         SessionManagement sessionManagement = new SessionManagement(LoginActivity.this);
-                        sessionManagement.saveSession(newCustomer);
-                        openHomePage();
+                        boolean isSpecialRequest = appController.getCustomerDAO().isSpecialCustomer(customerID);
+                        sessionManagement.saveSession(newCustomer, isSpecialRequest);
+                        if (!isSpecialRequest)
+                            openHomePage();
+                        else
+                            openWithdrawalPage();
                     }
                     else{
                         Toast.makeText(LoginActivity.this, "Invalid Credentials", Toast.LENGTH_SHORT).show();
@@ -72,10 +76,16 @@ public class LoginActivity extends AppCompatActivity {
     private void checkSession() {
         SessionManagement sessionManagement = new SessionManagement(LoginActivity.this);
         String userId = sessionManagement.getSession();
-        if (!userId.equals("Over")){
+        boolean specialReq = sessionManagement.isSpecialRequest();
+        if (!userId.equals("Over") && !specialReq){
             openHomePage();
         }
-        else{}
+        else if (!userId.equals("Over") && specialReq){
+            openWithdrawalPage();
+        }
+        else{
+
+        }
     }
 
     private void openHomePage() {
@@ -84,5 +94,9 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-
+    private void openWithdrawalPage(){
+        Intent intent = new Intent(getApplicationContext(),WithdrawalActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
 }
