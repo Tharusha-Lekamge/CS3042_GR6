@@ -5,16 +5,18 @@ const db = require("../models/supportFunctions/dbOperations");
 const bcrypt = require("bcryptjs");
 //const validator = require("../models/supportFunctions/validators");
 
+const signToken = (userID) => {
+  return jwt.sign({ userID }, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_EXPIRES_IN,
+  });
+};
+
 //signup function
 exports.signUp = async (req, res, next) => {
   const newCustomer = new Customer(req.body.data);
 
   // Using jwt token
-  const token = jwt.sign(
-    { id: newCustomer.customerNIC },
-    process.env.JWT_SECRET,
-    { expiresIn: process.env.JWT_EXPIRES_IN }
-  );
+  const token = signToken(newCustomer.customerNIC);
 
   var sqlStatement = newCustomer.statement;
   //console.log(sqlStatement);
@@ -62,26 +64,18 @@ exports.login = async (req, res, next) => {
     if (err) {
       res.status(400).json({
         status: "Error",
-        token: token,
       });
       return;
     }
     if (!valid) {
       res.status(400).json({
         status: "Wrong Password",
-        token: token,
       });
       return;
     }
     {
       // 3) pass the JWT to the client
-      const token = jwt.sign(
-        { id: result.customerNIC },
-        process.env.JWT_SECRET,
-        {
-          expiresIn: process.env.JWT_EXPIRES_IN,
-        }
-      );
+      const token = signToken(result[0].customerNIC);
       res.status(200).json({
         status: "Logged in",
         token: token,
@@ -89,3 +83,27 @@ exports.login = async (req, res, next) => {
     }
   });
 };
+
+exports.protect = catchAsync(async (req, res, next) => {
+  //1) Get token if exists
+  // Token is normally in the header
+  var token;
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith("Bearer")
+  ) {
+    token = req.headers.authorization.split(" ")[1];
+  }
+  if (!token) {
+    // Return an app error
+    // Implement app error class
+    return next();
+  }
+  //2) Validate token (Verification step)
+
+  //3) Check if user exists
+  //4) Check if User changed pass after JWT issued
+  //5) Give access to the route
+
+  next();
+});

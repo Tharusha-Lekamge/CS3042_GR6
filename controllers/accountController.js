@@ -72,6 +72,27 @@ exports.getAllAccByAgentID = async (req, res) => {
   }
 };
 
+exports.getAllAccByNIC = async (req, res) => {
+  const NIC = req.params.id;
+  try {
+    const sqlStatement = `SELECT * FROM accounts WHERE customerNIC = ${NIC}`;
+    const result = await db.query(sqlStatement);
+
+    res.json({
+      data: {
+        accounts: result,
+      },
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: "Failed to get",
+      data: {
+        err,
+      },
+    });
+  }
+};
+
 /**
  * Returns an array containing one element. ELement at index [0] is the requested account
  */
@@ -84,7 +105,7 @@ exports.getAccount = async (req, res) => {
     res.status(200).json({
       status: "Success",
       data: {
-        accounts: result,
+        accounts: result[0],
       },
     });
   } catch (err) {

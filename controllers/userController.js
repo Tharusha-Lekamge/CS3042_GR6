@@ -35,7 +35,7 @@ exports.getAllUsers = async (req, res) => {
 exports.getAllLoginInfoByAgentID = async (req, res) => {
   const agentID = req.params.id;
   try {
-    var sqlStatement = `SELECT * FROM accounts WHERE agentID = ${agentID}`;
+    var sqlStatement = `SELECT * FROM accounts WHERE agentID = ${agentID} GROUP BY customerNIC`;
     const resultAccounts = await db.query(sqlStatement);
 
     var userArray = [];
@@ -62,6 +62,8 @@ exports.getAllLoginInfoByAgentID = async (req, res) => {
     });
   }
 };
+
+
 
 /** Get customer NIC as param in req */
 exports.getUser = async (req, res) => {
