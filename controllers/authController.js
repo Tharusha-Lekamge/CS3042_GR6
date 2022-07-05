@@ -53,8 +53,8 @@ exports.login = async (req, res, next) => {
   if (!result) {
     res.status(400).json({
       status: "No such user",
-      token: token,
     });
+    return;
   }
 
   // If a result is found,
@@ -64,12 +64,14 @@ exports.login = async (req, res, next) => {
         status: "Error",
         token: token,
       });
+      return;
     }
     if (!valid) {
       res.status(400).json({
         status: "Wrong Password",
         token: token,
       });
+      return;
     }
     {
       // 3) pass the JWT to the client

@@ -103,9 +103,34 @@ exports.updateTransaction = async (req, res) => {
  * Don't Do this machang without permission
  */
 exports.deleteTransaction = async (req, res) => {
-  try{
+  try {
     const transactionID = req.params.id;
     const sqlStatement = `DELETE FROM ${tableName} WHERE transactionID = ${transactionID}`;
+    const result = await db.query(sqlStatement);
+
+    res.status(200).json({
+      status: "Success",
+      data: {
+        transactions: result[0],
+      },
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: "Failed to get",
+      data: {
+        err,
+      },
+    });
+  }
+};
+
+/**
+ * Get all tran
+ */
+exports.getAllTransactionsByAccNo = async (req, res) => {
+  try {
+    const accNo = req.params.accNo;
+    const sqlStatement = `SELECT * FROM ${tableName} WHERE accountNo = ${accNo}`;
     const result = await db.query(sqlStatement);
 
     res.status(200).json({
@@ -114,7 +139,7 @@ exports.deleteTransaction = async (req, res) => {
         transactions: result,
       },
     });
-  }catch(err){
+  } catch (err) {
     res.status(400).json({
       status: "Failed to get",
       data: {
