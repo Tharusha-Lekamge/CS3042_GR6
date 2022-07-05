@@ -2,8 +2,11 @@ const db = require("../models/supportFunctions/dbOperations");
 const Transaction = require("../models/transactionModel");
 const validators = require("../models/supportFunctions/validators");
 
+const catchAsync = require("../utils/catchAsync");
+const AppError = require("../utils/appError");
+
 const tableCols =
-  "(TransactionID, AccountNumber, Date, Time, TransactionType, AccountType, TransactionAmount, TransactionCharge)";
+  "(transactionID, accountNumber, date, transactionType, transactionAmount, transactionCharge, agentID)";
 const tableName = "transaction";
 
 exports.validateBody = async (req, res) => {
@@ -12,20 +15,24 @@ exports.validateBody = async (req, res) => {
 
 exports.createTransaction = async (req, res) => {
   try {
-    //console.log(req.body.data);
-    //const validate = validators.validateTransaction(req, res, next);
-    //console.log("validated");
-    const newTransaction = new Transaction(req.body.data);
-    //console.log(newTransaction);
-    const sqlStatement = newTransaction.statement;
-    //console.log(sqlStatement);
-    const result = await db.query(sqlStatement);
+    const transactionArray = req.body.data;
+    transactionArray.forEach((elem) => {
+      const newTransaction = new Transaction(elem);
+      var sqlStatement = newTransaction.statement;
+      const result = db.query(sqlStatement);
+      // update account balance
+      newTransaction.checkBalance();
+    });
+    // const newTransaction = new Transaction(req.body.data);
+    // const sqlStatement = newTransaction.statement;
+    // const result = await db.query(sqlStatement);
 
     res.status(200).json({
       status: "Successfully added",
-      data: { newTransaction },
+      data: {},
     });
   } catch (err) {
+    console.log(err);
     res.status(400).json({
       status: "Failed to add",
       data: {
@@ -91,10 +98,42 @@ exports.updateTransaction = async (req, res) => {
   });
 };
 
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * 
+ * Don't Do this machang without permission
+ */
 exports.deleteTransaction = async (req, res) => {
-  try{
+  try {
     const transactionID = req.params.id;
     const sqlStatement = `DELETE FROM ${tableName} WHERE transactionID = ${transactionID}`;
+    const result = await db.query(sqlStatement);
+
+    res.status(200).json({
+      status: "Success",
+      data: {
+        transactions: result[0],
+      },
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: "Failed to get",
+      data: {
+        err,
+      },
+    });
+  }
+};
+
+/**
+ * Get all tran
+ */
+exports.getAllTransactionsByAccNo = async (req, res) => {
+  try {
+    const accNo = req.params.accNo;
+    const sqlStatement = `SELECT * FROM ${tableName} WHERE accountNo = ${accNo}`;
     const result = await db.query(sqlStatement);
 
     res.status(200).json({
@@ -103,7 +142,7 @@ exports.deleteTransaction = async (req, res) => {
         transactions: result,
       },
     });
-  }catch(err){
+  } catch (err) {
     res.status(400).json({
       status: "Failed to get",
       data: {

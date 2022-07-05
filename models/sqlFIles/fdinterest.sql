@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 19, 2022 at 05:59 AM
+-- Generation Time: Jul 05, 2022 at 08:55 AM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.1.0
 
@@ -24,39 +24,33 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `customer`
+-- Table structure for table `fdinterest`
 --
 
-CREATE TABLE `customer` (
-  `CustomerID` int(11) NOT NULL,
-  `Password` varchar(32) NOT NULL,
-  `CustomerNIC` varchar(10) NOT NULL,
-  `Name` varchar(64) NOT NULL,
-  `ContactNumber` varchar(12) NOT NULL,
-  `Address` varchar(128) NOT NULL,
-  `Birthday` date NOT NULL,
-  `isAdmin` tinyint(1) NOT NULL DEFAULT 0
+CREATE TABLE `fdinterest` (
+  `fdType` varchar(16) NOT NULL,
+  `duration` tinyint(4) NOT NULL,
+  `interestRate` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `fdinterest`
+--
+
+INSERT INTO `fdinterest` (`fdType`, `duration`, `interestRate`) VALUES
+('long', 36, 15),
+('medium', 12, 14),
+('short', 6, 13);
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `customer`
+-- Indexes for table `fdinterest`
 --
-ALTER TABLE `customer`
-  ADD PRIMARY KEY (`CustomerID`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `customer`
---
-ALTER TABLE `customer`
-  MODIFY `CustomerID` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `fdinterest`
+  ADD PRIMARY KEY (`fdType`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

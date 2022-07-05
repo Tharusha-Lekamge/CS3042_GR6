@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 19, 2022 at 05:59 AM
+-- Generation Time: Jul 05, 2022 at 08:55 AM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.1.0
 
@@ -24,39 +24,25 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `customer`
+-- Table structure for table `interestrates`
 --
 
-CREATE TABLE `customer` (
-  `CustomerID` int(11) NOT NULL,
-  `Password` varchar(32) NOT NULL,
-  `CustomerNIC` varchar(10) NOT NULL,
-  `Name` varchar(64) NOT NULL,
-  `ContactNumber` varchar(12) NOT NULL,
-  `Address` varchar(128) NOT NULL,
-  `Birthday` date NOT NULL,
-  `isAdmin` tinyint(1) NOT NULL DEFAULT 0
+CREATE TABLE `interestrates` (
+  `accountType` enum('children','teen','adult','senior','joint') NOT NULL,
+  `interestRate` float NOT NULL,
+  `minAmount` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Indexes for dumped tables
+-- Dumping data for table `interestrates`
 --
 
---
--- Indexes for table `customer`
---
-ALTER TABLE `customer`
-  ADD PRIMARY KEY (`CustomerID`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `customer`
---
-ALTER TABLE `customer`
-  MODIFY `CustomerID` int(11) NOT NULL AUTO_INCREMENT;
+INSERT INTO `interestrates` (`accountType`, `interestRate`, `minAmount`) VALUES
+('children', 12, 0),
+('teen', 11, 500),
+('adult', 10, 1000),
+('senior', 13, 1000),
+('joint', 7, 5000);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

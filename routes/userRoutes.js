@@ -1,18 +1,21 @@
 const express = require("express");
 const userController = require("../controllers/userController");
-const authCOntroller = require("../controllers/authController");
-const { route } = require("express/lib/application");
+const authController = require("../controllers/authController");
 const router = express.Router();
+const validator = require("../models/supportFunctions/validators");
 
-route.post("/signup", authCOntroller.signUp);
+router.post(
+  "/signup", // Check if all needed fields are present
+  validator.validateCustomer,
+  // encrypts the password if pass = confirm pass
+  validator.encryptPass,
+  authController.signUp
+);
+router.post("/login", authController.login);
 
-router
-  .route("/")
-  .post(userController.createUser)
-  .get(userController.getAllTUser);
+router.route("/").get(userController.getAllUsers);
 router
   .route("/:id")
-  .post(userController.createUser)
   .get(userController.getUser)
   .patch(userController.updateUser)
   .delete(userController.deleteUser);
