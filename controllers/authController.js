@@ -1,3 +1,4 @@
+const { promisify } = require("utils");
 const Customer = require("../models/customerModel");
 const jwt = require("jsonwebtoken");
 const mysql = require("mysql2");
@@ -101,7 +102,7 @@ exports.protect = catchAsync(async (req, res, next) => {
     return next(new AppError("No token given in the header", 401));
   }
   //2) Validate token (Verification step)
-
+  const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
   //3) Check if user exists
   //4) Check if User changed pass after JWT issued
   //5) Give access to the route
