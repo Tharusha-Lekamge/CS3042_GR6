@@ -68,7 +68,7 @@ exports.getAllLoginInfoByAgentID = async (req, res) => {
 /** Get customer NIC as param in req */
 exports.getUser = async (req, res) => {
   try {
-    const customerID = req.params.ID;
+    const customerID = req.params.id;
     const sqlStatement = `SELECT * FROM ${tableName} WHERE customerID = ${customerID}`;
     const result = await db.query(sqlStatement);
 
@@ -99,7 +99,7 @@ exports.updateUser = async (req, res) => {
 
 exports.deleteUser = async (req, res) => {
   try {
-    const customerID = req.params.ID;
+    const customerID = req.params.id;
     const sqlStatement = `DELETE FROM ${tableName} WHERE customerID = ${customerID}`;
     const result = await db.query(sqlStatement);
 
