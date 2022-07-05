@@ -1,4 +1,4 @@
-const { promisify } = require("utils");
+const { promisify } = require("util");
 const Customer = require("../models/customerModel");
 const jwt = require("jsonwebtoken");
 const mysql = require("mysql2");
