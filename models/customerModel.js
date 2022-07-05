@@ -7,11 +7,12 @@ class Customer {
     this.tableName = "customer";
     this.data = data;
 
-    //this.customerID = data.customerID || "NULL";  // set to AI
+    this.customerID = Math.floor(Math.random() * 10000001);
     this.password = data.password; // required
     this.confirmPass = data.confirmPass; // required
     this.customerNIC = data.customerNIC; // required
-    this.name = data.name; // required
+    this.firstName = data.firstName; // required
+    this.lastName = data.lastName; // required
     this.contactNumber = data.contactNumber; // required
     this.address = data.address; // required
     this.birthday = new Date(data.birthday); // required
@@ -20,9 +21,9 @@ class Customer {
 
   generateInsertStatement() {
     const cols =
-      "(`password`, `customerNIC`, `name`, `contactNumber`, `address`, `birthday`)";
+      "(`customerID`, `password`, `customerNIC`, `firstName`, `lastName`, `contactNumber`, `address`, `birthday`)";
     var statement = `INSERT INTO ${this.tableName} ${cols} VALUES`;
-    var values = `('${this.password}', '${this.customerNIC}', '${this.name}', '${this.contactNumber}', '${this.address}', '${this.birthday}')`;
+    var values = `('${this.customerID}','${this.password}', '${this.customerNIC}', '${this.firstName}', '${this.lastName}', '${this.contactNumber}', '${this.address}', '${this.birthday}')`;
     return `${statement} ${values}`;
   }
 }

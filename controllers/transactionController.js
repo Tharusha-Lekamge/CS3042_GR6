@@ -2,8 +2,11 @@ const db = require("../models/supportFunctions/dbOperations");
 const Transaction = require("../models/transactionModel");
 const validators = require("../models/supportFunctions/validators");
 
+const catchAsync = require("../utils/catchAsync");
+const AppError = require("../utils/appError");
+
 const tableCols =
-  "(TransactionID, AccountNumber, Date, Time, TransactionType, AccountType, TransactionAmount, TransactionCharge)";
+  "(transactionID, accountNumber, date, transactionType, transactionAmount, transactionCharge, agentID)";
 const tableName = "transaction";
 
 exports.validateBody = async (req, res) => {

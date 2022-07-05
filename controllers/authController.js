@@ -3,6 +3,9 @@ const jwt = require("jsonwebtoken");
 const mysql = require("mysql2");
 const db = require("../models/supportFunctions/dbOperations");
 const bcrypt = require("bcryptjs");
+
+const catchAsync = require("../utils/catchAsync");
+const AppError = require("../utils/appError");
 //const validator = require("../models/supportFunctions/validators");
 
 const signToken = (userID) => {
@@ -95,9 +98,7 @@ exports.protect = catchAsync(async (req, res, next) => {
     token = req.headers.authorization.split(" ")[1];
   }
   if (!token) {
-    // Return an app error
-    // Implement app error class
-    return next();
+    return next(new AppError("No token given in the header", 401));
   }
   //2) Validate token (Verification step)
 

@@ -1,10 +1,12 @@
 const db = require("../models/supportFunctions/dbOperations");
-//const dbConfig = require("../dbConfig");
 const Customer = require("../models/customerModel.js");
 const validator = require("../models/supportFunctions/validators");
 
+const catchAsync = require("../utils/catchAsync");
+const AppError = require("../utils/appError");
+
 const tableCols =
-  "(customerNIC, name, contactNumber, address, birthday, password)";
+  "(`customerID`, `password`, `customerNIC`, `firstName`, `lastName`, `contactNumber`, `address`, `birthday`)";
 const tableName = "customer";
 
 exports.getAllUsers = async (req, res) => {
@@ -63,13 +65,11 @@ exports.getAllLoginInfoByAgentID = async (req, res) => {
   }
 };
 
-
-
 /** Get customer NIC as param in req */
 exports.getUser = async (req, res) => {
   try {
-    const customerNIC = req.params.ID;
-    const sqlStatement = `SELECT * FROM ${tableName} WHERE customerNIC = ${customerNIC}`;
+    const customerID = req.params.ID;
+    const sqlStatement = `SELECT * FROM ${tableName} WHERE customerID = ${customerID}`;
     const result = await db.query(sqlStatement);
 
     res.status(200).json({
@@ -99,8 +99,8 @@ exports.updateUser = async (req, res) => {
 
 exports.deleteUser = async (req, res) => {
   try {
-    const customerNIC = req.params.ID;
-    const sqlStatement = `DELETE FROM ${tableName} WHERE customerNIC = ${customerNIC}`;
+    const customerID = req.params.ID;
+    const sqlStatement = `DELETE FROM ${tableName} WHERE customerID = ${customerID}`;
     const result = await db.query(sqlStatement);
 
     res.status(200).json({
