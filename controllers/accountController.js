@@ -51,7 +51,7 @@ exports.getAllAccounts = async (req, res) => {
  *
  * Returns an array containing all accounts assigned to the agent with the passed AgentID
  */
-exports.getAllAccByAgentID = async (req, res) => {
+exports.getAllAccByAgentID = async (req, res, next) => {
   const agentID = req.params.id;
   try {
     const sqlStatement = `SELECT * FROM accounts WHERE agentID = ${agentID}`;
@@ -62,6 +62,7 @@ exports.getAllAccByAgentID = async (req, res) => {
         accounts: result,
       },
     });
+    next();
   } catch (err) {
     res.status(400).json({
       status: "Failed to get",
