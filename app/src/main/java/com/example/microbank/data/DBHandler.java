@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,6 +13,7 @@ import androidx.annotation.Nullable;
 import com.example.microbank.data.Implementation.AccountDAO_Imp;
 import com.example.microbank.data.Model.Account;
 
+import java.io.Console;
 import java.io.IOException;
 
 import okhttp3.Call;
@@ -21,7 +23,6 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class DBHandler extends SQLiteOpenHelper {
-    public static final String AGENT_ID="WEN100";
     private static final int VERSION=2;
     private static final String DB_NAME = "microDB";
     Context context;
@@ -78,30 +79,8 @@ public class DBHandler extends SQLiteOpenHelper {
             db.execSQL("DROP TABLE IF EXISTS TRANSACTIONS");
             onCreate(db);
         }
-
     }
 
 
-
-    public void LoadData(){
-        OkHttpClient client = new OkHttpClient();
-        String url = "";
-        Request request = new Request.Builder().url(url).build();
-
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                e.printStackTrace();
-            }
-
-            @Override
-            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-                if (response.isSuccessful()){
-                    String dataString = response.body().string();
-
-                }
-            }
-        });
-    }
 }
 

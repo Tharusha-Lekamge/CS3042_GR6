@@ -6,15 +6,28 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.microbank.data.CustomerDAO;
 import com.example.microbank.data.DBHandler;
 import com.example.microbank.data.Model.Customer;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.sql.PreparedStatement;
+import java.util.concurrent.TimeUnit;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class CustomerDAO_Imp extends DBHandler implements CustomerDAO {
     public CustomerDAO_Imp(@Nullable Context context) {
@@ -61,6 +74,7 @@ public class CustomerDAO_Imp extends DBHandler implements CustomerDAO {
         SQLiteDatabase db = this.getWritableDatabase();
         db.insert("CUSTOMERS",null,cv);
         db.close();
+
     }
 
     public Customer getUser(String customer_id){
@@ -89,6 +103,21 @@ public class CustomerDAO_Imp extends DBHandler implements CustomerDAO {
             return customer;
         }
         return null;
+    }
+
+    public void LoadCustomerData(JSONArray customers){
+
+        for (int i=0;i<customers.length();i++){
+            try {
+                JSONObject c = new JSONObject(customers.get(i).toString());
+                //String customerID = c.getString("customerID");
+                //ContentValue cv = new ContentValues;
+                //.....
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 
     public boolean isSpecialCustomer(String customerID){

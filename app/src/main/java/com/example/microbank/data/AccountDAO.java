@@ -3,6 +3,8 @@ package com.example.microbank.data;
 import com.example.microbank.data.Exception.InvalidAccountException;
 import com.example.microbank.data.Model.Account;
 
+import org.json.JSONArray;
+
 import java.util.List;
 
 public interface AccountDAO {
@@ -12,4 +14,5 @@ public interface AccountDAO {
     public boolean checkBalance(String accNo,double amount, String type,double charge) throws InvalidAccountException;
     public void initAccTable();
     public List<Account> fetchAccounts(String customerID);
+    public void LoadAccountData(JSONArray accounts);
 }

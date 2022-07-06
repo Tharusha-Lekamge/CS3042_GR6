@@ -20,12 +20,14 @@ import com.example.microbank.data.DBHandler;
 import com.example.microbank.data.Model.Customer;
 
 public class LoginActivity extends AppCompatActivity {
+    AppController_ab appController = new AppController(LoginActivity.this);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         Button submit = findViewById(R.id.btnSubmit);
         TextView pwdChange = findViewById(R.id.pwdForget);
+        appController.getDataforAgent();
         Toast pwdchng = Toast.makeText(LoginActivity.this, "Submitting Request", Toast.LENGTH_SHORT);
         pwdChange.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,7 +43,7 @@ public class LoginActivity extends AppCompatActivity {
                 EditText userPwd = findViewById(R.id.userpwd);
                 String customerID = userID.getText().toString();
                 String password = userPwd.getText().toString();
-                AppController_ab appController = new AppController(LoginActivity.this);
+
 
                 if (customerID.equals("")||password.equals("")){
                     Toast.makeText(LoginActivity.this,"Please fill all the fields to Login",Toast.LENGTH_SHORT).show();

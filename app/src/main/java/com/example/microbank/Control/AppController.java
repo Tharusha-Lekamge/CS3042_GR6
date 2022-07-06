@@ -3,6 +3,9 @@ package com.example.microbank.Control;
 
 
 import android.content.Context;
+import android.util.Log;
+
+import androidx.annotation.NonNull;
 
 import com.example.microbank.data.AccountDAO;
 import com.example.microbank.data.CustomerDAO;
@@ -12,12 +15,23 @@ import com.example.microbank.data.Implementation.TransactionDAO_Imp;
 import com.example.microbank.data.Model.Account;
 import com.example.microbank.data.TransactionDAO;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
 public class AppController extends AppController_ab {
     private Context context;
-
 
     public AppController(Context context) {
         this.context = context;
@@ -36,5 +50,7 @@ public class AppController extends AppController_ab {
 //        customerDAO.initCustomerTable();
 //        accountDAO.initAccTable();
     }
+
+
 
 }

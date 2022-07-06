@@ -7,8 +7,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +18,17 @@ import com.example.microbank.data.AccountDAO;
 import com.example.microbank.data.Exception.InvalidAccountException;
 import com.example.microbank.data.Model.Account;
 import com.example.microbank.data.DBHandler;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class AccountDAO_Imp extends DBHandler implements AccountDAO {
     public AccountDAO_Imp(@Nullable Context context) {
@@ -132,5 +145,19 @@ public class AccountDAO_Imp extends DBHandler implements AccountDAO {
         accList.add(acc5);
 
         return accList;
+    }
+
+    @Override
+    public void LoadAccountData(JSONArray accounts) {
+        for (int i=0;i<accounts.length();i++){
+            try {
+                JSONObject c = new JSONObject(accounts.get(i).toString());
+                //String customerID = c.getString("customerID");
+                //ContentValue cv = new ContentValues;
+                //.....
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
