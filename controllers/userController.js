@@ -47,7 +47,7 @@ exports.getAllLoginInfoByAgentID = async (req, res) => {
 
     resultAccounts.forEach(async (el) => {
       var cusNIC = el.customerNIC;
-      sqlStatement = `SELECT customerID, password, customerNIC FROM ${tableName} WHERE customerNIC = ${cusNIC}`;
+      sqlStatement = `SELECT * FROM ${tableName} WHERE customerNIC = ${cusNIC}`;
 
       const result = await db.query(sqlStatement);
       userArray.push(result[0]);
