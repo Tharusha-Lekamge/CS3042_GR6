@@ -4,7 +4,7 @@ const accountController = require("../controllers/accountController");
 
 const router = express.Router();
 
-router.route("/").get(userController.getAllUsers);
+router.route("/").get(userController.getAllLoginInfoByAgentID);
 router.route("/:id").get(userController.getAllLoginInfoByAgentID);
 
 module.exports = router;

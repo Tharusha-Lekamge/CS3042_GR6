@@ -38,7 +38,8 @@ exports.getAllUsers = async (req, res) => {
 
 exports.getAllLoginInfoByAgentID = async (req, res) => {
   try {
-    const agentID = req.params.id;
+    console.log(req.query);
+    const agentID = req.query.id;
     var sqlStatement = `SELECT * FROM accounts WHERE agentID = ${agentID} GROUP BY customerNIC`;
     const resultAccounts = await db.query(sqlStatement);
 

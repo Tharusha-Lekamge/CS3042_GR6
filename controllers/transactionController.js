@@ -69,7 +69,6 @@ exports.getAllTransactions = async (req, res) => {
 exports.getTransaction = async (req, res) => {
   try {
     const transactionID = req.params.id;
-    console.log(transactionID);
     const sqlStatement = `SELECT * FROM ${tableName} WHERE transactionID = ${transactionID}`;
     const result = await db.query(sqlStatement);
 
@@ -100,10 +99,10 @@ exports.updateTransaction = async (req, res) => {
 };
 
 /**
- * 
- * @param {*} req 
- * @param {*} res 
- * 
+ *
+ * @param {*} req
+ * @param {*} res
+ *
  * Don't Do this machang without permission
  */
 exports.deleteTransaction = async (req, res) => {
@@ -129,12 +128,13 @@ exports.deleteTransaction = async (req, res) => {
 };
 
 /**
- * Get all tran
+ * Pass account number as accNo in request.params
+ * All transactions of that account will be displayed
  */
 exports.getAllTransactionsByAccNo = async (req, res) => {
   try {
     const accNo = req.params.accNo;
-    const sqlStatement = `SELECT * FROM ${tableName} WHERE accountNo = ${accNo}`;
+    const sqlStatement = `SELECT * FROM ${tableName} WHERE accountNo = ${accNo} ORDER BY date`;
     const result = await db.query(sqlStatement);
 
     res.status(200).json({
