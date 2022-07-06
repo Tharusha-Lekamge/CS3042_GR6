@@ -69,6 +69,7 @@ exports.getAllTransactions = async (req, res) => {
 exports.getTransaction = async (req, res) => {
   try {
     const transactionID = req.params.id;
+    console.log(transactionID);
     const sqlStatement = `SELECT * FROM ${tableName} WHERE transactionID = ${transactionID}`;
     const result = await db.query(sqlStatement);
 

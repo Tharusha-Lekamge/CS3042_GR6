@@ -1,6 +1,8 @@
 const db = require("../models/supportFunctions/dbOperations");
 const Customer = require("../models/customerModel.js");
 const validator = require("../models/supportFunctions/validators");
+const mysql = require("mysql");
+const config = require("../dbConfig");
 
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
@@ -35,29 +37,34 @@ exports.getAllUsers = async (req, res) => {
 };
 
 exports.getAllLoginInfoByAgentID = async (req, res) => {
-  const agentID = req.params.id;
   try {
+    const agentID = req.params.id;
     var sqlStatement = `SELECT * FROM accounts WHERE agentID = ${agentID} GROUP BY customerNIC`;
     const resultAccounts = await db.query(sqlStatement);
 
-    var userArray = [];
+    var userArray = new Array();
 
-    for (item in resultAccounts) {
-      var cusNIC = item.customerNIC;
+    resultAccounts.forEach(async (el) => {
+      var cusNIC = el.customerNIC;
       sqlStatement = `SELECT customerID, password, customerNIC FROM ${tableName} WHERE customerNIC = ${cusNIC}`;
-      var resultAcc = await db.query(sqlStatement);
-      userArray.push(resultAcc);
-    }
+
+      const result = await db.query(sqlStatement);
+      userArray.push(result[0]);
+    });
+
+    // Just to give some time
+    const result1 = await db.query(sqlStatement);
 
     res.status(200).json({
       status: "Success",
       data: {
+        accounts: resultAccounts[0],
         users: userArray,
       },
     });
   } catch (err) {
     res.status(400).json({
-      status: "Failed to get",
+      status: "Failed to get dunno why",
       data: {
         err,
       },
