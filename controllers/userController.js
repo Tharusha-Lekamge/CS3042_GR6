@@ -38,9 +38,9 @@ exports.getAllUsers = async (req, res) => {
 
 exports.getAllLoginInfoByAgentID = async (req, res) => {
   try {
-    console.log(req.query);
+    //console.log(req.query);
     const agentID = req.query.id;
-    var sqlStatement = `SELECT * FROM accounts WHERE agentID = ${agentID} GROUP BY customerNIC`;
+    var sqlStatement = `SELECT * FROM accounts WHERE agentID = ${agentID} ORDER BY customerNIC`;
     const resultAccounts = await db.query(sqlStatement);
 
     var userArray = new Array();
@@ -76,14 +76,14 @@ exports.getAllLoginInfoByAgentID = async (req, res) => {
 /** Get customer NIC as param in req */
 exports.getUser = async (req, res) => {
   try {
-    const customerID = req.params.id;
+    const customerID = req.query.id;
     const sqlStatement = `SELECT * FROM ${tableName} WHERE customerID = ${customerID}`;
     const result = await db.query(sqlStatement);
 
     res.status(200).json({
       status: "Success",
       data: {
-        customers: result,
+        customers: result[0],
       },
     });
   } catch (err) {
@@ -120,6 +120,32 @@ exports.deleteUser = async (req, res) => {
   } catch (err) {
     res.status(400).json({
       status: "Failed to Delete",
+      data: {
+        err,
+      },
+    });
+  }
+};
+
+exports.getUserAndAccByID = async (req, res) => {
+  try {
+    const customerID = req.query.id;
+    const sqlStatement = `SELECT customerID, password, customerNIC FROM ${tableName} WHERE customerID = ${customerID}`;
+    const resultUser = await db.query(sqlStatement);
+
+    sqlStatement = `SELECT * FROM accounts WHERE customerID = ${customerID}`;
+    const resultAccounts = await db.query(sqlStatement);
+
+    res.status(200).json({
+      status: "Success",
+      data: {
+        customer: resultUser[0],
+        account: resultAccounts[0],
+      },
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: "Failed to get",
       data: {
         err,
       },
