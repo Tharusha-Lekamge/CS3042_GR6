@@ -10,6 +10,9 @@ import com.example.microbank.data.CustomerDAO;
 import com.example.microbank.data.Exception.InvalidAccountException;
 import com.example.microbank.data.Model.Account;
 import com.example.microbank.data.TransactionDAO;
+import static com.example.microbank.Constants.AGENT_ID;
+import static com.example.microbank.Constants.TR_CHARGE;
+import static com.example.microbank.Constants.HOST_IP;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -21,6 +24,7 @@ import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -29,17 +33,14 @@ public abstract class AppController_ab implements Serializable {
     private AccountDAO accountDAO;
     private TransactionDAO transactionDAO;
     private CustomerDAO customerDAO;
-    private Double trCharge= 123.0;
-    public static final String AGENT_ID="1234";
-
     public List<Account> getAccounts(String customerID) throws InvalidAccountException {
         return accountDAO.getAccountsList(customerID);
     }
 
     public void addTransaction(String cusID, String accNo,String type,Double amount,String reference) throws InvalidAccountException {
         if (!(amount==0)){
-            accountDAO.updateBalance(accNo,type,trCharge,amount);
-            transactionDAO.addTransaction(cusID, accNo,type,trCharge,amount,reference);
+            accountDAO.updateBalance(accNo,type,TR_CHARGE,amount);
+            transactionDAO.addTransaction(cusID, accNo,type,TR_CHARGE,amount,reference);
         }
     }
 
@@ -69,14 +70,13 @@ public abstract class AppController_ab implements Serializable {
         this.customerDAO = customerDAO;
     }
     public Double getTrCharge() {
-        return trCharge;
+        return TR_CHARGE;
     }
 
     public void getDataforAgent(){
         OkHttpClient client = new OkHttpClient();
-        String url = "http://192.168.1.7:3000/api/v1/sync/init/"+AGENT_ID;
+        HttpUrl url = new HttpUrl.Builder().scheme("http").host(HOST_IP).port(3000).addPathSegment("api").addPathSegment("v1").addPathSegment("sync").addQueryParameter("id",AGENT_ID).build();
         Request request = new Request.Builder().url(url).build();
-
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
@@ -87,12 +87,12 @@ public abstract class AppController_ab implements Serializable {
                 if (response.isSuccessful()){
                     String dataString = response.body().string();
                     try {
-                        JSONArray json  = new JSONObject(new JSONObject(dataString).getString("data")).getJSONArray("accounts");
-                        Log.d("ACCOUNTS", json.toString());
-
-                        //Create 2 methods in CustomerDAO and AccountDAO which takes two JSONArrays as inputs
-                        //Get the 2 JSON arrays from the response and pass them to the 2 objects
-                        //These methods should iterate through the arrays and add the values to tables
+                        JSONArray accountsJson  = new JSONObject(new JSONObject(dataString).getString("data")).getJSONArray("accounts");
+                        JSONArray customerJson = new JSONObject(new JSONObject(dataString).getString("data")).getJSONArray("users");
+                        customerDAO.clearCustomerTable();
+                        accountDAO.clearAccountsTable();
+                        customerDAO.LoadCustomerData(customerJson);
+                        accountDAO.LoadAccountData(accountsJson);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

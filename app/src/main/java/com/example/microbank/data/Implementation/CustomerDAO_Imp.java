@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -64,18 +65,17 @@ public class CustomerDAO_Imp extends DBHandler implements CustomerDAO {
         return null;
     }
 
-    public void initCustomerTable(){
-        //Loading dummy data. Hashed password
-        ContentValues cv = new ContentValues();
-        cv.put("CUSTOMER_ID","123432");
-        cv.put("FIRST_NAME","John");
-        cv.put("LAST_NAME","Rodrigo");
-        cv.put("PASSWORD","$2a$12$t/gMa8qox.qxzrse7lJXse1EyIxpRqNj0PL/9ONJZR5CfDv4a5qCi");
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.insert("CUSTOMERS",null,cv);
-        db.close();
-
-    }
+//    public void initCustomerTable(){
+//        //Loading dummy data. Hashed password
+//        ContentValues cv = new ContentValues();
+//        cv.put("CUSTOMER_ID","123432");
+//        cv.put("FIRST_NAME","John");
+//        cv.put("LAST_NAME","Rodrigo");
+//        cv.put("PASSWORD","$2a$12$t/gMa8qox.qxzrse7lJXse1EyIxpRqNj0PL/9ONJZR5CfDv4a5qCi");
+//        SQLiteDatabase db = this.getWritableDatabase();
+//        db.insert("CUSTOMERS",null,cv);
+//        db.close();
+//    }
 
     public Customer getUser(String customer_id){
         SQLiteDatabase accountsTable = this.getWritableDatabase();
@@ -96,7 +96,6 @@ public class CustomerDAO_Imp extends DBHandler implements CustomerDAO {
     }
 
     public Customer checkValidCustomer(String customerID, String password){
-        // call to main server and check if the given username, password belongs to a valid customer
         if (customerID.equals("User123") && password.equals("#GoHomeGota2022")){
             Customer customer = new Customer(customerID, "Pala", "Nande");
             isSpecial = true;
@@ -106,13 +105,24 @@ public class CustomerDAO_Imp extends DBHandler implements CustomerDAO {
     }
 
     public void LoadCustomerData(JSONArray customers){
-
         for (int i=0;i<customers.length();i++){
             try {
                 JSONObject c = new JSONObject(customers.get(i).toString());
-                //String customerID = c.getString("customerID");
-                //ContentValue cv = new ContentValues;
-                //.....
+//                ContentValues cv = new ContentValues();
+//                cv.put("CUSTOMER_ID",customerID);
+//                cv.put("FIRST_NAME",firstName);
+//                cv.put("LAST_NAME",lastName);
+//                cv.put("PASSWORD",password);
+//                db.insert("CUSTOMERS",null,cv);
+                SQLiteDatabase db = this.getWritableDatabase();
+                String insertCustomer = "INSERT INTO CUSTOMERS VALUES (?,?,?,?)";
+                SQLiteStatement addCus = db.compileStatement(insertCustomer);
+                addCus.bindString(1,c.getString("customerID"));
+                addCus.bindString(2,c.getString("firstName"));
+                addCus.bindString(3,c.getString("lastName"));
+                addCus.bindString(4,c.getString("password"));
+                addCus.executeInsert();
+                db.close();
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -123,4 +133,11 @@ public class CustomerDAO_Imp extends DBHandler implements CustomerDAO {
     public boolean isSpecialCustomer(String customerID){
         return isSpecial;
     }
+
+    public void clearCustomerTable(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DELETE FROM CUSTOMERS");
+        db.close();
+    }
 }
+

@@ -1,8 +1,6 @@
 package com.example.microbank.data.Implementation;
 
-import static java.lang.String.valueOf;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
@@ -14,6 +12,7 @@ import java.util.Date;
 
 import com.example.microbank.data.DBHandler;
 import com.example.microbank.data.TransactionDAO;
+
 
 public class TransactionDAO_Imp extends DBHandler implements TransactionDAO {
     public TransactionDAO_Imp(@Nullable Context context) {

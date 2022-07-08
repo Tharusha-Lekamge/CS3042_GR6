@@ -4,6 +4,7 @@ import com.example.microbank.data.Exception.InvalidAccountException;
 import com.example.microbank.data.Model.Account;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -15,4 +16,5 @@ public interface AccountDAO {
     public void initAccTable();
     public List<Account> fetchAccounts(String customerID);
     public void LoadAccountData(JSONArray accounts);
+    public void clearAccountsTable();
 }

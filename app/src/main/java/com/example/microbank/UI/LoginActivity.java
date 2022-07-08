@@ -43,8 +43,6 @@ public class LoginActivity extends AppCompatActivity {
                 EditText userPwd = findViewById(R.id.userpwd);
                 String customerID = userID.getText().toString();
                 String password = userPwd.getText().toString();
-
-
                 if (customerID.equals("")||password.equals("")){
                     Toast.makeText(LoginActivity.this,"Please fill all the fields to Login",Toast.LENGTH_SHORT).show();
                 }
@@ -72,7 +70,7 @@ public class LoginActivity extends AppCompatActivity {
 
     protected void onStart(){
         super.onStart();
-        checkSession();
+//        checkSession();
     }
 
     private void checkSession() {

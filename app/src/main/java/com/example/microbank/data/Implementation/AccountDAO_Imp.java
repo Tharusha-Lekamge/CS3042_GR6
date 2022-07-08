@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import com.example.microbank.data.AccountDAO;
 import com.example.microbank.data.Exception.InvalidAccountException;
@@ -38,6 +39,7 @@ public class AccountDAO_Imp extends DBHandler implements AccountDAO {
     @Override
     public void addAccount(Account acc) {
         SQLiteDatabase db = this.getWritableDatabase();
+
         ContentValues cv = new ContentValues();
         cv.put("ACCOUNT_NO",acc.getAcc_No());
         cv.put("CUSTOMER_ID",acc.getCustomer_ID());
@@ -147,17 +149,39 @@ public class AccountDAO_Imp extends DBHandler implements AccountDAO {
         return accList;
     }
 
-    @Override
+
     public void LoadAccountData(JSONArray accounts) {
         for (int i=0;i<accounts.length();i++){
             try {
                 JSONObject c = new JSONObject(accounts.get(i).toString());
-                //String customerID = c.getString("customerID");
-                //ContentValue cv = new ContentValues;
-                //.....
+                String accountNumber = c.getString("accountNumber");
+                String customerID = c.getString("customerNIC");
+                String accountType = c.getString("accountType");
+                Double balance = c.getDouble("accountBalance");
+//                ContentValues cv = new ContentValues();
+//                cv.put("ACCOUNT_NO",accountNumber);
+//                cv.put("CUSTOMER_ID",customerID);
+//                cv.put("ACCOUNT_TYPE",accountType.toUpperCase(Locale.ROOT));
+//                cv.put("BALANCE",balance);
+                String addAcc = "INSERT INTO ACCOUNTS VALUES (?,?,?,?)";
+                SQLiteDatabase db = this.getWritableDatabase();
+                SQLiteStatement insertAcc = db.compileStatement(addAcc);
+                insertAcc.bindString(1,accountNumber);
+                insertAcc.bindString(2,customerID);
+                insertAcc.bindString(3,accountType.toUpperCase(Locale.ROOT));
+                insertAcc.bindDouble(4,balance);
+                insertAcc.executeInsert();
+//                db.insert("ACCOUNTS",null,cv);
+                db.close();
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void clearAccountsTable(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DELETE FROM ACCOUNTS");
+        db.close();
     }
 }
