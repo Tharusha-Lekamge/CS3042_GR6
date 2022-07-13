@@ -20,14 +20,14 @@ exports.signUp = async (req, res, next) => {
   const newCustomer = new Customer(req.body.data);
 
   // Using jwt token
-  const token = signToken(newCustomer.customerNIC);
+  const token = signToken(newCustomer.customerID);
 
   var sqlStatement = newCustomer.statement;
   //console.log(sqlStatement);
   var result = await db.query(sqlStatement);
 
   // Get the created user from the database
-  sqlStatement = `SELECT * FROM customer WHERE CustomerNIC = ${newCustomer.customerNIC}`;
+  sqlStatement = `SELECT * FROM customer WHERE CustomerID = ${newCustomer.customerID}`;
   result = await db.query(sqlStatement);
 
   // console.log(result);
@@ -42,10 +42,10 @@ exports.signUp = async (req, res, next) => {
 
 exports.login = async (req, res, next) => {
   // Uses object destructuring to get the required fields from the passed object
-  var { customerNIC, password } = req.body;
+  var { customerID, password } = req.body;
 
-  // 1) check if the customerNIC and password is valid
-  if (!customerNIC || !password) {
+  // 1) check if the customerID and password is valid
+  if (!customerID || !password) {
     res.status(400).json({
       status: "fill the details",
       data: {},
@@ -53,7 +53,7 @@ exports.login = async (req, res, next) => {
     return;
   }
   // 2) check if user exists and if the password matches
-  const sqlStatement = `SELECT * FROM CUSTOMER WHERE customerNIC =  ${customerNIC}`;
+  const sqlStatement = `SELECT * FROM CUSTOMER WHERE customerID =  ${customerID}`;
   var result = await db.query(sqlStatement);
   // Check for errors
   if (!result) {
@@ -79,7 +79,7 @@ exports.login = async (req, res, next) => {
     }
     {
       // 3) pass the JWT to the client
-      const token = signToken(result[0].customerNIC);
+      const token = signToken(result[0].customerID);
       res.status(200).json({
         status: "Logged in",
         token: token,

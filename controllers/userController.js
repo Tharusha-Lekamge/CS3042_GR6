@@ -40,14 +40,14 @@ exports.getAllLoginInfoByAgentID = async (req, res) => {
   try {
     //console.log(req.query);
     const agentID = req.query.id;
-    var sqlStatement = `SELECT * FROM accounts WHERE agentID = ${agentID} ORDER BY customerNIC`;
+    var sqlStatement = `SELECT * FROM accounts NATURAL JOIN accountholders WHERE agentID = ${agentID} ORDER BY customerID`;
     const resultAccounts = await db.query(sqlStatement);
 
     var userArray = new Array();
 
     resultAccounts.forEach(async (el) => {
-      var cusNIC = el.customerNIC;
-      sqlStatement = `SELECT * FROM ${tableName} WHERE customerNIC = ${cusNIC}`;
+      var cusID = el.customerID;
+      sqlStatement = `SELECT * FROM ${tableName} WHERE customerID = ${cusID}`;
 
       const result = await db.query(sqlStatement);
       userArray.push(result[0]);
@@ -130,7 +130,7 @@ exports.deleteUser = async (req, res) => {
 exports.getUserAndAccByID = async (req, res) => {
   try {
     const customerID = req.query.id;
-    const sqlStatement = `SELECT customerID, password, customerNIC FROM ${tableName} WHERE customerID = ${customerID}`;
+    const sqlStatement = `SELECT customerID, password, customerID FROM ${tableName} WHERE customerID = ${customerID}`;
     const resultUser = await db.query(sqlStatement);
 
     sqlStatement = `SELECT * FROM accounts WHERE customerID = ${customerID}`;

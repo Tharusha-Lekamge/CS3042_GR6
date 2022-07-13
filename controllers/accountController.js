@@ -5,17 +5,27 @@ const tableName = "accounts";
 
 exports.createAccount = async (req, res) => {
   try {
-    const newAccount = new Account(req.body.data);
-    const sqlStatement = newAccount.statement;
-    const result = await db.query(sqlStatement);
+    // Check if the user exists
+
+    const accountCols = `accountNumber, accountType, agentID, accountBalance`;
+    const accountHoldersCols = `accountNumber, customerID`;
+
+    // Inserting into Accounts table
+    var statement = `INSERT INTO accounts VALUES `;
+    statement += `('${req.body.data.accNo}', '${req.body.data.accType}', ${req.body.data.agentID}, ${req.body.data.balance});`;
+    const result = await db.query(statement);
+
+    // Inserting into the accountholders table
+    statement = `INSERT INTO accountholders VALUES `;
+    statement += `('${req.body.data.accNo}', '${req.body.data.customerID}');`;
+    const result1 = await db.query(statement);
 
     res.status(200).json({
       status: "Successfully added",
-      data: { newAccount },
     });
   } catch (err) {
     res.status(400).json({
-      status: "Failed to add",
+      status: "Failed to Create Account",
       data: {
         err,
       },
@@ -78,7 +88,7 @@ exports.getAllAccByAgentID = async (req, res, next) => {
 exports.getAllAccByNIC = async (req, res) => {
   const NIC = req.params.id;
   try {
-    const sqlStatement = `SELECT * FROM accounts WHERE customerNIC = ${NIC}`;
+    const sqlStatement = `SELECT * FROM accounts NATURAL JOIN accountholders WHERE customerID = ${NIC}`;
     const result = await db.query(sqlStatement);
 
     res.json({
