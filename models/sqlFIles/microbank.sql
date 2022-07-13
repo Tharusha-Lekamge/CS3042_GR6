@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 05, 2022 at 12:00 PM
+-- Generation Time: Jul 13, 2022 at 06:40 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.1.0
 
@@ -28,9 +28,16 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `accountholders` (
-  `customerID` int(11) NOT NULL,
-  `accountNumber` int(11) NOT NULL
+  `customerID` varchar(16) NOT NULL,
+  `accountNumber` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `accountholders`
+--
+
+INSERT INTO `accountholders` (`customerID`, `accountNumber`) VALUES
+('11112222', '13');
 
 -- --------------------------------------------------------
 
@@ -40,7 +47,6 @@ CREATE TABLE `accountholders` (
 
 CREATE TABLE `accounts` (
   `accountNumber` varchar(20) NOT NULL,
-  `customerNIC` varchar(10) DEFAULT NULL,
   `accountType` enum('Children','Teen','Adult','Senior') DEFAULT NULL,
   `agentID` varchar(10) DEFAULT NULL,
   `accountBalance` float DEFAULT 0
@@ -50,9 +56,23 @@ CREATE TABLE `accounts` (
 -- Dumping data for table `accounts`
 --
 
-INSERT INTO `accounts` (`accountNumber`, `customerNIC`, `accountType`, `agentID`, `accountBalance`) VALUES
-('1234567894', '1233455', 'Teen', '123', 1149),
-('1239999994', '12345667', 'Children', '1234', 69570);
+INSERT INTO `accounts` (`accountNumber`, `accountType`, `agentID`, `accountBalance`) VALUES
+('11112222', 'Senior', '1', 1111),
+('1234567894', 'Teen', '123', 1149),
+('1239999994', 'Children', '1234', 69570);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `admins`
+--
+
+CREATE TABLE `admins` (
+  `username` varchar(32) NOT NULL,
+  `password` varchar(128) NOT NULL,
+  `firstName` varchar(32) NOT NULL,
+  `lastName` varchar(32) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -74,23 +94,22 @@ CREATE TABLE `agentdetails` (
 --
 
 CREATE TABLE `customer` (
-  `customerID` int(11) NOT NULL,
+  `customerID` varchar(16) NOT NULL,
   `password` varchar(64) NOT NULL,
   `firstName` varchar(32) NOT NULL,
   `lastName` varchar(32) NOT NULL,
   `customerNIC` varchar(10) NOT NULL,
   `contactNumber` varchar(12) NOT NULL,
   `address` varchar(128) NOT NULL,
-  `birthday` date NOT NULL,
-  `isAdmin` tinyint(1) NOT NULL DEFAULT 0
+  `birthday` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `customer`
 --
 
-INSERT INTO `customer` (`customerID`, `password`, `firstName`, `lastName`, `customerNIC`, `contactNumber`, `address`, `birthday`, `isAdmin`) VALUES
-(13, '$2a$12$LoU8SAJxLmfm.zZ13bSC9eyTiphseqX9wAFun2xJixpBSo/cX5Yye', '', '', '1999325', 'Withdraw', 'Children', '0000-00-00', 0);
+INSERT INTO `customer` (`customerID`, `password`, `firstName`, `lastName`, `customerNIC`, `contactNumber`, `address`, `birthday`) VALUES
+('13', '$2a$12$LoU8SAJxLmfm.zZ13bSC9eyTiphseqX9wAFun2xJixpBSo/cX5Yye', 'Hello', 'Horld', '12345667', '123456', 'who knows', '2022-07-01');
 
 -- --------------------------------------------------------
 
@@ -180,13 +199,19 @@ INSERT INTO `transaction` (`transactionID`, `accountNumber`, `date`, `transactio
 --
 
 --
+-- Indexes for table `accountholders`
+--
+ALTER TABLE `accountholders`
+  ADD PRIMARY KEY (`customerID`,`accountNumber`),
+  ADD KEY `accountNumber` (`accountNumber`);
+
+--
 -- Indexes for table `accounts`
 --
 ALTER TABLE `accounts`
   ADD PRIMARY KEY (`accountNumber`),
   ADD KEY `AccountType` (`accountType`),
-  ADD KEY `AgentID` (`agentID`),
-  ADD KEY `CustomerNIC` (`customerNIC`);
+  ADD KEY `AgentID` (`agentID`);
 
 --
 -- Indexes for table `agentdetails`
@@ -198,7 +223,8 @@ ALTER TABLE `agentdetails`
 -- Indexes for table `customer`
 --
 ALTER TABLE `customer`
-  ADD PRIMARY KEY (`customerID`);
+  ADD PRIMARY KEY (`customerID`),
+  ADD UNIQUE KEY `customerNIC` (`customerNIC`);
 
 --
 -- Indexes for table `fdinterest`
@@ -222,12 +248,6 @@ ALTER TABLE `transaction`
 --
 -- AUTO_INCREMENT for dumped tables
 --
-
---
--- AUTO_INCREMENT for table `customer`
---
-ALTER TABLE `customer`
-  MODIFY `customerID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `transaction`
