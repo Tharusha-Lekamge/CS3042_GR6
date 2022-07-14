@@ -72,13 +72,13 @@ exports.getAllLoginInfoByAgentID = async (req, res) => {
 
     // AgentID and Customer ID is ommited in the following sql queries
     // Used to get distinct elements without duplicates for joint accounts
-    sqlStatement = `SELECT DISTINCT accountNumber, accountType, accountBalance FROM accounts NATURAL JOIN accountholders WHERE agentID = ${agentID} AND accountType != 'Joint' ORDER BY customerID`;
+    sqlStatement = `SELECT DISTINCT accountNumber, accountType, accountBalance FROM accounts NATURAL JOIN accountholders NATURAL JOIN customer WHERE agentID = ${agentID} AND accountType != 'Joint' ORDER BY customerID`;
     var accounts = await db.query(sqlStatement);
 
-    sqlStatementJoint = `SELECT DISTINCT accountNumber, accountType, accountBalance FROM accounts NATURAL JOIN accountholders WHERE accountType = 'Joint' ORDER BY customerID`;
+    sqlStatementJoint = `SELECT DISTINCT accountNumber, accountType, accountBalance FROM accounts NATURAL JOIN accountholders NATURAL JOIN customer WHERE accountType = 'Joint' ORDER BY customerID`;
     const jointAccounts1 = await db.query(sqlStatementJoint);
 
-    const holderStatement = `SELECT DISTINCT accountNumber, customerID FROM accounts NATURAL JOIN accountholders WHERE agentID = ${agentID} ORDER BY customerID`;
+    const holderStatement = `SELECT DISTINCT accountNumber, customerID FROM accounts NATURAL JOIN accountholders NATURAL JOIN customer WHERE agentID = ${agentID} ORDER BY customerID`;
     const accountholders = await db.query(holderStatement);
 
     const userSqlStatement = `SELECT DISTINCT customerID, password, firstName, lastName, agentID FROM customer NATURAL JOIN accountholders NATURAL JOIN accounts WHERE agentID = ${agentID} ORDER BY customerID`;
