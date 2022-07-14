@@ -39,7 +39,7 @@ exports.getAllUsers = async (req, res) => {
 /**
  * 
  * @param {*} req Set agentID as the query parameter in the method
- * @param {*} res res.body contains two data arrays namely accounts and users
+ * @param {*} res res.body contains three data arrays namely accounts, users and accountholders
  */
 exports.getAllLoginInfoByAgentID = async (req, res) => {
   try {
@@ -83,6 +83,9 @@ exports.getAllLoginInfoByAgentID = async (req, res) => {
     const holderStatement = `SELECT DISTINCT accountNumber, customerID FROM accounts NATURAL JOIN accountholders WHERE agentID = ${agentID} ORDER BY customerID`;
     const accountholders = await db.query(holderStatement);
 
+    const userSqlStatement = `SELECT DISTINCT customerID, password, firstName, lastName, agentID FROM customer NATURAL JOIN accountholders NATURAL JOIN accounts WHERE agentID = ${agentID} ORDER BY customerID`;
+    const users = await db.query(userSqlStatement);
+
     jointAccounts1.forEach((el) => {
       accounts.push(el);
     });
@@ -93,9 +96,9 @@ exports.getAllLoginInfoByAgentID = async (req, res) => {
     res.status(200).json({
       status: "Success",
       data: {
-        accounts: accounts,
-        users: userArray,
         accountholders: accountholders,
+        accounts: accounts,
+        users: users,    
       },
     });
   } catch (err) {

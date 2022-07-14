@@ -7,7 +7,7 @@ exports.createFD = async (req, res) => {
   const { accountNumber, customerID, amount, openingDate, planType, FD_ID } =
     req.body;
   var sqlStatement = `INSERT INTO ${tableName} ${tableCols} VALUES `;
-  sqlStatement += `(${accountNumber}, ${customerID}, ${amount}, ${openingDate}, ${planType}, ${FD_ID})`;
+  sqlStatement += `(${accountNumber}, ${customerID}, ${amount}, ${openingDate}, ${planType}, ${FD_ID});`;
 };
 
 exports.withdrawFD = async (req, res) => {
@@ -37,33 +37,17 @@ exports.withdrawFD = async (req, res) => {
   }
 };
 
-const getFdByID = async (id) => {
-  try {
-    const sqlStatement = `SELECT * FROM ${tableName} WHERE FD_ID = ${id}`;
-    return await db.query(sqlStatement);
-  } catch (err) {
-    return [];
-  }
-};
-
-const getFdByAccNo = async (accNo) => {
-  try {
-    const sqlStatement = `SELECT * FROM ${tableName} WHERE accountNumber = ${accNo}`;
-    return await db.query(sqlStatement);
-  } catch (err) {
-    return [];
-  }
-};
-
 exports.getFD = async (req, res) => {
   try {
     var fdList = [];
-    const id = req.query.id;
+    const { id, accNo } = req.query;
     if (!id) {
-      const accNo = req.query.accNo;
-      fdList = getFdByAccNo(accNo);
+      const sqlStatement = `SELECT * FROM ${tableName} WHERE accountNumber = ${accNo}`;
+      fdList = await db.query(sqlStatement);
+    } else {
+      const sqlStatement = `SELECT * FROM ${tableName} WHERE FD_ID = ${id}`;
+      fdList = await db.query(sqlStatement);
     }
-    fdList = getFdByID(id);
 
     res.status(200).json({
       status: "Success",
