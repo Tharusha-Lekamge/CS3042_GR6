@@ -80,9 +80,12 @@ exports.getAllLoginInfoByAgentID = async (req, res) => {
     sqlStatementJoint = `SELECT DISTINCT accountNumber, accountType, accountBalance FROM accounts NATURAL JOIN accountholders WHERE accountType = 'Joint' ORDER BY customerID`;
     const jointAccounts1 = await db.query(sqlStatementJoint);
 
-    jointAccounts1.forEach((el) =>{
+    const holderStatement = `SELECT DISTINCT accountNumber, customerID FROM accounts NATURAL JOIN accountholders WHERE agentID = ${agentID} ORDER BY customerID`;
+    const accountholders = await db.query(holderStatement);
+
+    jointAccounts1.forEach((el) => {
       accounts.push(el);
-    })
+    });
 
     // Just to give some time
     const result1 = await db.query(sqlStatement);
@@ -92,6 +95,7 @@ exports.getAllLoginInfoByAgentID = async (req, res) => {
       data: {
         accounts: accounts,
         users: userArray,
+        accountholders: accountholders,
       },
     });
   } catch (err) {
