@@ -1,6 +1,5 @@
 const db = require("../models/supportFunctions/dbOperations");
 const Transaction = require("../models/transactionModel");
-const validators = require("../models/supportFunctions/validators");
 
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");

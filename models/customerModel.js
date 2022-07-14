@@ -1,6 +1,3 @@
-const mysql = require("mysql2");
-
-
 // pass req.body.data to the constructor
 class Customer {
   constructor(data) {
@@ -11,6 +8,7 @@ class Customer {
     this.password = data.password; // required
     this.confirmPass = data.confirmPass; // required
     this.customerNIC = data.customerNIC; // required
+    this.agentID = data.agentID; // required
     this.firstName = data.firstName; // required
     this.lastName = data.lastName; // required
     this.contactNumber = data.contactNumber; // required
@@ -21,9 +19,9 @@ class Customer {
 
   generateInsertStatement() {
     const cols =
-      "(`customerID`, `password`, `customerNIC`, `firstName`, `lastName`, `contactNumber`, `address`, `birthday`)";
+      "(`customerID`, `password`, `customerNIC`, `firstName`, `lastName`, `contactNumber`, `address`, `birthday`, `agentID`)";
     var statement = `INSERT INTO ${this.tableName} ${cols} VALUES`;
-    var values = `('${this.customerID}','${this.password}', '${this.customerNIC}', '${this.firstName}', '${this.lastName}', '${this.contactNumber}', '${this.address}', '${this.birthday}')`;
+    var values = `('${this.customerID}','${this.password}', '${this.customerNIC}', '${this.firstName}', '${this.lastName}', '${this.contactNumber}', '${this.address}', '${this.birthday}', '${this.agentID}')`;
     return `${statement} ${values}`;
   }
 }

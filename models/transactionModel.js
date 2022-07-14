@@ -1,4 +1,3 @@
-const mysql = require("mysql");
 const db = require("../models/supportFunctions/dbOperations");
 
 /* Required input fields are
