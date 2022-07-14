@@ -38,13 +38,17 @@ public class DBHandler extends SQLiteOpenHelper {
         String dropTableAccounts = "DROP TABLE IF EXISTS ACCOUNTS";
         String dropTableCustomers = "DROP TABLE IF EXISTS CUSTOMERS";
         String dropTableTransactions = "DROP TABLE IF EXISTS TRANSACTIONS";
+        String dropTableAccHolders = "DROP TABLE IF EXISTS ACCOUNT_HOLDERS";
+
         String createTableAccounts = "CREATE TABLE ACCOUNTS (" +
                 "ACCOUNT_NO VARCHAR(20) NOT NULL," +
-                "CUSTOMER_ID VARCHAR(10) NOT NULL," +
                 "ACCOUNT_TYPE CHECK (ACCOUNT_TYPE IN ('CHILDREN','TEEN','ADULT','SENIOR','JOINT'))," +
                 "BALANCE DOUBLE," +
-                "PRIMARY KEY(ACCOUNT_NO)," +
-                "FOREIGN KEY(CUSTOMER_ID) REFERENCES CUSTOMERS(CUSTOMER_ID))";
+                "PRIMARY KEY(ACCOUNT_NO))";
+
+        String createTableAccHolders = "CREATE TABLE ACCOUNT_HOLDERS (" +
+                "ACCOUNT_NO VARCHAR(20) NOT NULL," +
+                "CUSTOMER_ID VARCHAR(10) NOT NULL)";
 
         String createTableTransactions = "CREATE TABLE TRANSACTIONS (" +
                 "TRANSACTION_ID INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -66,9 +70,12 @@ public class DBHandler extends SQLiteOpenHelper {
         db.execSQL(dropTableAccounts);
         db.execSQL(dropTableTransactions);
         db.execSQL(dropTableCustomers);
+        db.execSQL(dropTableAccHolders);
         db.execSQL(createTableCustomers);
         db.execSQL(createTableAccounts);
         db.execSQL(createTableTransactions);
+        db.execSQL(createTableAccHolders);
+
     }
 
     @Override

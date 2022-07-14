@@ -1,11 +1,13 @@
 package com.example.microbank.Control;
 
+import android.os.AsyncTask;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import com.example.microbank.Control.Exception.AppControllerException;
 import com.example.microbank.data.AccountDAO;
+import com.example.microbank.data.AccountHoldersDAO;
 import com.example.microbank.data.CustomerDAO;
 import com.example.microbank.data.Exception.InvalidAccountException;
 import com.example.microbank.data.Model.Account;
@@ -29,10 +31,12 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public abstract class AppController_ab implements Serializable {
+public abstract class AppController_ab implements Serializable  {
     private AccountDAO accountDAO;
     private TransactionDAO transactionDAO;
     private CustomerDAO customerDAO;
+    private AccountHoldersDAO accountHoldersDAO;
+
     public List<Account> getAccounts(String customerID) throws InvalidAccountException {
         return accountDAO.getAccountsList(customerID);
     }
@@ -73,6 +77,10 @@ public abstract class AppController_ab implements Serializable {
         return TR_CHARGE;
     }
 
+    public AccountHoldersDAO getAccountHoldersDAO() { return accountHoldersDAO;}
+
+    public void setAccountHoldersDAO(AccountHoldersDAO accountHoldersDAO) {this.accountHoldersDAO = accountHoldersDAO;}
+
     public void getDataforAgent(){
         OkHttpClient client = new OkHttpClient();
         HttpUrl url = new HttpUrl.Builder().scheme("http").host(HOST_IP).port(3000).addPathSegment("api").addPathSegment("v1").addPathSegment("sync").addQueryParameter("id",AGENT_ID).build();
@@ -89,10 +97,13 @@ public abstract class AppController_ab implements Serializable {
                     try {
                         JSONArray accountsJson  = new JSONObject(new JSONObject(dataString).getString("data")).getJSONArray("accounts");
                         JSONArray customerJson = new JSONObject(new JSONObject(dataString).getString("data")).getJSONArray("users");
+                        JSONArray AccHolderJson = new JSONObject(new JSONObject(dataString).getString("data")).getJSONArray("accountholders");
                         customerDAO.clearCustomerTable();
                         accountDAO.clearAccountsTable();
+                        accountHoldersDAO.clearAccHolderts();
                         customerDAO.LoadCustomerData(customerJson);
                         accountDAO.LoadAccountData(accountsJson);
+                        accountHoldersDAO.LoadAccHolderData(AccHolderJson);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -100,4 +111,5 @@ public abstract class AppController_ab implements Serializable {
             }
         });
     }
+
 }

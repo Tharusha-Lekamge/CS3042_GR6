@@ -27,7 +27,13 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         Button submit = findViewById(R.id.btnSubmit);
         TextView pwdChange = findViewById(R.id.pwdForget);
-        appController.getDataforAgent();
+        Thread dataThread = new Thread(){
+            public void run(){
+                  appController.getDataforAgent();
+            }
+        };
+        dataThread.start();
+//        appController.getDataforAgent();
         Toast pwdchng = Toast.makeText(LoginActivity.this, "Submitting Request", Toast.LENGTH_SHORT);
         pwdChange.setOnClickListener(new View.OnClickListener() {
             @Override

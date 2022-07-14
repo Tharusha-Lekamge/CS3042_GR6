@@ -8,5 +8,5 @@ public class Constants {
     public static final String AGENT_ID="89078";
 
     //Add your IPV4 address here
-    public static final String HOST_IP = "142.112.0.0";
+    public static final String HOST_IP = "192.168.1.7";
 }

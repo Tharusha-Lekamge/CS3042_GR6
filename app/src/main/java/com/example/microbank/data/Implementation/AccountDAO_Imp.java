@@ -51,7 +51,7 @@ public class AccountDAO_Imp extends DBHandler implements AccountDAO {
 
     public List<Account> getAccountsList(String CustomerID) throws InvalidAccountException{
         List<Account> accountList = new ArrayList<>();
-        String queryString = "SELECT * FROM ACCOUNTS WHERE CUSTOMER_ID='"+CustomerID+"';";
+        String queryString = "SELECT * FROM ACCOUNTS NATURAL JOIN ACCOUNT_HOLDERS WHERE CUSTOMER_ID='"+CustomerID+"';";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(queryString,null);
         if (cursor.moveToFirst()){
@@ -155,7 +155,6 @@ public class AccountDAO_Imp extends DBHandler implements AccountDAO {
             try {
                 JSONObject c = new JSONObject(accounts.get(i).toString());
                 String accountNumber = c.getString("accountNumber");
-                String customerID = c.getString("customerNIC");
                 String accountType = c.getString("accountType");
                 Double balance = c.getDouble("accountBalance");
 //                ContentValues cv = new ContentValues();
@@ -163,13 +162,12 @@ public class AccountDAO_Imp extends DBHandler implements AccountDAO {
 //                cv.put("CUSTOMER_ID",customerID);
 //                cv.put("ACCOUNT_TYPE",accountType.toUpperCase(Locale.ROOT));
 //                cv.put("BALANCE",balance);
-                String addAcc = "INSERT INTO ACCOUNTS VALUES (?,?,?,?)";
+                String addAcc = "INSERT INTO ACCOUNTS VALUES (?,?,?)";
                 SQLiteDatabase db = this.getWritableDatabase();
                 SQLiteStatement insertAcc = db.compileStatement(addAcc);
                 insertAcc.bindString(1,accountNumber);
-                insertAcc.bindString(2,customerID);
-                insertAcc.bindString(3,accountType.toUpperCase(Locale.ROOT));
-                insertAcc.bindDouble(4,balance);
+                insertAcc.bindString(2,accountType.toUpperCase(Locale.ROOT));
+                insertAcc.bindDouble(3,balance);
                 insertAcc.executeInsert();
 //                db.insert("ACCOUNTS",null,cv);
                 db.close();

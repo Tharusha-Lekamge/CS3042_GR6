@@ -8,8 +8,10 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.example.microbank.data.AccountDAO;
+import com.example.microbank.data.AccountHoldersDAO;
 import com.example.microbank.data.CustomerDAO;
 import com.example.microbank.data.Implementation.AccountDAO_Imp;
+import com.example.microbank.data.Implementation.AccountHoldersDAO_Imp;
 import com.example.microbank.data.Implementation.CustomerDAO_Imp;
 import com.example.microbank.data.Implementation.TransactionDAO_Imp;
 import com.example.microbank.data.Model.Account;
@@ -45,6 +47,8 @@ public class AppController extends AppController_ab {
         setTransactionsDAO(transactionDAO);
         CustomerDAO customerDAO = new CustomerDAO_Imp(context);
         setCustomerDAO(customerDAO);
+        AccountHoldersDAO accountHoldersDAO  = new AccountHoldersDAO_Imp(context);
+        setAccountHoldersDAO(accountHoldersDAO);
 
 //        /*Run this below methods to load dummy data first time to the tables. Then comment out. Or else will run into unique constraint errors*/
 //        customerDAO.initCustomerTable();
