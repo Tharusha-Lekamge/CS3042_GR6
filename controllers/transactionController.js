@@ -21,7 +21,7 @@ exports.createTransaction = async (req, res) => {
       var sqlStatement = newTransaction.statement;
       const result = db.query(sqlStatement);
       // update account balance
-      newTransaction.checkBalance();
+      newTransaction.updateBalance();
     });
     // const newTransaction = new Transaction(req.body.data);
     // const sqlStatement = newTransaction.statement;
@@ -128,14 +128,22 @@ exports.deleteTransaction = async (req, res) => {
 };
 
 /**
- * Pass account number as accNo in request.params
- * All transactions of that account will be displayed
+ *
+ * @param {*} req pass accNo or agentID in the req.query object
+ * @param {*} res res.data object has transactions array with all matching transactions
  */
-exports.getAllTransactionsByAccNo = async (req, res) => {
+exports.getAllTransactionsByAccAgent = async (req, res) => {
   try {
-    const accNo = req.params.accNo;
-    const sqlStatement = `SELECT * FROM ${tableName} WHERE accountNo = ${accNo} ORDER BY date`;
-    const result = await db.query(sqlStatement);
+    const { accNo, agentID } = req.query;
+    var result = [];
+
+    if (!accNo) {
+      const sqlStatement = `SELECT DISTINCT * FROM ${tableName} WHERE agentID = ${agentID} ORDER BY date`;
+      result = await db.query(sqlStatement);
+    } else {
+      const sqlStatement = `SELECT DISTINCT * FROM ${tableName} WHERE accountNumber = ${accNo} ORDER BY date`;
+      result = await db.query(sqlStatement);
+    }
 
     res.status(200).json({
       status: "Success",

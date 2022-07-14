@@ -36,22 +36,53 @@ exports.getAllUsers = async (req, res) => {
   }
 };
 
+/**
+ * 
+ * @param {*} req Set agentID as the query parameter in the method
+ * @param {*} res res.body contains two data arrays namely accounts and users
+ */
 exports.getAllLoginInfoByAgentID = async (req, res) => {
   try {
-    //console.log(req.query);
+
     const agentID = req.query.id;
-    var sqlStatement = `SELECT * FROM accounts NATURAL JOIN accountholders WHERE agentID = ${agentID} ORDER BY customerID`;
+    var sqlStatement = `SELECT DISTINCT customerID FROM accounts NATURAL JOIN accountholders WHERE agentID = ${agentID} ORDER BY customerID`;
     const resultAccounts = await db.query(sqlStatement);
+    
+    sqlStatementJoint = `SELECT DISTINCT customerID FROM accounts NATURAL JOIN accountholders WHERE accountType = 'Joint' ORDER BY customerID`;
+    const jointAccounts = await db.query(sqlStatementJoint);
 
     var userArray = new Array();
 
+    // Getting customers for every account
     resultAccounts.forEach(async (el) => {
       var cusID = el.customerID;
-      sqlStatement = `SELECT * FROM ${tableName} WHERE customerID = ${cusID}`;
+      sqlStatement = `SELECT * FROM customer NATURAL JOIN accountholders WHERE customerID = ${cusID}`;
 
       const result = await db.query(sqlStatement);
       userArray.push(result[0]);
     });
+
+    // Getting customers for joint accounts
+    jointAccounts.forEach(async (el) => {
+      var cusID = el.customerID;
+      sqlStatement = `SELECT * FROM customer NATURAL JOIN accountholders WHERE customerID = ${cusID}`;
+
+      const result = await db.query(sqlStatement);
+      //resultAccounts.push(el);
+      userArray.push(result[0]);
+    });
+
+    // AgentID and Customer ID is ommited in the following sql queries
+    // Used to get distinct elements without duplicates for joint accounts
+    sqlStatement = `SELECT DISTINCT accountNumber, accountType, accountBalance FROM accounts NATURAL JOIN accountholders WHERE agentID = ${agentID} AND accountType != 'Joint' ORDER BY customerID`;
+    var accounts = await db.query(sqlStatement);
+
+    sqlStatementJoint = `SELECT DISTINCT accountNumber, accountType, accountBalance FROM accounts NATURAL JOIN accountholders WHERE accountType = 'Joint' ORDER BY customerID`;
+    const jointAccounts1 = await db.query(sqlStatementJoint);
+
+    jointAccounts1.forEach((el) =>{
+      accounts.push(el);
+    })
 
     // Just to give some time
     const result1 = await db.query(sqlStatement);
@@ -59,7 +90,7 @@ exports.getAllLoginInfoByAgentID = async (req, res) => {
     res.status(200).json({
       status: "Success",
       data: {
-        accounts: resultAccounts[0],
+        accounts: accounts,
         users: userArray,
       },
     });
@@ -127,13 +158,19 @@ exports.deleteUser = async (req, res) => {
   }
 };
 
+/**
+ * 
+ * @param {*} req Pass customerID in the req.query.customerID field. 
+ * eg: url/?customerID=1234567
+ * @param {*} res res.body contains customer and account elements
+ */
 exports.getUserAndAccByID = async (req, res) => {
   try {
-    const customerID = req.query.id;
-    const sqlStatement = `SELECT customerID, password, customerID FROM ${tableName} WHERE customerID = ${customerID}`;
+    const customerID = req.query.customerID;
+    const sqlStatement = `SELECT * FROM ${tableName} WHERE customerID = ${customerID}`;
     const resultUser = await db.query(sqlStatement);
 
-    sqlStatement = `SELECT * FROM accounts WHERE customerID = ${customerID}`;
+    sqlStatement = `SELECT * FROM accounts NATURAL JOIN accountholders WHERE customerID = ${customerID}`;
     const resultAccounts = await db.query(sqlStatement);
 
     res.status(200).json({

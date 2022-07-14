@@ -8,11 +8,13 @@ const userRouter = require("./routes/userRoutes");
 const syncRouter = require("./routes/syncRoutes");
 const accountRouter = require("./routes/accountRoutes");
 const fdRouter = require("./routes/fdRoutes");
+const reportRouter = require("./routes/reportRoutes");
 
 app.use("/api/v1/transaction", transactionRouter);
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/sync", syncRouter);
 app.use("/api/v1/account", accountRouter);
 app.use("/api/v1/fd", fdRouter);
+app.use("/api/v1/report", reportRouter);
 
 module.exports = app;
