@@ -1,7 +1,5 @@
 package com.example.microbank.Control;
 
-import android.os.AsyncTask;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -111,5 +109,6 @@ public abstract class AppController_ab implements Serializable  {
             }
         });
     }
+
 
 }

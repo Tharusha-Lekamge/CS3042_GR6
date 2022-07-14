@@ -4,6 +4,7 @@ package com.example.microbank.data.Implementation;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
@@ -34,6 +35,10 @@ public class TransactionDAO_Imp extends DBHandler implements TransactionDAO {
         statement.bindDouble(7,amount);
         statement.bindString(8,reference);
         long rowId = statement.executeInsert();
+    }
+
+    public void updateServer(){
+        Log.d("UPDATECALL", "Updating Serverrrrr");
     }
 
 

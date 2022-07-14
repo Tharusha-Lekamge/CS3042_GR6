@@ -13,6 +13,7 @@ public class SessionManagement {
     String FIRST_NAME = "session_firstname";
     String LAST_NAME = "session_lastname";
     String IS_SPECIAL = "session_specialReq";
+    String TRIGGER_SET = "Trigger_Created";
 
     public SessionManagement(Context context){
         sharedPreferences = context.getSharedPreferences(SHARED_PREF_NAME,Context.MODE_PRIVATE);
@@ -33,6 +34,9 @@ public class SessionManagement {
 
     public void removeSession(){
         editor.putString(SESSION_KEY,"Over").commit();
+        editor.remove(FIRST_NAME);
+        editor.remove(LAST_NAME);
+        editor.remove(IS_SPECIAL);
     }
 
     public String getFirstName(){
@@ -41,5 +45,15 @@ public class SessionManagement {
 
     public boolean isSpecialRequest(){
         return sharedPreferences.getBoolean(IS_SPECIAL, false);
+    }
+
+    public void setTrigger(){
+        editor.putBoolean(TRIGGER_SET,true).commit();
+    }
+    public void resetTrigger(){
+        editor.putBoolean(TRIGGER_SET,false).commit();
+    }
+    public boolean getTrigger(){
+        return sharedPreferences.getBoolean(TRIGGER_SET,false);
     }
 }

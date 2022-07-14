@@ -14,6 +14,8 @@ import android.widget.Toast;
 import com.example.microbank.Control.AppController;
 import com.example.microbank.Control.AppController_ab;
 import com.example.microbank.Control.SessionManagement;
+import com.example.microbank.Control.SyncService;
+import com.example.microbank.Control.UpdateTrigger;
 import com.example.microbank.R;
 
 import com.example.microbank.data.DBHandler;
@@ -35,6 +37,14 @@ public class LoginActivity extends AppCompatActivity {
         dataThread.start();
 //        appController.getDataforAgent();
         Toast pwdchng = Toast.makeText(LoginActivity.this, "Submitting Request", Toast.LENGTH_SHORT);
+        SessionManagement sessionManagement = new SessionManagement(LoginActivity.this);
+//        sessionManagement.resetTrigger();
+        if (!sessionManagement.getTrigger()){
+            UpdateTrigger updateTrigger = new UpdateTrigger(this);
+//            updateTrigger.cancelAlarm(SyncService.class);
+            updateTrigger.setAlarm(SyncService.class);
+            sessionManagement.setTrigger();
+        }
         pwdChange.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -49,6 +59,7 @@ public class LoginActivity extends AppCompatActivity {
                 EditText userPwd = findViewById(R.id.userpwd);
                 String customerID = userID.getText().toString();
                 String password = userPwd.getText().toString();
+
                 if (customerID.equals("")||password.equals("")){
                     Toast.makeText(LoginActivity.this,"Please fill all the fields to Login",Toast.LENGTH_SHORT).show();
                 }
@@ -56,7 +67,7 @@ public class LoginActivity extends AppCompatActivity {
                     Customer newCustomer = appController.getCustomerDAO().checkUserNamePassword(customerID,password);
                     if (newCustomer!=null){
                         Toast.makeText(LoginActivity.this, "Login Succesful", Toast.LENGTH_SHORT).show();
-                        SessionManagement sessionManagement = new SessionManagement(LoginActivity.this);
+
                         boolean isSpecialRequest = appController.getCustomerDAO().isSpecialCustomer(customerID);
                         sessionManagement.saveSession(newCustomer, isSpecialRequest);
                         if (!isSpecialRequest)
