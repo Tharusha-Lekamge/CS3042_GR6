@@ -14,6 +14,30 @@ const signToken = (userID) => {
   });
 };
 
+const createSendToken = (user, statusCode, res) => {
+  const token = signToken(user._id);
+  const cookieOptions = {
+    expires: new Date(
+      Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
+    ),
+    httpOnly: true,
+  };
+  if (process.env.NODE_ENV === "production") cookieOptions.secure = true;
+
+  res.cookie("jwt", token, cookieOptions);
+
+  // Remove password from output
+  user.password = undefined;
+
+  res.status(statusCode).json({
+    status: "success",
+    token,
+    data: {
+      user,
+    },
+  });
+};
+
 //signup function
 exports.signUp = async (req, res, next) => {
   const newCustomer = new Customer(req.body.data);
@@ -52,7 +76,7 @@ exports.login = async (req, res, next) => {
     return;
   }
   // 2) check if user exists and if the password matches
-  const sqlStatement = `SELECT * FROM CUSTOMER WHERE customerID =  ${customerID}`;
+  const sqlStatement = `SELECT DISTINCT customerID, password FROM customer WHERE customerID =  ${customerID}`;
   var result = await db.query(sqlStatement);
   // Check for errors
   if (!result) {
