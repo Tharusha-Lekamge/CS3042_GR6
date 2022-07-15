@@ -1,7 +1,6 @@
 const { promisify } = require("util");
 const Customer = require("../models/customerModel");
 const jwt = require("jsonwebtoken");
-const mysql = require("mysql2");
 const db = require("../models/supportFunctions/dbOperations");
 const bcrypt = require("bcryptjs");
 

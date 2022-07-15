@@ -49,27 +49,6 @@ exports.getAllLoginInfoByAgentID = async (req, res) => {
     sqlStatementJoint = `SELECT DISTINCT customerID FROM accounts NATURAL JOIN accountholders NATURAL JOIN customer WHERE accountType = 'Joint' ORDER BY customerID`;
     const jointAccounts = await db.query(sqlStatementJoint);
 
-    // var userArray = new Array();
-
-    // // Getting customers for every account
-    // resultAccounts.forEach(async (el) => {
-    //   var cusID = el.customerID;
-    //   sqlStatement = `SELECT * FROM customer NATURAL JOIN accountholders WHERE customerID = ${cusID}`;
-
-    //   const result = await db.query(sqlStatement);
-    //   userArray.push(result[0]);
-    // });
-
-    // // Getting customers for joint accounts
-    // jointAccounts.forEach(async (el) => {
-    //   var cusID = el.customerID;
-    //   sqlStatement = `SELECT * FROM customer NATURAL JOIN accountholders WHERE customerID = ${cusID}`;
-
-    //   const result = await db.query(sqlStatement);
-    //   //resultAccounts.push(el);
-    //   userArray.push(result[0]);
-    // });
-
     // AgentID and Customer ID is ommited in the following sql queries
     // Used to get distinct elements without duplicates for joint accounts
     sqlStatement = `SELECT DISTINCT accountNumber, accountType, accountBalance FROM accounts NATURAL JOIN accountholders NATURAL JOIN customer WHERE agentID = ${agentID} AND accountType != 'Joint' ORDER BY customerID`;
