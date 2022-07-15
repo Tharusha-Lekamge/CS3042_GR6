@@ -20,7 +20,7 @@ exports.createTransaction = async (req, res) => {
       var sqlStatement = newTransaction.statement;
       const result = db.query(sqlStatement);
       // update account balance
-      newTransaction.updateBalance();
+      //newTransaction.updateBalance();
     });
     // const newTransaction = new Transaction(req.body.data);
     // const sqlStatement = newTransaction.statement;

@@ -14,17 +14,16 @@ const signToken = (userID) => {
   });
 };
 
-const createSendToken = (user, statusCode, res) => {
-  const token = signToken(user._id);
-  const cookieOptions = {
+const createSendToken = (user, statusCode, req, res) => {
+  const token = signToken(user.customerID);
+
+  res.cookie("jwt", token, {
     expires: new Date(
       Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
     ),
     httpOnly: true,
-  };
-  if (process.env.NODE_ENV === "production") cookieOptions.secure = true;
-
-  res.cookie("jwt", token, cookieOptions);
+    secure: req.secure || req.headers["x-forwarded-proto"] === "https",
+  });
 
   // Remove password from output
   user.password = undefined;
@@ -102,11 +101,7 @@ exports.login = async (req, res, next) => {
     }
     {
       // 3) pass the JWT to the client
-      const token = signToken(result[0].customerID);
-      res.status(200).json({
-        status: "Logged in",
-        token: token,
-      });
+      createSendToken(result[0], 200, req, res);
     }
   });
 };
@@ -145,3 +140,30 @@ exports.protect = catchAsync(async (req, res, next) => {
   res.locals.user = curUser[0];
   next();
 });
+
+exports.isLoggedIn = async (req, res, next) => {
+  if (req.cookies.jwt) {
+    try {
+      // 1) verify token
+      const decoded = await promisify(jwt.verify)(
+        req.cookies.jwt,
+        process.env.JWT_SECRET
+      );
+
+      // 2) Check if user still exists
+      const sqlStatement = `SELECT DISTINCT customerID, password FROM customer WHERE customerID =  ${customerID}`;
+      var currentUser = await db.query(sqlStatement);
+      if (!currentUser[0]) {
+        return next();
+      }
+      currentUser.password = undefined;
+
+      // THERE IS A LOGGED IN USER
+      res.locals.user = currentUser[0];
+      return next();
+    } catch (err) {
+      return next();
+    }
+  }
+  next();
+};

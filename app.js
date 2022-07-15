@@ -1,11 +1,26 @@
 var express = require("express");
 const path = require("path"); // To generate paths
+
+const cookieParser = require("cookie-parser");
+const bodyParser = require("body-parser");
+const rateLimit = require("express-rate-limit");
+
 const app = express();
 app.use(express.json());
 
 // Set up pug templating for views
 app.set("view engine", "pug");
 app.set("views", path.join(__dirname, "views"));
+
+// Limit requests from same API
+const limiter = rateLimit({
+  max: 100,
+  windowMs: 60 * 60 * 1000,
+  message: "Too many requests from this IP, please try again in an hour!",
+});
+app.use("/api", limiter);
+
+app.use(cookieParser());
 
 //ROUTERS
 const AppError = require("./utils/appError");
