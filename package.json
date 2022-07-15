@@ -2,9 +2,11 @@
   "name": "cs3042_gr6",
   "version": "1.0.0",
   "description": "Main DB application to Mobile banking app",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js",
+    "watch:js": "parcel watch ./public/js/index.js --out-dir ./public/js --out-file bundle.js"
   },
   "repository": {
     "type": "git",
@@ -40,6 +42,7 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.29.4",
+    "parcel-bundler": "^1.12.5",
     "prettier": "^2.6.2"
   }
 }

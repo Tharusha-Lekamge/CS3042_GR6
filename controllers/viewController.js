@@ -59,3 +59,26 @@ exports.getSignup = catchAsync(async (req, res) => {
     title: "Sign Up",
   });
 });
+
+exports.getReport = catchAsync(async (req, res) => {
+  // 1) Get data
+  try {
+    const { accNo, agentID } = req.query;
+    var result = [];
+
+    if (!accNo) {
+      const sqlStatement = `SELECT DISTINCT * FROM ${tableName} WHERE agentID = ${agentID} ORDER BY date`;
+      result = await db.query(sqlStatement);
+    } else {
+      const sqlStatement = `SELECT DISTINCT * FROM ${tableName} WHERE accountNumber = ${accNo} ORDER BY date`;
+      result = await db.query(sqlStatement);
+    }
+
+    res.status(200).render("report", {
+      title: "report",
+      transactions: result,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+});

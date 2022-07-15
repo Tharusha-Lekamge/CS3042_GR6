@@ -161,7 +161,7 @@ exports.getUserAndAccByID = async (req, res) => {
       status: "Success",
       data: {
         customer: resultUser[0],
-        account: resultAccounts[0],
+        account: resultAccounts,
       },
     });
   } catch (err) {
