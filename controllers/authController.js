@@ -138,7 +138,7 @@ exports.protect = catchAsync(async (req, res, next) => {
 
   //3) Check if user exists
   const customerID = decoded.userID;
-  const findUserSQLstatement = `SELECT DISTINCT customerID FROM customer WHERE customerID = ${customerID}`;
+  const findUserSQLstatement = `SELECT DISTINCT customerID, firstName FROM customer WHERE customerID = ${customerID}`;
   const curUser = await db.query(findUserSQLstatement);
 
   // If there is no user
@@ -173,7 +173,7 @@ exports.adminProtect = catchAsync(async (req, res, next) => {
 
   //3) Check if user exists
   const userID = decoded.userID;
-  const findUserSQLstatement = `SELECT DISTINCT username, password FROM admins WHERE username = '${userID}'`;
+  const findUserSQLstatement = `SELECT DISTINCT username, firstName FROM admins WHERE username = '${userID}'`;
   const curUser = await db.query(findUserSQLstatement);
 
   // If there is no user
@@ -182,6 +182,7 @@ exports.adminProtect = catchAsync(async (req, res, next) => {
   }
   //4) Check if User changed pass after JWT issued
   //5) Give access to the route
+  curUser[0].isAdmin = true;
   req.user = curUser[0];
   res.locals.user = curUser[0];
   next();
