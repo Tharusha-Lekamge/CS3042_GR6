@@ -159,7 +159,6 @@ exports.isLoggedIn = async (req, res, next) => {
       currentUser.password = undefined;
 
       // THERE IS A LOGGED IN USER
-      console.log(`${currentUser[0].firstName} is logged in`);
       res.locals.user = currentUser[0];
       return next();
     } catch (err) {

@@ -15,12 +15,14 @@ const login = async (customerID, password) => {
 
     if (res.data.status === "success") {
       // showAlert("success", "Logged in successfully!");
-      // window.setTimeout(() => {
-      //   location.assign("/");
-      // }, 1500);
-      console.log("success");
+      alert("Logged in");
+      window.setTimeout(() => {
+        location.assign("/");
+      }, 1500);
+      
     }
   } catch (err) {
+    alert(err.response.data.message);
     //showAlert("error", err.response.data.message);
   }
 };

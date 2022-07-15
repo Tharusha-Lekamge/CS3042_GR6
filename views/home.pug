@@ -1,5 +1,8 @@
 extends base
 
 block content 
-  span(style="text-align: center")
-    a.btn.btn--green.btn--small(href='/login') LOG IN   
+  if user 
+    span Welcome #{user.firstName}
+  else
+    span(style="text-align: center")
+      a.btn.btn--green.btn--small(href='/login') LOG IN   
