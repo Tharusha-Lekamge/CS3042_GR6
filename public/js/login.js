@@ -1,8 +1,8 @@
 /* eslint-disable */
-// import axios from "axios";
-// import { showAlert } from "./alerts";
+import axios from "axios";
+import { showAlert } from "./alerts";
 
-const login = async (customerID, password) => {
+export const login = async (customerID, password) => {
   try {
     const res = await axios({
       method: "POST",
@@ -19,7 +19,6 @@ const login = async (customerID, password) => {
       window.setTimeout(() => {
         location.assign("/");
       }, 1500);
-      
     }
   } catch (err) {
     alert(err.response.data.message);
@@ -27,7 +26,7 @@ const login = async (customerID, password) => {
   }
 };
 
-const logout = async () => {
+export const logout = async () => {
   try {
     const res = await axios({
       method: "GET",
@@ -40,9 +39,4 @@ const logout = async () => {
   }
 };
 
-document.querySelector(".form").addEventListener("submit", (e) => {
-  e.preventDefault();
-  const customerID = document.getElementById("customerID").value;
-  const password = document.getElementById("password").value;
-  login(customerID, password);
-});
+
