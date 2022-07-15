@@ -16,4 +16,5 @@ public interface AccountDAO {
     public void initAccTable();
     public void LoadAccountData(JSONArray accounts);
     public void clearAccountsTable();
+    public Account getAccount(String accountNumber, String customerID);
 }

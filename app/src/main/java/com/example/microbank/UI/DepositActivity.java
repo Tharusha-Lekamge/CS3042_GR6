@@ -17,6 +17,7 @@ import com.example.microbank.Control.SessionManagement;
 import com.example.microbank.R;
 
 import com.example.microbank.data.Exception.InvalidAccountException;
+import com.example.microbank.data.Implementation.DataHolder;
 import com.example.microbank.data.Model.Account;
 import com.example.microbank.data.Model.Transaction;
 
@@ -84,12 +85,7 @@ public class DepositActivity extends AppCompatActivity implements AdapterView.On
 
         List<String> strAcc_no = new ArrayList<>();
         List<Account> accList = null;
-        AppController appController = new AppController(DepositActivity.this);
-        try {
-            accList = appController.getAccountDAO().getAccountsList(customerID);
-        } catch (InvalidAccountException e) {
-            e.printStackTrace();
-        }
+        accList = DataHolder.getInstance().getAccList();
         spin.setOnItemSelectedListener(this);
 
         for (int i=0; i<accList.size(); i++){

@@ -7,6 +7,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
+import android.text.TextUtils;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
@@ -65,7 +66,6 @@ public class TransactionDAO_Imp extends DBHandler implements TransactionDAO {
         Cursor cursor = db.rawQuery(trs, null);
 
         if (checkForUpdate() || alarm){
-
             JSONArray arr = cur2Json(cursor);
             JSONObject obj = new JSONObject();
             try {
@@ -73,7 +73,7 @@ public class TransactionDAO_Imp extends DBHandler implements TransactionDAO {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            //Log.d("dbcheck1", obj.toString());
+
             MediaType JSON = MediaType.parse("application/json; charset=utf-8");
             OkHttpClient client = new OkHttpClient();
             HttpUrl url = new HttpUrl.Builder().scheme("http").host(HOST_IP).port(3000).addPathSegment("api").addPathSegment("v1").addPathSegment("transaction").addQueryParameter("id", AGENT_ID).build();
@@ -121,10 +121,10 @@ public class TransactionDAO_Imp extends DBHandler implements TransactionDAO {
                             break;
                         case "TIMESTAMP":
                             key = "date";
-                            String arr[] = cursor.getString(i).substring(2,10).split("-");
-                            for (int j=0; j<arr.length; j++){
-                                dt += arr[j];
-                            }
+                            String arr1[] = cursor.getString(i).substring(2,10).split("-");
+                            String arr2[] = cursor.getString(i).substring(11,16).split(":");
+                            dt += TextUtils.join("", arr1);
+                            dt += TextUtils.join("", arr2);
                             break;
                         case "TRANSACTION_TYPE":
                             key = "transactionType";
@@ -195,10 +195,10 @@ public class TransactionDAO_Imp extends DBHandler implements TransactionDAO {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         String currentDateandTime = sdf.format(new Date());
         String trID = String.valueOf(AGENT_ID);
-        String arr[] = currentDateandTime.substring(2,10).split("-");
-        for (int j=0; j<arr.length; j++){
-            trID += arr[j];
-        }
+        String arr1[] = currentDateandTime.substring(2,10).split("-");
+        String arr2[] = currentDateandTime.substring(11,16).split(":");
+        trID += TextUtils.join("", arr1);
+        trID += TextUtils.join("", arr2);
 
         JSONObject specialTR = new JSONObject();
         try {
@@ -212,13 +212,9 @@ public class TransactionDAO_Imp extends DBHandler implements TransactionDAO {
             specialTR.put("reference", reference);
             specialTR.put("agentID", AGENT_ID);
 
-            Log.d("SPECIALREQ", "specialRequest:" + specialTR.toString());
-
-            JSONObject sp_tr[] = {specialTR};
-            Log.d("SPTR", "specialRequest: sptr : " + sp_tr.toString() );
+            JSONArray sp_tr = new JSONArray().put(specialTR);
             JSONObject obj = new JSONObject();
             obj.put("data", sp_tr);
-            Log.d("OBJSP", "specialRequest: obj : " + obj.toString());
 
             MediaType JSON = MediaType.parse("application/json; charset=utf-8");
             OkHttpClient client = new OkHttpClient();
@@ -240,7 +236,7 @@ public class TransactionDAO_Imp extends DBHandler implements TransactionDAO {
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
                     String datastring = response.body().string();
-                    Log.d("SPTRPASS", "special request updated");
+                    Log.d("SPTRPASS", "special request updated " + datastring);
                 }
             });
 

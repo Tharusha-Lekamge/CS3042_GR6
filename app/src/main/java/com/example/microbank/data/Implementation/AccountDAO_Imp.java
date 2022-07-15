@@ -39,7 +39,6 @@ public class AccountDAO_Imp extends DBHandler implements AccountDAO {
     @Override
     public void addAccount(Account acc) {
         SQLiteDatabase db = this.getWritableDatabase();
-
         ContentValues cv = new ContentValues();
         cv.put("ACCOUNT_NO",acc.getAcc_No());
         cv.put("CUSTOMER_ID",acc.getCustomer_ID());
@@ -72,7 +71,7 @@ public class AccountDAO_Imp extends DBHandler implements AccountDAO {
         return accountList;
     }
     public void updateBalance(String accNo,String type,Double trCharge,Double amount) throws InvalidAccountException {
-//        String SQLUpdate = "SELECT BALANCE FROM ACCOUNTS WHERE ACCOUNT_NO = '" + accNo + "';";
+
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery("SELECT BALANCE FROM ACCOUNTS WHERE ACCOUNT_NO =?",new String[]{accNo});
         if (!cursor.moveToFirst()) {
@@ -126,26 +125,12 @@ public class AccountDAO_Imp extends DBHandler implements AccountDAO {
         return isValid;
     }
 
+    // dummy data
     public void initAccTable(){
         Account acc1 = new Account("2039134","123432","ADULT",12500.0);
         Account acc2 = new Account("2031134","123432","TEEN",15500.0);
         addAccount(acc1);
         addAccount(acc2);
-    }
-
-    // method to call central database and fetch the accounts of a special customer
-    public List<Account> fetchAccounts(String customerID){
-        List<Account> accList = new ArrayList<>();
-
-        Account acc3 = new Account("4035567", "890765", "SENIOR", 10000.0);
-        Account acc4 = new Account("4038899", "890765", "CHILD", 10000.0);
-        Account acc5 = new Account("4035233", "890765", "JOINT", 10000.0);
-
-        accList.add(acc3);
-        accList.add(acc4);
-        accList.add(acc5);
-
-        return accList;
     }
 
 
@@ -156,11 +141,6 @@ public class AccountDAO_Imp extends DBHandler implements AccountDAO {
                 String accountNumber = c.getString("accountNumber");
                 String accountType = c.getString("accountType");
                 Double balance = c.getDouble("accountBalance");
-//                ContentValues cv = new ContentValues();
-//                cv.put("ACCOUNT_NO",accountNumber);
-//                cv.put("CUSTOMER_ID",customerID);
-//                cv.put("ACCOUNT_TYPE",accountType.toUpperCase(Locale.ROOT));
-//                cv.put("BALANCE",balance);
                 String addAcc = "INSERT INTO ACCOUNTS VALUES (?,?,?)";
                 SQLiteDatabase db = this.getWritableDatabase();
                 SQLiteStatement insertAcc = db.compileStatement(addAcc);
@@ -180,5 +160,19 @@ public class AccountDAO_Imp extends DBHandler implements AccountDAO {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DELETE FROM ACCOUNTS");
         db.close();
+    }
+
+    public Account getAccount(String accountNumber, String customerID){
+        Account account = null;
+        String queryString = "SELECT * FROM ACCOUNTS WHERE ACCOUNT_NO="+accountNumber+";";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(queryString,null);
+        if(cursor.moveToFirst()){
+            String accNo = cursor.getString(0);
+            String accountType = cursor.getString(1);
+            Double balance = cursor.getDouble(2);
+            account = new Account(accNo,customerID,accountType,balance);
+        }
+        return account;
     }
 }

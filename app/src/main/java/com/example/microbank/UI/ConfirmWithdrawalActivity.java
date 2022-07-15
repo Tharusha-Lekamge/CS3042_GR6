@@ -14,6 +14,7 @@ import com.example.microbank.Control.AppController_ab;
 import com.example.microbank.Control.SessionManagement;
 import com.example.microbank.R;
 import com.example.microbank.data.Exception.InvalidAccountException;
+import com.example.microbank.data.Model.Account;
 import com.example.microbank.data.Model.Transaction;
 
 public class ConfirmWithdrawalActivity extends AppCompatActivity {
@@ -50,18 +51,28 @@ public class ConfirmWithdrawalActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                Account acc = appController.getAccountDAO().getAccount(accNo, cusID);
+                String accType = "NONE";
+                if (acc != null)
+                    accType = acc.getAccount_type();
+
                 try {
-                    if (!specialReq){
+                    if (specialReq){
+                        // call to main server and immediately update the account
+                        appController.getTransactionDAO().specialRequest(cusID, accNo,type,60.0, amount,reference);
+                        openLogoutPage();
+                    }
+                    else if (accType.equals("JOINT")){
+                        // call to main server and immediately update the account
+                        appController.getTransactionDAO().specialRequest(cusID, accNo,type,30.0, amount,reference);
+                        openHomePage();
+                    }
+                    else{
                         if (appController.getAccountDAO().checkBalance(accNo,amount,type,charge)){
                             appController.addTransaction(cusID, accNo,type,amount,reference);
                             Toast.makeText(ConfirmWithdrawalActivity.this, "Transaction added successfully", Toast.LENGTH_LONG).show();
                             openHomePage();
                         }
-                    }
-                    else{
-                        // call to main server and immediately update the account
-                        appController.getTransactionDAO().specialRequest(cusID, accNo,type,30.0, amount,reference);
-                        openLogoutPage();
                     }
 
                 } catch (InvalidAccountException e) {

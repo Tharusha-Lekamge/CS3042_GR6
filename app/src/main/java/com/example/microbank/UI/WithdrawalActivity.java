@@ -18,8 +18,12 @@ import com.example.microbank.Control.AppController;
 import com.example.microbank.Control.SessionManagement;
 import com.example.microbank.R;
 import com.example.microbank.data.Exception.InvalidAccountException;
+import com.example.microbank.data.Implementation.DataHolder;
 import com.example.microbank.data.Model.Account;
 import com.example.microbank.data.Model.Transaction;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,19 +44,7 @@ public class WithdrawalActivity extends AppCompatActivity implements AdapterView
         String customerID = session.getSession();
         boolean specialReq = session.isSpecialRequest();
 
-        List<Account> accList = null;
-        AppController appController = new AppController(WithdrawalActivity.this);
-        try {
-            if (!specialReq)
-                accList = appController.getAccountDAO().getAccountsList(customerID);
-            else{
-                accList = appController.getCustomerDAO().fetchAccounts(customerID);
-                Log.d("WDACC", "in withdrawal activity , accList : " + accList.toString());
-            }
-        } catch (InvalidAccountException e) {
-            e.printStackTrace();
-        }
-
+        List<Account> accList = DataHolder.getInstance().getAccList();
 
         List<String> accountList = getSpinnerList(accSel, accList);
         ArrayAdapter acc_arr = new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, accountList);

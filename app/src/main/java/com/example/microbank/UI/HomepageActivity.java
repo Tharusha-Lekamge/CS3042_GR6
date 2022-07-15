@@ -17,6 +17,7 @@ import com.example.microbank.Control.AppController_ab;
 import com.example.microbank.Control.SessionManagement;
 import com.example.microbank.R;
 import com.example.microbank.data.Exception.InvalidAccountException;
+import com.example.microbank.data.Implementation.DataHolder;
 import com.example.microbank.data.Model.Account;
 import com.example.microbank.data.Model.Customer;
 
@@ -27,7 +28,6 @@ public class HomepageActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_homepage);
-        AppController_ab appController = new AppController(HomepageActivity.this);
 
         Button logout = findViewById(R.id.logoutBtn);
         ImageButton withdrawImgBtn = findViewById(R.id.withdrawalImgBtn);
@@ -36,16 +36,13 @@ public class HomepageActivity extends AppCompatActivity {
         TextView nameTag = findViewById(R.id.name_tag);
         SessionManagement sessionManagement = new SessionManagement(HomepageActivity.this);
         String customer_id = sessionManagement.getSession();
-//        Customer customer = appController.getCustomerDAO().getUser(customer_id);
+
         nameTag.setText("Hello "+sessionManagement.getFirstName());
 
         RecyclerView rv = findViewById(R.id.rv_accList);
         List<Account> accountList = null;
-        try {
-            accountList = appController.getAccountDAO().getAccountsList(customer_id);
-        } catch (InvalidAccountException e) {
-            e.printStackTrace();
-        }
+        accountList = DataHolder.getInstance().getAccList();
+
         AccDisplayAdapter arr_adp = new AccDisplayAdapter(this, accountList);
 
         // below line is for setting a layout manager for our recycler view.

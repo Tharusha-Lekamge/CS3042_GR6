@@ -14,6 +14,7 @@ import com.example.microbank.Control.AppController_ab;
 import com.example.microbank.Control.SessionManagement;
 import com.example.microbank.R;
 import com.example.microbank.data.Exception.InvalidAccountException;
+import com.example.microbank.data.Implementation.DataHolder;
 import com.example.microbank.data.Model.Account;
 
 import java.util.List;
@@ -34,7 +35,7 @@ public class LogoutActivity extends AppCompatActivity {
         RecyclerView rv = findViewById(R.id.rv_accList);
         List<Account> accountList;
 
-        accountList = appController.getCustomerDAO().fetchAccounts(customer_id);
+        accountList = DataHolder.getInstance().getAccList();
 
         AccDisplayAdapter arr_adp = new AccDisplayAdapter(this, accountList);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);

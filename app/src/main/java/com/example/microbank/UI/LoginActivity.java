@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.se.omapi.Session;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,7 +21,12 @@ import com.example.microbank.Control.UpdateTrigger;
 import com.example.microbank.R;
 
 import com.example.microbank.data.DBHandler;
+import com.example.microbank.data.Exception.InvalidAccountException;
+import com.example.microbank.data.Implementation.DataHolder;
+import com.example.microbank.data.Model.Account;
 import com.example.microbank.data.Model.Customer;
+
+import java.util.List;
 
 public class LoginActivity extends AppCompatActivity {
     AppController_ab appController = new AppController(LoginActivity.this);
@@ -67,8 +74,18 @@ public class LoginActivity extends AppCompatActivity {
                     Customer newCustomer = appController.getCustomerDAO().checkUserNamePassword(customerID,password);
                     if (newCustomer!=null){
                         Toast.makeText(LoginActivity.this, "Login Succesful", Toast.LENGTH_SHORT).show();
-
+                        List<Account> accList = null;
                         boolean isSpecialRequest = appController.getCustomerDAO().isSpecialCustomer(customerID);
+                        if (!isSpecialRequest){
+                            try {
+                                accList = appController.getAccountDAO().getAccountsList(customerID);
+                            } catch (InvalidAccountException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        else
+                            accList = appController.getCustomerDAO().fetchAccounts(customerID);
+                        DataHolder.getInstance().setAccountList(accList);
                         sessionManagement.saveSession(newCustomer, isSpecialRequest);
                         if (!isSpecialRequest)
                             openHomePage();
@@ -80,8 +97,6 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 }
             }
-
-
         });
     }
 
