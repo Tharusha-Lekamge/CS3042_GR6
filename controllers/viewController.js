@@ -43,3 +43,16 @@ exports.accountView = catchAsync(async (req, res) => {
     transactions: transactions,
   });
 });
+
+
+exports.getLogin = catchAsync(async (req, res) => {
+  res.status(200).render("loginForm", {
+    title: "Login",
+  });
+});
+
+exports.getSignup = catchAsync(async (req, res) => {
+  res.status(200).render("signup", {
+    title: "Sign Up",
+  });
+});

@@ -3,12 +3,12 @@ header.header
   nav.nav.nav--home
     .container 
       .logo 
-        a.nav__el(href='#') MicroBank
+        a.nav__el(href='/') MicroBank
   nav.nav.nav--user 
     if user 
       a.nav__el(href='#') My Account 
       a.nav__el(href='#') Fixed Deposits
       a.nav__el.nav__el--logout Log out
     else 
-      button.nav__el LogIn 
-      button.nav__el SignUp
+      a.nav__el(href="/login") LogIn 
+      a.nav__el(href='/signup') SignUp
