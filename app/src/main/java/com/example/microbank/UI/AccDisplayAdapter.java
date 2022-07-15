@@ -44,7 +44,7 @@ public class AccDisplayAdapter extends RecyclerView.Adapter<AccDisplayAdapter.Vi
 
         String acc_type = acc.getAccount_type();
         switch (acc_type){
-            case "CHILD":
+            case "CHILDREN":
                 holder.type.setImageResource(R.drawable.child);
                 break;
             case "TEEN":

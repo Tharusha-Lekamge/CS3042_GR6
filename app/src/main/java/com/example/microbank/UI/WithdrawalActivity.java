@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -45,7 +46,7 @@ public class WithdrawalActivity extends AppCompatActivity implements AdapterView
             if (!specialReq)
                 accList = appController.getAccountDAO().getAccountsList(customerID);
             else{
-                accList = appController.getAccountDAO().fetchAccounts(customerID);
+                accList = appController.getCustomerDAO().fetchAccounts(customerID);
             }
         } catch (InvalidAccountException e) {
             e.printStackTrace();
@@ -65,7 +66,9 @@ public class WithdrawalActivity extends AppCompatActivity implements AdapterView
                 String withdraw_amount = amount.getText().toString();
                 String withdraw_reference = reference.getText().toString();
                 String type = "WITHDRAW";
-                double charge = 123.00;
+                double charge = 30.00;
+                if (specialReq)
+                    charge = 60.00;
 
                 if (checkAmountValid(withdraw_amount)){
                     double amount = Double.parseDouble(withdraw_amount);

@@ -57,10 +57,9 @@ public class AccountDAO_Imp extends DBHandler implements AccountDAO {
         if (cursor.moveToFirst()){
             do {
                 String accNo = cursor.getString(0);
-                String customerID = cursor.getString(1);
-                String accountType = cursor.getString(2);
-                Double balance = cursor.getDouble(3);
-                Account account = new Account(accNo,customerID,accountType,balance);
+                String accountType = cursor.getString(1);
+                Double balance = cursor.getDouble(2);
+                Account account = new Account(accNo,CustomerID,accountType,balance);
                 accountList.add(account);
             }while (cursor.moveToNext());
         }

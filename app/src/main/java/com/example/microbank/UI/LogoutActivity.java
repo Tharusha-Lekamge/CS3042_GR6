@@ -34,7 +34,7 @@ public class LogoutActivity extends AppCompatActivity {
         RecyclerView rv = findViewById(R.id.rv_accList);
         List<Account> accountList;
 
-        accountList = appController.getAccountDAO().fetchAccounts(customer_id);
+        accountList = appController.getCustomerDAO().fetchAccounts(customer_id);
 
         AccDisplayAdapter arr_adp = new AccDisplayAdapter(this, accountList);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);

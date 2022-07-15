@@ -6,12 +6,18 @@ import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.io.IOException;
+
 public class SyncService extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         // Sync function
         AppController appController = new AppController(context);
-        appController.getTransactionDAO().updateServer();
+        try {
+            appController.getTransactionDAO().updateCentralDB(true);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         Toast.makeText(context, "Update Central Server!!!!!!!!!", Toast.LENGTH_SHORT).show();
         Log.d("TRIGTRIGTRIG", "TriggerReceived");
     }

@@ -53,7 +53,7 @@ public class DepositActivity extends AppCompatActivity implements AdapterView.On
                 String deposit_amount = amount.getText().toString();
                 String deposit_reference = reference.getText().toString();
                 String type = "DEPOSIT";
-                double charge = 123.00;
+                double charge = 30.00;
 
                 if (checkAmountValid(deposit_amount)){
                     double amount = Double.parseDouble(deposit_amount);

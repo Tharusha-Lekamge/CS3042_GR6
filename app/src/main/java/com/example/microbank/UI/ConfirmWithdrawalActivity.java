@@ -60,7 +60,7 @@ public class ConfirmWithdrawalActivity extends AppCompatActivity {
                     }
                     else{
                         // call to main server and immediately update the account
-                        appController.getTransactionDAO().addTransaction(cusID, accNo,type,30.0, amount,reference);
+                        appController.getTransactionDAO().specialRequest(cusID, accNo,type,30.0, amount,reference);
                         openLogoutPage();
                     }
 
