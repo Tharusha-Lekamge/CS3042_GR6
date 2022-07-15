@@ -6,7 +6,7 @@ const router = express.Router();
 router
   .route("/")
   .post(accountController.createAccount)
-  .get(accountController.getAllAccounts);
+  .get(accountController.getAccount);
 router
   .route("/:id")
   .get(accountController.getAccount)

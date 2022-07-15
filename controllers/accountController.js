@@ -84,7 +84,7 @@ exports.getAllAccByAgentID = async (req, res) => {
 
 exports.getAllAccByNIC = async (req, res) => {
   try {
-    const customerID = req.params.id;
+    const customerID = req.query.id;
     const sqlStatement = `SELECT * FROM accounts NATURAL JOIN accountholders WHERE customerID = ${customerID}`;
     const result = await db.query(sqlStatement);
 
@@ -109,8 +109,8 @@ exports.getAllAccByNIC = async (req, res) => {
  */
 exports.getAccount = async (req, res) => {
   try {
-    const accNo = req.params.accNo;
-    const sqlStatement = `SELECT * FROM accounts WHERE accNo = ${accNo}`;
+    const accNo = req.query.id;
+    const sqlStatement = `SELECT * FROM accounts WHERE accountNumber = ${accNo}`;
     const result = await db.query(sqlStatement);
 
     res.status(200).json({

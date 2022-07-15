@@ -16,10 +16,14 @@ const syncRouter = require("./routes/syncRoutes");
 const accountRouter = require("./routes/accountRoutes");
 const fdRouter = require("./routes/fdRoutes");
 const reportRouter = require("./routes/reportRoutes");
+const viewRouter = require("./routes/viewRoutes");
 
 // Serving static files
 app.use(express.static(path.join(__dirname, "public")));
 
+// ROUTES
+
+app.use("/", viewRouter);
 app.use("/api/v1/transaction", transactionRouter);
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/sync", syncRouter);
