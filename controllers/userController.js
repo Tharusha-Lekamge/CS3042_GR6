@@ -151,8 +151,8 @@ exports.deleteUser = async (req, res) => {
 exports.getUserAndAccByID = async (req, res) => {
   try {
     const customerID = req.query.customerID;
-    const sqlStatement = `SELECT * FROM ${tableName} WHERE customerID = ${customerID}`;
-    const resultUser = await db.query(sqlStatement);
+    var sqlStatement = `SELECT * FROM ${tableName} WHERE customerID = ${customerID}`;
+    var resultUser = await db.query(sqlStatement);
 
     sqlStatement = `SELECT * FROM accounts NATURAL JOIN accountholders WHERE customerID = ${customerID}`;
     const resultAccounts = await db.query(sqlStatement);
