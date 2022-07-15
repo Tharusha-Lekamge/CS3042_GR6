@@ -120,15 +120,29 @@ exports.protect = catchAsync(async (req, res, next) => {
     req.headers.authorization.startsWith("Bearer")
   ) {
     token = req.headers.authorization.split(" ")[1];
+  } else if (req.cookies.jwt) {
+    token = req.cookies.jwt;
   }
+
   if (!token) {
     return next(new AppError("No token given in the header", 401));
   }
   //2) Validate token (Verification step)
   const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+  console.log(decoded);
+
   //3) Check if user exists
+  const customerID = decoded.userID;
+  const findUserSQLstatement = `SELECT DISTINCT customerID FROM customer WHERE customerID = ${customerID}`;
+  const curUser = await db.query(findUserSQLstatement);
+
+  // If there is no user
+  if (!curUser[0]) {
+    return next(new AppError("No user with this ID found", 401));
+  }
   //4) Check if User changed pass after JWT issued
   //5) Give access to the route
-
+  req.user = curUser[0];
+  res.locals.user = curUser[0];
   next();
 });

@@ -6,9 +6,15 @@ const router = express.Router();
 
 router
   .route("/monthly-by-agent")
-  .get(transactionController.getAllTransactionsByAccAgent);
+  .get(
+    authController.protect,
+    transactionController.getAllTransactionsByAccAgent
+  );
 router
   .route("/monthly-by-account")
-  .get(transactionController.getAllTransactionsByAccAgent);
+  .get(
+    authController.protect,
+    transactionController.getAllTransactionsByAccAgent
+  );
 
 module.exports = router;
