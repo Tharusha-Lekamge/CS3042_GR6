@@ -144,8 +144,13 @@ public class TransactionDAO_Imp extends DBHandler implements TransactionDAO {
 
                     }
                     try {
-                        if (!key.equals("transactionID"))
-                            rowObject.put(key,cursor.getString(i));
+                        if (!key.equals("transactionID")){
+                            if (key.equals("transactionAmount"))
+                                rowObject.put(key,Double.parseDouble(cursor.getString(i)));
+                            else
+                                rowObject.put(key,cursor.getString(i));
+                        }
+
                         else{
                             newTRID += cursor.getString(i);
                         }
@@ -187,33 +192,59 @@ public class TransactionDAO_Imp extends DBHandler implements TransactionDAO {
 
     public void specialRequest(String customerID, String accNo,String type,Double trCharge,Double amount,String reference){
 
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        String currentDateandTime = sdf.format(new Date());
+        String trID = String.valueOf(AGENT_ID);
+        String arr[] = currentDateandTime.substring(2,10).split("-");
+        for (int j=0; j<arr.length; j++){
+            trID += arr[j];
+        }
+
         JSONObject specialTR = new JSONObject();
         try {
-            specialTR.put("CustomerID", customerID);
-            specialTR.put("AccountNo", accNo);
-            specialTR.put("Type", type);
-            specialTR.put("Charges", trCharge);
-            specialTR.put("Amount", amount);
-            specialTR.put("Reference", reference);
+            specialTR.put("transactionID",trID);
+            specialTR.put("customerID", customerID);
+            specialTR.put("accountNumber", accNo);
+            specialTR.put("date",currentDateandTime);
+            specialTR.put("transactionType", type);
+            specialTR.put("transactionCharge", trCharge);
+            specialTR.put("transactionAmount", amount);
+            specialTR.put("reference", reference);
+            specialTR.put("agentID", AGENT_ID);
 
             Log.d("SPECIALREQ", "specialRequest:" + specialTR.toString());
+
+            JSONObject sp_tr[] = {specialTR};
+            Log.d("SPTR", "specialRequest: sptr : " + sp_tr.toString() );
+            JSONObject obj = new JSONObject();
+            obj.put("data", sp_tr);
+            Log.d("OBJSP", "specialRequest: obj : " + obj.toString());
 
             MediaType JSON = MediaType.parse("application/json; charset=utf-8");
             OkHttpClient client = new OkHttpClient();
             HttpUrl url = new HttpUrl.Builder().scheme("http").host(HOST_IP).port(3000).addPathSegment("api").addPathSegment("v1").addPathSegment("transaction").build();
 
-            RequestBody body = RequestBody.create(JSON, specialTR.toString());
+            RequestBody body = RequestBody.create(JSON, obj.toString());
 
             Request request = new Request.Builder()
                     .url(url)
                     .post(body)
                     .build();
 
-            client.newCall(request).execute();
+            client.newCall(request).enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    Log.d("SPTRFAIL", "onFailure: response not received");
+                }
+
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    String datastring = response.body().string();
+                    Log.d("SPTRPASS", "special request updated");
+                }
+            });
 
         } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
             e.printStackTrace();
         }
     }

@@ -47,6 +47,7 @@ public class WithdrawalActivity extends AppCompatActivity implements AdapterView
                 accList = appController.getAccountDAO().getAccountsList(customerID);
             else{
                 accList = appController.getCustomerDAO().fetchAccounts(customerID);
+                Log.d("WDACC", "in withdrawal activity , accList : " + accList.toString());
             }
         } catch (InvalidAccountException e) {
             e.printStackTrace();
