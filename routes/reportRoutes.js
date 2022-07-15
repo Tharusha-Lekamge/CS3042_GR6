@@ -1,11 +1,20 @@
 const express = require("express");
-const userController = require("../controllers/userController");
 const authController = require("../controllers/authController");
-const router = express.Router();
-const validator = require("../models/supportFunctions/validators");
-const accountController = require("../controllers/accountController");
+const transactionController = require("../controllers/transactionController");
 
-router.route("/monthly-by-agent").get(authController.protect);
-router.route("/monthly-by-account").get(authController.protect);
+const router = express.Router();
+
+router
+  .route("/monthly-by-agent")
+  .get(
+    authController.protect,
+    transactionController.getAllTransactionsByAccAgent
+  );
+router
+  .route("/monthly-by-account")
+  .get(
+    authController.protect,
+    transactionController.getAllTransactionsByAccAgent
+  );
 
 module.exports = router;

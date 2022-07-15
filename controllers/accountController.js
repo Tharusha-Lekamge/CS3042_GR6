@@ -1,21 +1,30 @@
 const db = require("../models/supportFunctions/dbOperations");
-//const dbConfig = require("../dbConfig");
 const Account = require("../models/accountModel");
 const tableName = "accounts";
 
 exports.createAccount = async (req, res) => {
   try {
-    const newAccount = new Account(req.body.data);
-    const sqlStatement = newAccount.statement;
-    const result = await db.query(sqlStatement);
+    // Check if the user exists
+
+    const accountCols = `accountNumber, accountType, accountBalance`;
+    const accountHoldersCols = `accountNumber, customerID`;
+
+    // Inserting into Accounts table
+    var statement = `INSERT INTO accounts VALUES `;
+    statement += `('${req.body.data.accNo}', '${req.body.data.accType}', ${req.body.data.balance});`;
+    const result = await db.query(statement);
+
+    // Inserting into the accountholders table
+    statement = `INSERT INTO accountholders VALUES `;
+    statement += `('${req.body.data.accNo}', '${req.body.data.customerID}');`;
+    const result1 = await db.query(statement);
 
     res.status(200).json({
       status: "Successfully added",
-      data: { newAccount },
     });
   } catch (err) {
     res.status(400).json({
-      status: "Failed to add",
+      status: "Failed to Create Account",
       data: {
         err,
       },
@@ -52,12 +61,13 @@ exports.getAllAccounts = async (req, res) => {
  * Returns an array containing all accounts assigned to the agent with the passed AgentID
  */
 exports.getAllAccByAgentID = async (req, res) => {
-  const agentID = req.params.id;
   try {
-    const sqlStatement = `SELECT * FROM accounts WHERE agentID = ${agentID}`;
+    const agentID = req.params.id;
+    const sqlStatement = `SELECT DISTINCT accountNumber, accountType, accountBalance FROM accounts NATURAL JOIN accountholders NATURAL JOIN customer WHERE agentID = ${agentID}`;
     const result = await db.query(sqlStatement);
 
     res.json({
+      status: "Success",
       data: {
         accounts: result,
       },
@@ -73,12 +83,13 @@ exports.getAllAccByAgentID = async (req, res) => {
 };
 
 exports.getAllAccByNIC = async (req, res) => {
-  const NIC = req.params.id;
   try {
-    const sqlStatement = `SELECT * FROM accounts WHERE customerNIC = ${NIC}`;
+    const customerID = req.params.id;
+    const sqlStatement = `SELECT * FROM accounts NATURAL JOIN accountholders WHERE customerID = ${customerID}`;
     const result = await db.query(sqlStatement);
 
     res.json({
+      status: "Success",
       data: {
         accounts: result,
       },
@@ -98,7 +109,7 @@ exports.getAllAccByNIC = async (req, res) => {
  */
 exports.getAccount = async (req, res) => {
   try {
-    const accNo = req.params.id;
+    const accNo = req.params.accNo;
     const sqlStatement = `SELECT * FROM accounts WHERE accNo = ${accNo}`;
     const result = await db.query(sqlStatement);
 
