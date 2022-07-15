@@ -16,5 +16,7 @@ router
 router.route("/login").get(viewController.getLogin);
 router.route("/signup").get(viewController.getSignup);
 router.route("/report").get(viewController.getReport);
+router.route("/all-accounts").get(viewController.getAllAccounts);
+router.route("/all-agents").get(viewController.getAllAgents);
 
 module.exports = router;

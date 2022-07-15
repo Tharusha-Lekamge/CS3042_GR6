@@ -15,7 +15,12 @@ const signToken = (userID) => {
 };
 
 const createSendToken = (user, statusCode, req, res) => {
-  const token = signToken(user.customerID);
+  var token;
+  if (user.customerID) {
+    token = signToken(user.customerID);
+  } else {
+    token = signToken(user.username);
+  }
 
   res.cookie("jwt", token, {
     expires: new Date(
@@ -75,10 +80,10 @@ exports.login = async (req, res, next) => {
     return;
   }
   // 2) check if user exists and if the password matches
-  var sqlStatement = `SELECT DISTINCT customerID, password FROM customer WHERE customerID =  ${customerID}`;
+  var sqlStatement = `SELECT DISTINCT customerID, password FROM customer WHERE customerID = '${customerID}'`;
   var result = await db.query(sqlStatement);
 
-  sqlStatement = `SELECT DISTINCT username, password, firstName FROM admins WHERE username =  ${customerID}`;
+  sqlStatement = `SELECT DISTINCT username, password, firstName FROM admins WHERE username = '${customerID}'`;
   var admins = await db.query(sqlStatement);
 
   result.push(admins[0]);
@@ -157,14 +162,26 @@ exports.isLoggedIn = async (req, res, next) => {
       );
 
       // 2) Check if user still exists
-      const sqlStatement = `SELECT DISTINCT customerID, password, firstName FROM customer WHERE customerID =  ${decoded.userID}`;
+      var sqlStatement = `SELECT DISTINCT customerID, password, firstName FROM customer WHERE customerID = '${decoded.userID}'`;
       var currentUser = await db.query(sqlStatement);
       if (!currentUser[0]) {
-        return next();
+        console.log("No standard customer. Checking for admins");
+        console.log(decoded);
+        sqlStatement = `SELECT DISTINCT username, password, firstName FROM admins WHERE username = '${decoded.userID}'`;
+        var admins = await db.query(sqlStatement);
+        if (!admins[0]) {
+          console.log("No admins too");
+          return next();
+        } else {
+          console.log("Admin found");
+          currentUser = admins;
+          currentUser[0].isAdmin = true;
+        }
       }
       currentUser.password = undefined;
 
       // THERE IS A LOGGED IN USER
+      console.log(currentUser[0]);
       res.locals.user = currentUser[0];
       return next();
     } catch (err) {

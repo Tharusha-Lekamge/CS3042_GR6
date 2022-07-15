@@ -87,3 +87,31 @@ exports.getReport = catchAsync(async (req, res) => {
     console.log(err);
   }
 });
+
+exports.getAllAccounts = catchAsync(async (req, res) => {
+  // 1) Get accounts of the User
+  var sqlStatement = `SELECT * FROM accounts NATURAL JOIN accountholders`;
+  const accounts = await db.query(sqlStatement);
+
+  // 2) Build card Template
+  // 3) Display as cards
+  res.status(200).render("all-accounts", {
+    title: "All Accounts",
+    accounts: accounts,
+  });
+});
+
+exports.getAllAgents = catchAsync(async (req, res) => {
+  // 1) Get accounts of the User
+  const customerID = req.query.id;
+  var sqlStatement = `SELECT agentID FROM customer`;
+  const agents = await db.query(sqlStatement);
+
+  // 2) Build card Template
+  // 3) Display as cards
+  console.log(customerID);
+  res.status(200).render("agents-overview", {
+    title: "Agents Overview",
+    agents: agents,
+  });
+});
