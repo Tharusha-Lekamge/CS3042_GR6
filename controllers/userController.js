@@ -157,6 +157,10 @@ exports.getUserAndAccByID = async (req, res) => {
     sqlStatement = `SELECT * FROM accounts NATURAL JOIN accountholders WHERE customerID = ${customerID}`;
     const resultAccounts = await db.query(sqlStatement);
 
+    if (!resultUser[0]) {
+      return new AppError("No such user found");
+    }
+
     res.status(200).json({
       status: "Success",
       data: {
