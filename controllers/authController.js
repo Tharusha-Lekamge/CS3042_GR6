@@ -152,6 +152,41 @@ exports.protect = catchAsync(async (req, res, next) => {
   next();
 });
 
+exports.adminProtect = catchAsync(async (req, res, next) => {
+  //1) Get token if exists
+  // Token is normally in the header
+  var token;
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith("Bearer")
+  ) {
+    token = req.headers.authorization.split(" ")[1];
+  } else if (req.cookies.jwt) {
+    token = req.cookies.jwt;
+  }
+
+  if (!token) {
+    return next(new AppError("No token given in the header", 401));
+  }
+  //2) Validate token (Verification step)
+  const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+
+  //3) Check if user exists
+  const userID = decoded.userID;
+  const findUserSQLstatement = `SELECT DISTINCT username, password FROM admins WHERE username = '${userID}'`;
+  const curUser = await db.query(findUserSQLstatement);
+
+  // If there is no user
+  if (!curUser[0]) {
+    return next(new AppError("No user with this ID found", 401));
+  }
+  //4) Check if User changed pass after JWT issued
+  //5) Give access to the route
+  req.user = curUser[0];
+  res.locals.user = curUser[0];
+  next();
+});
+
 exports.isLoggedIn = async (req, res, next) => {
   if (req.cookies.jwt) {
     try {
