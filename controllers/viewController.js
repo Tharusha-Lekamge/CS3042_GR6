@@ -16,12 +16,15 @@ exports.getOverview = catchAsync(async (req, res) => {
   sqlStatement = `SELECT * FROM fixeddeposits NATURAL JOIN accountholders WHERE customerID = ${customerID}`;
   const fixedDeposits = await db.query(sqlStatement);
 
+
   // 2) Build card Template
   // 3) Display as cards
+  console.log(customerID);
   res.status(200).render("overview", {
     title: "User Overview",
     accounts: accounts,
     fds: fixedDeposits,
+    customerID: customerID,
   });
 });
 

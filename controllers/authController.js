@@ -151,7 +151,7 @@ exports.isLoggedIn = async (req, res, next) => {
       );
 
       // 2) Check if user still exists
-      const sqlStatement = `SELECT DISTINCT customerID, password FROM customer WHERE customerID =  ${customerID}`;
+      const sqlStatement = `SELECT DISTINCT customerID, password, firstName FROM customer WHERE customerID =  ${decoded.userID}`;
       var currentUser = await db.query(sqlStatement);
       if (!currentUser[0]) {
         return next();
@@ -159,6 +159,7 @@ exports.isLoggedIn = async (req, res, next) => {
       currentUser.password = undefined;
 
       // THERE IS A LOGGED IN USER
+      console.log(`${currentUser[0].firstName} is logged in`);
       res.locals.user = currentUser[0];
       return next();
     } catch (err) {
