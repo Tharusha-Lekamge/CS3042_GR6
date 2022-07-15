@@ -28,8 +28,11 @@ exports.getOverview = catchAsync(async (req, res) => {
 exports.accountView = catchAsync(async (req, res) => {
   // 1) Get data
   const accNo = req.query.id;
-  const sqlStatement = `SELECT * FROM accounts NATURAL JOIN accountholders WHERE accountNumber = ${accNo}`;
+  var sqlStatement = `SELECT * FROM accounts NATURAL JOIN accountholders WHERE accountNumber = ${accNo}`;
   const result = await db.query(sqlStatement);
+
+  sqlStatement = `SELECT DISTINCT * FROM transaction WHERE accountNumber = ${accNo} ORDER BY date`;
+  const transactions = await db.query(sqlStatement);
 
   // 2) Build Template
 
@@ -37,5 +40,6 @@ exports.accountView = catchAsync(async (req, res) => {
   res.status(200).render("account", {
     title: result[0].accountNumber,
     account: result[0],
+    transactions: transactions,
   });
 });
