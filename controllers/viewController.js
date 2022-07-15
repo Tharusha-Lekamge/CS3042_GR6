@@ -74,11 +74,14 @@ exports.getReport = catchAsync(async (req, res) => {
       result = await db.query(sqlStatement);
     }
 
+    var noOfRecords = result.length;
+
     res.status(200).render("report", {
       title: "report",
       transactions: result,
       accNo: accNo,
       agentID: agentID,
+      noOfRecords: noOfRecords,
     });
   } catch (err) {
     console.log(err);

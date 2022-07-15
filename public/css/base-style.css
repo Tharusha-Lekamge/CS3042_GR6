@@ -368,7 +368,7 @@ body {
   );
 }
 
-.report-table {
+table {
   vertical-align: bottom;
   width: '100%'; 
   padding: 15px; 
@@ -378,12 +378,14 @@ body {
   background-color:'#F2F2F2';
 }
 
-.report-table-header {
-  width: '25%'; 
+tbody th {
+  background-color: #36c;
+  color: #fff;
+  text-align: left;
 }
 
-.report-table-row{
-  border-bottom: 2px solid #000;
+tbody tr:nth-child(even) th {
+  background-color: #25c;
 }
 
 .header__hero {

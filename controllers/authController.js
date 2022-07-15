@@ -75,8 +75,14 @@ exports.login = async (req, res, next) => {
     return;
   }
   // 2) check if user exists and if the password matches
-  const sqlStatement = `SELECT DISTINCT customerID, password FROM customer WHERE customerID =  ${customerID}`;
+  var sqlStatement = `SELECT DISTINCT customerID, password FROM customer WHERE customerID =  ${customerID}`;
   var result = await db.query(sqlStatement);
+
+  sqlStatement = `SELECT DISTINCT username, password, firstName FROM admins WHERE username =  ${customerID}`;
+  var admins = await db.query(sqlStatement);
+
+  result.push(admins[0]);
+  var placeholder = await db.query(sqlStatement);
   // Check for errors
   if (!result) {
     res.status(400).json({
