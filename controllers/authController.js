@@ -117,6 +117,16 @@ exports.login = async (req, res, next) => {
   });
 };
 
+exports.logout = (req, res) => {
+  res.cookie("jwt", "loggedout", {
+    expires: new Date(Date.now() + 10000),
+    httpOnly: true,
+  });
+  res.status(200).json({
+    status: "Success",
+  });
+};
+
 exports.protect = catchAsync(async (req, res, next) => {
   //1) Get token if exists
   // Token is normally in the header
@@ -155,37 +165,41 @@ exports.protect = catchAsync(async (req, res, next) => {
 exports.adminProtect = catchAsync(async (req, res, next) => {
   //1) Get token if exists
   // Token is normally in the header
-  var token;
-  if (
-    req.headers.authorization &&
-    req.headers.authorization.startsWith("Bearer")
-  ) {
-    token = req.headers.authorization.split(" ")[1];
-  } else if (req.cookies.jwt) {
-    token = req.cookies.jwt;
-  }
+  try {
+    var token;
+    if (
+      req.headers.authorization &&
+      req.headers.authorization.startsWith("Bearer")
+    ) {
+      token = req.headers.authorization.split(" ")[1];
+    } else if (req.cookies.jwt) {
+      token = req.cookies.jwt;
+    }
 
-  if (!token) {
-    return next(new AppError("No token given in the header", 401));
-  }
-  //2) Validate token (Verification step)
-  const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+    if (!token) {
+      return next(new AppError("No token given in the header", 401));
+    }
+    //2) Validate token (Verification step)
+    const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
 
-  //3) Check if user exists
-  const userID = decoded.userID;
-  const findUserSQLstatement = `SELECT DISTINCT username, firstName FROM admins WHERE username = '${userID}'`;
-  const curUser = await db.query(findUserSQLstatement);
+    //3) Check if user exists
+    const userID = decoded.userID;
+    const findUserSQLstatement = `SELECT DISTINCT username, firstName FROM admins WHERE username = '${userID}'`;
+    const curUser = await db.query(findUserSQLstatement);
 
-  // If there is no user
-  if (!curUser[0]) {
-    return next(new AppError("No user with this ID found", 401));
+    // If there is no user
+    if (!curUser[0]) {
+      return next(new AppError("No user with this ID found", 401));
+    }
+    //4) Check if User changed pass after JWT issued
+    //5) Give access to the route
+    curUser[0].isAdmin = true;
+    req.user = curUser[0];
+    res.locals.user = curUser[0];
+    next();
+  } catch (err) {
+    return new AppError("Error in admin protect", 400);
   }
-  //4) Check if User changed pass after JWT issued
-  //5) Give access to the route
-  curUser[0].isAdmin = true;
-  req.user = curUser[0];
-  res.locals.user = curUser[0];
-  next();
 });
 
 exports.isLoggedIn = async (req, res, next) => {
@@ -201,15 +215,11 @@ exports.isLoggedIn = async (req, res, next) => {
       var sqlStatement = `SELECT DISTINCT customerID, password, firstName FROM customer WHERE customerID = '${decoded.userID}'`;
       var currentUser = await db.query(sqlStatement);
       if (!currentUser[0]) {
-        console.log("No standard customer. Checking for admins");
-        console.log(decoded);
         sqlStatement = `SELECT DISTINCT username, password, firstName FROM admins WHERE username = '${decoded.userID}'`;
         var admins = await db.query(sqlStatement);
         if (!admins[0]) {
-          console.log("No admins too");
           return next();
         } else {
-          console.log("Admin found");
           currentUser = admins;
           currentUser[0].isAdmin = true;
         }
@@ -217,7 +227,6 @@ exports.isLoggedIn = async (req, res, next) => {
       currentUser.password = undefined;
 
       // THERE IS A LOGGED IN USER
-      console.log(currentUser[0]);
       res.locals.user = currentUser[0];
       return next();
     } catch (err) {

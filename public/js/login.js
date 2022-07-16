@@ -29,14 +29,15 @@ const login = async (customerID, password) => {
 
 const logout = async () => {
   try {
+    console.log("logout called");
     const res = await axios({
       method: "GET",
-      url: "/api/v1/users/logout",
+      url: "/api/v1/user/logout",
     });
     if ((res.data.status = "success")) location.reload(true);
   } catch (err) {
     console.log(err.response);
-    showAlert("error", "Error logging out! Try again.");
+    //showAlert("error", "Error logging out! Try again.");
   }
 };
 
@@ -45,4 +46,9 @@ document.querySelector(".form").addEventListener("submit", (e) => {
   const customerID = document.getElementById("customerID").value;
   const password = document.getElementById("password").value;
   login(customerID, password);
+});
+
+document.querySelector(".nav__el--logout").addEventListener("click", () => {
+  console.log("click triggered");
+  logout();
 });

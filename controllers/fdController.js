@@ -1,13 +1,13 @@
 const db = require("../models/supportFunctions/dbOperations");
 
 const tableName = "fixeddeposits";
-const tableCols = `accountNumber, customerID, amount, openingDate, planType, FD_ID`;
+const tableCols = `accountNumber, customerID, amount, openingDate, planType, FD_ID, closingDate`;
 
 exports.createFD = async (req, res) => {
   const { accountNumber, customerID, amount, openingDate, planType, FD_ID } =
     req.body;
   var sqlStatement = `INSERT INTO ${tableName} ${tableCols} VALUES `;
-  sqlStatement += `(${accountNumber}, ${customerID}, ${amount}, ${openingDate}, ${planType}, ${FD_ID});`;
+  sqlStatement += `(${accountNumber}, ${customerID}, ${amount}, ${openingDate}, ${planType}, ${FD_ID}, ${closingDate});`;
 };
 
 exports.withdrawFD = async (req, res) => {

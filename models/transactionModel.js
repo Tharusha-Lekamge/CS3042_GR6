@@ -1,4 +1,5 @@
 const db = require("../models/supportFunctions/dbOperations");
+const moment = require("moment");
 
 /* Required input fields are
  * accountNumber
@@ -6,6 +7,8 @@ const db = require("../models/supportFunctions/dbOperations");
  * transactionType
  * transactionAmount
  * agentID
+ * customerID
+ * closingDate
  *
  * transactionID is AI
  * transaction charge default is 30.0
@@ -17,26 +20,28 @@ class Transaction {
     this.tableName = "transaction";
 
     this.transactionID = data.transactionID;
+    this.customerID = data.customerID;
     this.accountNumber = data.accountNumber;
     this.dateTime = new Date(data.date);
     this.sqlDate = this.dateTime.toISOString().slice(0, 19).replace("T", " ");
+    this.reference = data.reference;
 
     this.transactionType = data.transactionType;
     this.transactionAmount = data.transactionAmount;
     this.transactionCharge = data.transactionCharge;
     this.agentID = data.agentID;
+    this.customerID = data.customerID;
 
     this.statement = this.generateInsertStatement();
     this.updateBalance();
-    //this.checkBalance();
   }
   // To insert the transaction to the transaction table
   generateInsertStatement() {
     //console.log("inside functuon");
     const cols =
-      "(transactionID, accountNumber, date, transactionType, transactionAmount, transactionCharge, agentID)";
+      "(transactionID, customerID, accountNumber, date, transactionType, transactionAmount, transactionCharge, agentID, reference)";
     var statement = `INSERT INTO ${this.tableName} ${cols} VALUES`;
-    var values = `('${this.transactionID}', '${this.accountNumber}', '${this.sqlDate}', '${this.transactionType}', '${this.transactionAmount}', '${this.transactionCharge}', '${this.agentID}');`;
+    var values = `('${this.transactionID}', '${this.customerID}', '${this.accountNumber}', '${this.sqlDate}', '${this.transactionType}', '${this.transactionAmount}', '${this.transactionCharge}', '${this.agentID}', '${this.reference}');`;
     const state = statement + " " + values;
     //console.log(state);
     return state;
@@ -49,6 +54,7 @@ class Transaction {
       // result is in the form [{accountBalance: xxx}]
       // Array of objects
       var balance = result[0].accountBalance;
+      balance -= this.transactionCharge;
       if (this.transactionType == "Deposit" || "deposit") {
         balance += this.transactionAmount;
       } else if (this.transactionType == "Withdraw" || "withdraw") {
