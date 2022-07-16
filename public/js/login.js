@@ -41,7 +41,7 @@ const logout = async () => {
   }
 };
 
-document.querySelector(".form").addEventListener("submit", (e) => {
+document.querySelector(".form--login").addEventListener("submit", (e) => {
   e.preventDefault();
   const customerID = document.getElementById("customerID").value;
   const password = document.getElementById("password").value;

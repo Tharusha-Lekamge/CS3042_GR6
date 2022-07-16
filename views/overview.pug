@@ -25,7 +25,7 @@ block content
                 span Last Transaction: 
 
             .card__footer
-              a.btn.btn--green.btn--small(href='#') Add FD
+              a.btn.btn--green.btn--small(href=`/fd?accNo=${account.accountNumber}`) Add FD
               a.btn.btn--green.btn--small(href=`account?id=${account.accountNumber}`) Details
 
       h2.heading-secondary Fixed Deposits
@@ -52,7 +52,7 @@ block content
 
 
             .card__footer
-              a.btn.btn--green.btn--small(href='#') Details      
+              //a.btn.btn--green.btn--small(href='#') Details      
     else  
       a.nav__el(href="/login") LogIn 
       a.nav__el(href='/signup') SignUp  

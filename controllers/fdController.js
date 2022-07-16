@@ -1,13 +1,38 @@
 const db = require("../models/supportFunctions/dbOperations");
 
 const tableName = "fixeddeposits";
-const tableCols = `accountNumber, customerID, amount, openingDate, planType, FD_ID, closingDate`;
+const tableCols = `(accountNumber, customerID, amount, openingDate, planType, closingDate)`;
 
 exports.createFD = async (req, res) => {
-  const { accountNumber, customerID, amount, openingDate, planType, FD_ID } =
-    req.body;
-  var sqlStatement = `INSERT INTO ${tableName} ${tableCols} VALUES `;
-  sqlStatement += `(${accountNumber}, ${customerID}, ${amount}, ${openingDate}, ${planType}, ${FD_ID}, ${closingDate});`;
+  try {
+    console.log(req.body);
+    const {
+      accountNumber,
+      customerID,
+      amount,
+      openingDate,
+      planType,
+      closingDate,
+    } = req.body;
+    var sqlStatement = `INSERT INTO ${tableName} ${tableCols} VALUES `;
+    sqlStatement += `('${accountNumber}', '${customerID}', ${amount}, '${openingDate}', '${planType}', '${closingDate}');`;
+    const result = await db.query(sqlStatement);
+
+    if (result) {
+      res.status(200).json({
+        status: "success",
+      });
+    } else {
+      res.status(400).json({
+        status: "Failed",
+      });
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(400).json({
+      status: "Failed",
+    });
+  }
 };
 
 exports.withdrawFD = async (req, res) => {

@@ -1,5 +1,4 @@
 const db = require("../models/supportFunctions/dbOperations");
-const moment = require("moment");
 
 /* Required input fields are
  * accountNumber
@@ -35,15 +34,14 @@ class Transaction {
     this.statement = this.generateInsertStatement();
     this.updateBalance();
   }
+
   // To insert the transaction to the transaction table
   generateInsertStatement() {
-    //console.log("inside functuon");
     const cols =
       "(transactionID, customerID, accountNumber, date, transactionType, transactionAmount, transactionCharge, agentID, reference)";
     var statement = `INSERT INTO ${this.tableName} ${cols} VALUES`;
     var values = `('${this.transactionID}', '${this.customerID}', '${this.accountNumber}', '${this.sqlDate}', '${this.transactionType}', '${this.transactionAmount}', '${this.transactionCharge}', '${this.agentID}', '${this.reference}');`;
     const state = statement + " " + values;
-    //console.log(state);
     return state;
   }
   // To update the accounts table - account balance
@@ -55,13 +53,9 @@ class Transaction {
       // Array of objects
       var balance = result[0].accountBalance;
       balance -= this.transactionCharge;
-      if (this.transactionType == "Deposit" || "deposit" || "DEPOSIT") {
+      if (this.transactionType === "DEPOSIT") {
         balance += this.transactionAmount;
-      } else if (
-        this.transactionType == "Withdraw" ||
-        "withdraw" ||
-        "WITHDRAW"
-      ) {
+      } else if (this.transactionType === "WITHDRAW") {
         balance -= this.transactionAmount;
       } else {
         balance += 0;
@@ -70,16 +64,6 @@ class Transaction {
       accountStatement = `UPDATE accounts SET accountBalance = ${balance} WHERE accountNumber = ${this.accountNumber}`;
       result = await db.query(accountStatement);
     } catch (err) {}
-  }
-  /**
-   * No use of this function
-   */
-  async checkBalance() {
-    var accountStatement = `SELECT accountBalance FROM accounts WHERE accountNumber = ${this.accountNumber}`;
-    var result = await db.query(accountStatement);
-    // result is in the form [{accountBalance: xxx}]
-    // Array of objects
-    var balance = result[0].accountBalance;
   }
 }
 

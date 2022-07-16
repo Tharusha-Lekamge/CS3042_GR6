@@ -107,11 +107,47 @@ exports.getAllAgents = catchAsync(async (req, res) => {
   var sqlStatement = `SELECT agentID FROM customer`;
   const agents = await db.query(sqlStatement);
 
+  agents.forEach(async (agent) => {
+    var tagentSQL = `SELECT COUNT(transactionID) as c FROM transaction WHERE agentID = ${agent.agentID}`;
+    var numberOfTransactions = await db.query(tagentSQL);
+
+    agent.noOfTransactions = numberOfTransactions[0].c;
+    const placeholder = await db.query(tagentSQL);
+  });
+  const placeholder3 = await db.query(sqlStatement);
+
+  agents.forEach(async (agent) => {
+    var agentSql = `SELECT COUNT(customerID) as c FROM customer WHERE agentID = ${agent.agentID}`;
+    var numberOfCustomers = await db.query(agentSql);
+
+    agent.noOfCustomers = numberOfCustomers[0].c;
+    const placeholder2 = await db.query(agentSql);
+  });
+  const placeholder4 = await db.query(sqlStatement);
+  agents.forEach(async (agent) => {
+    var tagentSQL = `SELECT transactionID as c FROM transaction WHERE agentID = ${agent.agentID} ORDER BY date`;
+    var transactions = await db.query(tagentSQL);
+
+    agent.lastTransaction = transactions[0].c;
+    const placeholder = await db.query(tagentSQL);
+  });
+
   // 2) Build card Template
   // 3) Display as cards
-  console.log(customerID);
+  const placeholder = await db.query(sqlStatement);
+
   res.status(200).render("agents-overview", {
     title: "Agents Overview",
     agents: agents,
+  });
+});
+
+exports.getFD = catchAsync(async (req, res) => {
+  const accountNumber = req.query.accNo;
+  const sqlStatement = `SELECT DISTINCT * FROM transaction WHERE accountNumber = ${accNo} ORDER BY date`;
+  result = await db.query(sqlStatement);
+  res.status(200).render("fd", {
+    title: "Fixed Deposit",
+    accNo: accountNumber,
   });
 });

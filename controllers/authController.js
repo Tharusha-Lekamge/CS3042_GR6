@@ -148,7 +148,7 @@ exports.protect = catchAsync(async (req, res, next) => {
 
   //3) Check if user exists
   const customerID = decoded.userID;
-  const findUserSQLstatement = `SELECT DISTINCT customerID, firstName FROM customer WHERE customerID = ${customerID}`;
+  var findUserSQLstatement = `SELECT DISTINCT customerID, firstName FROM customer WHERE customerID = ${customerID}`;
   const curUser = await db.query(findUserSQLstatement);
 
   // If there is no user

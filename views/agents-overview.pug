@@ -18,11 +18,11 @@ block content
             .card__details
               h4.card__sub-heading Agent Summary
               .card__data
-                span Number of Accounts : 
+                span Number of Customers : #{agent.noOfCustomers}
               .card__data
-                span Number of Transactions: 
+                span Number of Transactions: #{agent.noOfTransactions}
               .card__data 
-                span Last Transaction: 
+                span Last Transaction ID: #{agent.lastTransaction}
 
             .card__footer
               a.btn.btn--green.btn--small(href=`report?agentID=${agent.agentID}`) Transaction Report

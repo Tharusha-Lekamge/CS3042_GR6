@@ -18,6 +18,7 @@ router
 router
   .route("/account")
   .get(authController.protect, viewController.accountView);
+router.route("/fd").get(authController.protect, viewController.getFD);
 
 // ADMIN Views
 router

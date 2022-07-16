@@ -19,12 +19,7 @@ exports.createTransaction = async (req, res) => {
       const newTransaction = new Transaction(elem);
       var sqlStatement = newTransaction.statement;
       const result = db.query(sqlStatement);
-      // update account balance
-      //newTransaction.updateBalance();
     });
-    // const newTransaction = new Transaction(req.body.data);
-    // const sqlStatement = newTransaction.statement;
-    // const result = await db.query(sqlStatement);
 
     res.status(200).json({
       status: "Successfully added",
