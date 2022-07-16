@@ -144,8 +144,6 @@ exports.getAllAgents = catchAsync(async (req, res) => {
 
 exports.getFD = catchAsync(async (req, res) => {
   const accountNumber = req.query.accNo;
-  const sqlStatement = `SELECT DISTINCT * FROM transaction WHERE accountNumber = ${accNo} ORDER BY date`;
-  result = await db.query(sqlStatement);
   res.status(200).render("fd", {
     title: "Fixed Deposit",
     accNo: accountNumber,
