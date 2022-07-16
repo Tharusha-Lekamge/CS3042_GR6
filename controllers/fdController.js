@@ -5,6 +5,7 @@ const tableCols = `(accountNumber, customerID, amount, openingDate, planType, cl
 
 exports.createFD = async (req, res) => {
   try {
+    console.log("createFD");
     console.log(req.body);
     const {
       accountNumber,
@@ -37,19 +38,20 @@ exports.createFD = async (req, res) => {
 
 exports.withdrawFD = async (req, res) => {
   try {
-    const { id } = req.params;
-    const account = getFdByID(id);
-    // Get the FD balance
-    const balance = account[0].amount;
-    const accNo = account[0].accountNumber;
+    const id = req.body.FD_ID;
+    // const account = getFdByID(id);
+    // // Get the FD balance
+    // const balance = account[0].amount;
+    // const accNo = account[0].accountNumber;
     // Add the balance to the account Number as a transaction
 
     // Delete the FD record
+    console.log(id);
     var sqlStatement = `DELETE FROM ${tableName} WHERE FD_ID = ${id}`;
     const deleteRes = await db.query(sqlStatement);
 
     res.status(200).json({
-      status: "Successfully withdrawn",
+      status: "success",
       data: {
         deleted: deleteRes,
       },

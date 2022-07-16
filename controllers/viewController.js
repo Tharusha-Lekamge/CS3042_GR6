@@ -54,6 +54,12 @@ exports.getLogin = catchAsync(async (req, res) => {
   });
 });
 
+exports.getLogout = catchAsync(async (req, res) => {
+  res.status(200).render("logoutForm", {
+    title: "Logout",
+  });
+});
+
 exports.getSignup = catchAsync(async (req, res) => {
   res.status(200).render("signup", {
     title: "Sign Up",
@@ -144,10 +150,19 @@ exports.getAllAgents = catchAsync(async (req, res) => {
 
 exports.getFD = catchAsync(async (req, res) => {
   const accountNumber = req.query.accNo;
-  const sqlStatement = `SELECT DISTINCT * FROM transaction WHERE accountNumber = ${accNo} ORDER BY date`;
-  result = await db.query(sqlStatement);
   res.status(200).render("fd", {
     title: "Fixed Deposit",
     accNo: accountNumber,
+  });
+});
+
+exports.withdrawFD = catchAsync(async (req, res) => {
+  const FD_ID = req.query.id;
+  const sqlStatement = `SELECT DISTINCT * FROM fixeddeposits WHERE FD_ID = ${FD_ID}`;
+  result = await db.query(sqlStatement);
+  res.status(200).render("fdWithdraw", {
+    title: "WithDraw Fixed Deposit",
+    FD_ID: FD_ID,
+    fd: result,
   });
 });

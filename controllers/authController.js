@@ -14,6 +14,12 @@ const signToken = (userID) => {
   });
 };
 
+const signTokenLogout = (userID) => {
+  return jwt.sign({ userID }, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_COOKIE_EXPIRES_LOGOUT,
+  });
+};
+
 const createSendToken = (user, statusCode, req, res) => {
   var token;
   if (user.customerID) {
@@ -26,6 +32,32 @@ const createSendToken = (user, statusCode, req, res) => {
     expires: new Date(
       Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
     ),
+    httpOnly: true,
+    secure: req.secure || req.headers["x-forwarded-proto"] === "https",
+  });
+
+  // Remove password from output
+  user.password = undefined;
+
+  res.status(statusCode).json({
+    status: "success",
+    token,
+    data: {
+      user,
+    },
+  });
+};
+
+const createLogoutToken = (user, statusCode, req, res) => {
+  var token;
+  if (user.customerID) {
+    token = signTokenLogout(user.customerID);
+  } else {
+    token = signTokenLogout(user.username);
+  }
+
+  res.cookie("jwt", token, {
+    expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_LOGOUT),
     httpOnly: true,
     secure: req.secure || req.headers["x-forwarded-proto"] === "https",
   });
@@ -118,9 +150,11 @@ exports.login = async (req, res, next) => {
 };
 
 exports.logout = (req, res) => {
+  console.log("auth logout");
   res.cookie("jwt", "loggedout", {
-    expires: new Date(Date.now() + 10000),
+    expires: new Date(Date.now() + 100),
     httpOnly: true,
+    secure: req.secure || req.headers["x-forwarded-proto"] === "https",
   });
   res.status(200).json({
     status: "Success",

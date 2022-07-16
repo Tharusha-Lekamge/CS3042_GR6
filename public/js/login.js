@@ -34,12 +34,20 @@ const logout = async () => {
       method: "GET",
       url: "/api/v1/user/logout",
     });
-    if ((res.data.status = "success")) location.reload(true);
+    if ((res.data.status = "success")) {
+      // showAlert("success", "Logged in successfully!");
+      alert("Logged Out");
+      window.setTimeout(() => {
+        location.assign("/");
+      }, 1500);
+    }
   } catch (err) {
     console.log(err.response);
     //showAlert("error", "Error logging out! Try again.");
   }
 };
+
+const logoutForm = document.querySelector(".form--logout");
 
 document.querySelector(".form--login").addEventListener("submit", (e) => {
   e.preventDefault();
@@ -48,7 +56,11 @@ document.querySelector(".form--login").addEventListener("submit", (e) => {
   login(customerID, password);
 });
 
-document.querySelector(".nav__el--logout").addEventListener("click", () => {
-  console.log("click triggered");
-  logout();
-});
+if (logoutForm) {
+  logoutForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    console.log("click triggered");
+    logout();
+  });
+}
+

@@ -9,12 +9,12 @@ header.header
       if (!user.isAdmin)
         a.nav__el(href='#') Welcome #{user.firstName}
         a.nav__el(href=`/account-overview?id=${user.customerID}`) My Accounts 
-        a.nav__el.nav__el--logout Log out
+        a.nav__el.logout-button(href="/logout") Log out
       if user.isAdmin   
         a.nav__el(href='#') Welcome #{user.firstName}
         a.nav__el(href=`/all-accounts`) All Accounts
         a.nav__el(href=`/all-agents`) All Agents
-        a.nav__el.nav__el--logout Log out
+        a.nav__el.logout-button(href="/logout") Log out
     else 
       a.nav__el(href="/login") LogIn 
       a.nav__el(href='/signup') SignUp
