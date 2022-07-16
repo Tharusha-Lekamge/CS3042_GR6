@@ -55,9 +55,13 @@ class Transaction {
       // Array of objects
       var balance = result[0].accountBalance;
       balance -= this.transactionCharge;
-      if (this.transactionType == "Deposit" || "deposit") {
+      if (this.transactionType == "Deposit" || "deposit" || "DEPOSIT") {
         balance += this.transactionAmount;
-      } else if (this.transactionType == "Withdraw" || "withdraw") {
+      } else if (
+        this.transactionType == "Withdraw" ||
+        "withdraw" ||
+        "WITHDRAW"
+      ) {
         balance -= this.transactionAmount;
       } else {
         balance += 0;
