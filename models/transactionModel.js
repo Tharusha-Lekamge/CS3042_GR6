@@ -55,12 +55,10 @@ class Transaction {
       // Array of objects
       var balance = result[0].accountBalance;
       balance -= this.transactionCharge;
-      if (this.transactionType == "Deposit" || "deposit" || "DEPOSIT") {
+      if (this.transactionType === "DEPOSIT") {
         balance += this.transactionAmount;
       } else if (
-        this.transactionType == "Withdraw" ||
-        "withdraw" ||
-        "WITHDRAW"
+        this.transactionType === "WITHDRAW"
       ) {
         balance -= this.transactionAmount;
       } else {
@@ -69,7 +67,7 @@ class Transaction {
       }
       accountStatement = `UPDATE accounts SET accountBalance = ${balance} WHERE accountNumber = ${this.accountNumber}`;
       result = await db.query(accountStatement);
-    } catch (err) {}
+    } catch (err) { }
   }
   /**
    * No use of this function
